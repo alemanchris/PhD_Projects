@@ -1,0 +1,83 @@
+# Text arrays and touples
+actions = ["surf","ski"]
+actions_2 = ( "surf" , "ski")
+# some logicals not to confuse
+#=
+
+P && Q is true if both are true, otherwise it’s false
+P || Q is false if both are false, otherwise it’s true
+=#
+# Exercise 1
+# Part 1
+# the use of zip()
+x_vals = [1,2,3]
+y_vals = [1,1,1]
+sum([ i[1]*i[2] for i in zip(x_vals,y_vals)])
+# or
+sum([x*y for (x,y) in zip(x_vals, y_vals)])
+# Part 2
+# The use of a comprehension
+count_s = 0
+sum([ i%2==0 for i in 0:99 ])
+
+# with out using comprehension
+doubles = [2i for i in 1:4]
+for i = 0:2:t
+    y = y+1
+end
+# Part 3
+pairs = [(2, 5), (4, 2), (9, 8), (12, 10)]
+sum([x%2==0 &&  y%2==0 for (x,y) in pairs])
+
+# Excersice 2
+countries = ("Japan", "Korea", "China")
+cities = ("Tokyo", "Seoul", "Beijing")
+for (i, country) in enumerate(countries)
+    city = cities[i]
+    println("The capital of $country is $city")
+end
+function p(x,coef)
+    value = 0
+    for (i,a_s) in enumerate(coef)
+        value = value+(a_s*x^(i-1))
+    end
+    return value
+end
+
+p(2,[1,2,3])
+p(1,[2,4])
+# The short version
+p_2(x, coeff) = sum([a * x^(i-1) for (i, a) in enumerate(coeff)])
+# Excersice 3
+function num_uper(x)
+    count = 0
+    for i in x
+        if i == uppercase(i) && isalpha(i)
+            count = count+1
+        end
+    end
+    return count
+end
+ num_uper("U RaN iG ro")
+ # one liner
+count_num(x) = sum([ j == uppercase(j) && isalpha(j) for j in x ])
+count_num("DerTderTCD")
+count_num("U RaN iG ro")
+# Excersice 4
+f_ex4_2(seq_a, seq_b) = issubset(Set(seq_a), Set(seq_b))
+
+# Excersice 5
+# Excersice 6
+f = open("us_cities.txt","r")
+total_pop = 0
+for line = eachline(f)
+    city, population = split(line,':')
+    total_pop += parse(Int, population)
+end
+
+f_ex6 = open("us_cities.txt", "r")
+total_pop = 0
+for line in eachline(f_ex6)
+    city, population = split(line, ':')            # Tuple unpacking
+    total_pop += parse(Int, population)
+end

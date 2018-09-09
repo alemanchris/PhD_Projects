@@ -33,3 +33,7 @@ plot(x=e_values2, Geom.histogram)
 # Plot from dataframes,
 plot(dataset("ggplot2", "diamonds"), x="Price", Geom.histogram)
 ####
+
+# Ploting multiple lines with layers
+plot(layer( x=[1:10], y=rand(10),Geom.point, Geom.line, Theme(default_color=color("orange")) ),
+      layer( x=[1:10], y=rand(10),Geom.point, Geom.line, Theme(default_color=color("purple"))) )
