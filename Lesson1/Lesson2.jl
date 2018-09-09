@@ -67,7 +67,39 @@ count_num("U RaN iG ro")
 f_ex4_2(seq_a, seq_b) = issubset(Set(seq_a), Set(seq_b))
 
 # Excersice 5
+function linapprox(f, a, b, n, x)
+    #=
+    Evaluates the piecewise linear interpolant of f at x on the interval
+    [a, b], with n evenly spaced grid points.
+
+    =#
+    length_of_interval = b - a
+    num_subintervals = n - 1
+    step = length_of_interval / num_subintervals
+
+    # === find first grid point larger than x === #
+    point = a
+    while point <= x
+        point += step
+    end
+
+    # === x must lie between the gridpoints (point - step) and point === #
+    u, v = point - step, point
+
+    return f(u) + (x - u) * (f(v) - f(u)) / (v - u)
+end
+f_ex5(x) = x^2
+g_ex5(x) = linapprox(f_ex5, -1, 1, 3, x)
+x_grid = linspace(-1, 1, 100)
+y_vals = map(f_ex5, x_grid)
+y_approx = map(g_ex5, x_grid)
+using Gadfly
+Gadfly.push_theme(:default)
+plot(layer( x=x_grid, y=y_vals, Geom.line, Theme(default_color=color("orange")) ),
+     layer( x=x_grid, y=y_approx, Geom.line, Theme(default_color=color("purple"))) )
+
 # Excersice 6
+
 f = open("us_cities.txt","r")
 total_pop = 0
 for line = eachline(f)

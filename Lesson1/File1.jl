@@ -27,6 +27,7 @@ plot(x=rand(20),y=rand(20),Geom.histogram)
 
 # Ploting histograms
 using Gadfly
+Gadfly.push_theme(:default)
 e_values=randn(100)
 e_values2=randn(100000)
 plot(x=e_values2, Geom.histogram)
