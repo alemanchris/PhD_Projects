@@ -1,0 +1,332 @@
+\section{The model}\label{sec4}
+This section describes the proposed heterogeneous agent general equilibrium model.
+\subsection{Model characteristics}
+The model features two types agents: sex consumers and sex producers. They are finitely lived, have rational expectations and intend to maximize future discounted utility, $E_{0}\sum_{t}^{\infty}\beta^{t}u$, subject to their respective budget constraints. I assume the function $u:[0,\infty)\to \mathbb{R}$ is strictly increasing, strictly concave and twice continuously differentiable. \\
+ Agents interact in three competitive markets in this economy: The goods market, the sex market and the assets market.  
+\begin{itemize}
+\item From the goods market agents can obtain consumption good $c$ at price $p_{1}$\footnote{From now on I will use the price of the consumption good as numeraire, then $p_{1}=1$}. 
+\item Non-marital risky sex $x$ is traded in the sex market for price $p_{2}=p$. Where variable $x$ is continuous.
+\item Individuals can either save or borrow in the asset market by trading a non-contingent asset $a$ with endogenous return $r$.
+\item Agents education can either be high or low $e=\{1,0\}$.
+\item HIV status can be positive or negative $h=\{1,0\}$.
+\item Labor is supplied inelastically.
+\item Agents receive labor income $y(e)$, where income differs according to their education level $e$. In particular $y(1)>y(0)$.
+\item Let $\gamma_{e}$ denote the survival probability of an agent with level of education $e$.
+\item Let $\psi^{h}$ be the fertility rate of an individual with HIV status $h$.
+\item Let $\lambda(x,h)$ denote the probability of getting infected with HIV. Note that the probability of infection is actually a function of the amount of risky sex($x$) consumed by the agent. This value is determined endogenously.
+\item There are two types of agents sex buyers ($g$) and sex producers ($-g$).  
+\end{itemize}
+Following the discussion in Section\ref{sec1}, the model intends to characterize the different stages of the HIV epidemic according to the level of education of the population. In particular, the increase in the probability of infection for the most educated in the early and final stages.\\
+In line with \cite{raul}, four stages of the epidemic have been identified. 
+\begin{enumerate}
+\item Pre-Epidemic stage
+\item Miopic stage of the epidemic
+\item Difussion and maturity of the epidemic
+\item Introduction of anti-retro viral drugs
+\end{enumerate}
+The features of each stage will be described in detail in the upcoming sections.\\
+
+The model features additional dynamics, in the sense that it intends to capture the evolution of the HIV epidemic starting from stage one until stage four. For presentation purposes each stage characterizes a stationary equilibrium, but later on they will be linked with the intention to describe the complete evolution of the HIV epidemic.
+
+In the following sections I describe in detail the characteristics of each of the stages of the model.  
+\subsection{Pre-epidemic stage}\label{pre}
+In this pre-HIV world, there is no probability of infection, namely $\lambda_(x,h)=0$. Agents differ on their type $g$, assets $a$ and education level $e$.\\
+
+\noindent\textbf{Sex Buyers:}\\
+For agents of type $g$ the dynamic problem is:
+\begin{align}
+V(a,e,g;\Phi) &= \mathop{\max_{c\geq 0,x \geq 0,a' \geq 0}}  u(c,x) + \beta \gamma_{e} V(a',e,g;\Phi') \label{eq1}\\
+\mbox{s.t}\nonumber\\
+c+ px +a'&= y(e) + (1+r(\Phi))a \label{eq2}
+\end{align}
+
+ Agents interact in non-marital risky sex activities, these agents buys non-marital risky sex $x$ at price $p$ and saves or borrows $a'$ with return $r$. Note that labor is supplied inelastically and depends on their level of education $e$, then their labor income is $y(e)$, where $y(1)>y(0)$.\\
+ This problem is characterized by three individual state variables ($a,e,g$) and one aggregate state variable $\Phi$, which represents the population distribution over the states $a,e,g$. The choice variables are $c,x$ and $a'$.\\
+The above problem can be written in sequential form: 
+\begin{align*}
+\mathop{\max_{c_{t},x_{t},a_{t+1}}}&E_{0}\sum^{\infty}_{t=0}\beta^{t}u(c_{t},x_{t})  \\
+\mbox{s.t}\\ 
+c_{t}+p_{t}x_{t}+a_{t+1}&=y(e)+(1+r_{t})a_{t}
+\end{align*}
+ \textbf{FOC's:}\\
+ \begin{align*}
+ \frac{\partial u(c_{t},x_{t})}{\partial x_{t}}&=-u'_{c}(c_{t},x_{t})p_{t}+u'_{x}(c_{t},x_{t})=0\\
+ \frac{\partial u(c_{t},x_{t})}{\partial a_{t+1}}&=-u'_{c}(c_{t},x_{t})+u'_{c}(c_{t+1},x_{t+1})(1+r_{t})\beta=0
+ \end{align*}
+ Given the price system $\{p_{t}\}_{t=0}^{\infty},\{r_{t}\}_{t=0}^{\infty}$ the solution is characterized by the sequence of allocations $\{c_{t}\}_{t=0}^{\infty}, \{x_{t}\}_{t=0}^{\infty}, \{a_{t}\}_{t=0}^{\infty}$ such that they solve the above maximization problem.\\
+ 
+\noindent \textbf{Sex Producers:}\\
+For agents of type $-g$ the dynamic problem is:
+\begin{align}
+V(a,e,-g;\Phi) &= \mathop{\max_{c\geq 0, 1\geq l\geq 0,a' \geq 0}}  u(c) + \beta \gamma_{e} V(a',e,-g;\Phi') \label{eq3}\\
+\mbox{s.t}\nonumber\\
+c +a'&= pl^{\alpha}+y(e)(1-l) + (1+r(\Phi))a \label{eq4}
+\end{align}
+Note that for these agents, extra marital risky sex does not generate any utility, then the utility function only depends on the amount of $c$ consumed. Additionally, these agents produce sex with a decreasing return to scale production function $x=l^{\alpha}$ where $\alpha\in(0,1)$. In other words, these agents produce non-marital risky-sex $x$ using time $l$ and sell it a price $p$. Where $l$ is the fraction of labor dedicated to the production of sex, the rest of the labor ($1-l$) which is not allocated to sex production is sold in the market for labor income $y(e)$. Additionally agents save or borrow assets $a$ at rate $r$.\\
+
+\noindent The above problem can be written in sequential form: 
+\begin{align*}
+\mathop{\max_{c_{t},l_{t},a_{t+1}}}&E_{0}\sum^{\infty}_{t=0}\beta^{t}u(c_{t})  \\
+\mbox{s.t}\\ 
+c_{t}+a_{t+1}&=p_{t}l_{t}^{\alpha}+y(e)(1-l_{t})+(1+r_{t})a_{t}
+\end{align*}
+ \textbf{FOC's:}\\
+ \begin{align*}
+ \frac{\partial u(c_{t})}{\partial l_{t}}&=-u'_{c}(c_{t})(\alpha p_{t} u^{\alpha-1}-y(e))=0\\
+ \frac{\partial u(c_{t})}{\partial a_{t+1}}&=-u'_{c}(c_{t})+u'_{c}(c_{t+1})(1+r_{t})\beta=0
+ \end{align*}
+ Given the sequence of prices $\{p_{t}\}_{t=0}^{\infty},\{r_{t}\}_{t=0}^{\infty}$ the solution are the sequences of allocations $\{c_{t}\}_{t=0}^{\infty},\{l_{t}\}_{t=0}^{\infty}, \{l_{t}\}_{t=0}^{\infty}, \{a_{t}\}_{t=0}^{\infty}$ that solve  the agent's problem.\\
+For the computation of the solution I assume that the utility function is CRRA with relative risk aversion parameter $\sigma$, all agents regardless of their type share the same relative risk aversion. Then $u'_{c}(c_{t},x_{t})=c_{t}^{-\sigma}$, $u'_{x}(c_{t},x_{t})=x_{t}^{-\sigma}$.
+\subsection*{Solution to the recursive problem}
+ Given prices $p,r$ the solution to the recursive problem of agents $g$ and $-g$  are the policy functions $a(a,e,g;\Phi), x(a,e,g;\Phi), c(a,e,g;\Phi), l(a,e,g;\Phi)$ that induce a stationary distribution $\Phi(\mathcal{A,E,G})$ over the set of state variables. Denote $\Phi$ as the aggregate state variable.
+ \subsection*{The aggregate sate variable and transition function}
+\noindent The aggregate state variable evolves according to:
+\begin{align}
+\Phi'=F(\Phi)
+\end{align} 
+Where the function $F:\mathcal{M}\to\mathcal{M}$ is the aggregate law of motion, mapping distributions to distributions. $F$ summarizes how agents move within the distribution of assets , education and type from one period to the next, however this is exactly what a transition function tell us. \\
+\noindent Define the transition function $\mathcal{Q}:\mathcal{Z}\times\mathcal{B(Z)}\to[0,1]$ by: 
+\begin{align*}
+Q((a,e,g)(\mathcal{A},\mathcal{E},\mathcal{G})) &= \left\{
+\begin{tabular}{clc}
+$\gamma_{e}$ & if      & $a(a,e,g;\Phi) \in \mathcal{A} $\\
+0 & else & 
+\end{tabular}
+\right.\\
+\forall \,\,\,(a,e,g)&\in\mathcal{Z}\,\,\,\mbox{and}\,\,\,(\mathcal{A,E,G})\in{\mathcal{B(Z)}}
+\end{align*}
+Where $\mathcal{Z}$ consists of all n-tuples of $A\times E\times G$. \\
+Define $\mathcal{B(Z)}$ as the set of Borel sets on $\mathcal{Z}$, in particular $\mathcal{A,E,G}\in\mathcal{B(Z)}$ where $\mathcal{A,E,G}$ are projections of $\mathcal{Z}$ over the spaces $A,E$ and $G$ respectively. Let $\mathcal{P}$ be a probability measure on $\mathcal{B(Z)}$, then $\mathcal{P}: \mathcal{B(Z)}\to[0,1]$.\\
+Then the evolution of the asset distribution is:
+\begin{align}
+\Phi'(\mathcal{A},\mathcal{E},\mathcal{G}) = F(\Phi) (\mathcal{A},\mathcal{E},\mathcal{G})= \int_{a,e,g} Q((a,e,g)(\mathcal{A},\mathcal{E},\mathcal{G})) d \Phi+\psi\Phi((a',e,g)(\mathcal{A},\mathcal{E},\mathcal{G}))
+\end{align}
+Which is the fraction of people with assets in $\mathcal{A}$, education $\mathcal{E}$ and type $\mathcal{G}$ as measured by $\Phi$, that transits to ($\mathcal{A,E,G}$) as measured by $\mathcal{Q}$. The last term accounts for the new born. Population increases according to the fertility rate $\psi$, it important to note that individuals of a certain type give birth to people of the same type.
+ 
+ \subsection*{Stationary equilibrium}
+ The \textit{stationary equilibrium of the Pre-Epicemic stage} is:
+ \begin{itemize}
+ \item An interest rate $r$ and price $p$
+ \item Policy functions $a(a,e,g;\Phi), x(a,e,g;\Phi), c(a,e,g;\Phi), l(a,e,g;\Phi)$
+ \item A stationary distribution $\Phi(\mathcal{A},\mathcal{E},\mathcal{G}) $
+ \end{itemize}
+ Such that:
+ \begin{enumerate}[label=\alph*]
+ \item Given $r$ and $p$ the policy functions  $a(a,e,g;\Phi), x(a,e,g;\Phi), c(a,e,g;\Phi), l(a,e,g;\Phi)$ solve the sex buyers and sex producers problem respectively. 
+ \item The stationary probability distribution $\Phi'(\mathcal{A},\mathcal{E},\mathcal{G})$ is induced by the optimal policy $a(a,e,g;\Phi)$.
+ \item All markets clear. 
+  \end{enumerate}
+ \begin{align*}
+\int_{a,e,g} a(a,e,g;\Phi) d\Phi &= 0 \\
+\int_{a,e,g} x(a,e,g;\Phi) d \Phi &= \int_{a,e,-g} x(a,e,-g;\Phi) d\Phi
+\end{align*} 
+That is, there is zero net supply of assets, the sex markets clear and the consumption market clears by Walras law. 
+
+ 
+ 
+
+
+\subsection{Miopic stage of the epidemic}\label{mio}
+The myopic stage is almost identical to the pre-HIV stage except for the following aspects: 
+\begin{enumerate}
+\item Now there is the possibility of becoming HIV infected as the result of non-marital risky sex activity $x$. The probability of infection is $\lambda(x,h)$\footnote{For simplicity I denote the of getting HIV infected given that an individual is healthy $\lambda(x,0)$ by just $\lambda(x)$ }.
+\item Agents are myopic. This implies that they are being infected but they are not aware of it, in fact they believe that at all periods ${h=h'=0}$, i.e., that the probability of infection $\lambda(x,h)$ is zero. In particular,  in this stage they naively set $V(a',e,g,h'=0)$ when solving their maximization problem; it is in that sense that they are myopic. 
+\item In this stage the survival probability $\gamma_{e}$ and labor income $y(e)$ not only depend on education $e$ but also on the HIV status, $h$. Then $\gamma_{e}(h)$ and $y(e,h)$. In particular given $e$, $\gamma_{e}(1)<\gamma_{e}(0)$ and $y(e,1)<y(e,0)$.
+\end{enumerate}
+Following \cite{victor_dos},the functional form that determines to which extent the amount of non-marital risky sex affects the probability of infection is: 
+\begin{align*}
+\lambda(x)=\frac{exp(x)}{exp(x)+\rho exp(-x)}
+\end{align*}
+ The formula above depends only on one parameter, $\rho\geq 0$ and since $x\geq 0$ the domain of the function is, $\mathbb{R}_{+}$ and the range $\{\frac{1}{1+\rho}\leq \lambda(x)\leq1\}$. We can interpret $\rho$ as the parameter
+that captures the individual's degree of understanding of the epidemic evolution. More over, a lower $\rho$ is associated with a lower degree of understanding, and a higher value of $\rho$ means the agent is better informed about the risks of infection. Then $\frac{\partial\lambda(x)}{\partial x}>0$ and $\frac{\partial\lambda(x)}{\partial \rho}<0$ this is, the higher the understanding parameter $\rho$, the less the chances of infection.\\
+From one side, even if individuals have no extra marital risky-sex $x=0$ they still have chance $\frac{1}{1+\rho}$ of getting infected. From the other side, as $x$ tends to infinity $\lambda(x)$ tends to one.
+\begin{align*}
+\lim_{x\to\infty} \lambda(x)= 1
+\end{align*}
+
+\noindent\textbf{Sex buyers}\\
+For agents of type $g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,g,h;\Phi) = \max_{c,x,a'} \quad  & u(c,x) + \beta \sum_{h'|h} \gamma_e(h') \lambda(x,h'|h) V(a',e,g,h'=0;\Phi)\\
+\mbox{s.t}\\
+c+ px +a'&= y(e,h) + (1+r(\Phi))a 
+\end{align*}
+The FOC's and solution to the sequential formulation are analogous to the previous stage.\\
+\noindent\textbf{Sex Producers}\\
+For agents of type $-g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,-g,h;\Phi) = \max_{c,l,a'} \quad &  u(c) + \beta  \sum_{h'|h} \gamma_e(h') \lambda(x,h'|h)  V(a',e,-g,h'=0;\Phi)\\
+\mbox{s.t}\\
+c +a'&= pl^{\alpha} + y(e,h)(1-l) + (1+r(\Phi))a   
+\end{align*}
+The FOC's and solution to the sequential formulation are analogous to the previous stage.
+\subsection*{Solution to the recursive problem}
+ Given prices $p,r$ the solution to the recursive problem of agents $g$ and $-g$  are the policy functions $a(a,e,g,h;\Phi), x(a,e,g,h;\Phi), c(a,e,g,h;\Phi), l(a,e,g,h;\Phi)$ that induce a stationary distribution $\Phi(\mathcal{A,E,G,H})$ over the set of state variables. $\Phi$ now includes a new state variable, the HIV status $h$.
+ \subsection*{The aggregate sate variable and transition function}
+\noindent As before the aggregate state variable evolves according to:
+\begin{align}
+\Phi'=F(\Phi)
+\end{align} 
+Where $F:\mathcal{M}\to\mathcal{M} $ now summarizes how agents move within the distribution of assets , education, type, and HIV status from one period to the next.\\
+\noindent Define the transition function $Q:\mathcal{Z}\times\mathcal{B(Z)}\to[0,1]$ by: 
+\begin{align*}
+Q((a,e,g,h)(\mathcal{A},\mathcal{E},\mathcal{G},\mathcal{H})) &= \left\{
+\begin{tabular}{clc}
+$\gamma_{e}(h')\lambda(x,h'|h)$ & if      & $a(a,e,g,h;\Phi) \in \mathcal{A} $\\
+0 & else & 
+\end{tabular}
+\right.\\ \label{eq5}
+\forall \,\,\,(a,e,g,h)&\in\mathcal{Z}\,\,\,\mbox{and}\,\,\,(\mathcal{A,E,G,H})\in{\mathcal{B(Z)}}
+\end{align*}
+Again $\mathcal{Z}$ consists of all n-tuples of $A\times E\times G \times H$, and $\mathcal{B(Z)}$ is the set of Borel sets on $\mathcal{Z}$. Moreover, $\mathcal{A,E,G,H}\in\mathcal{B(Z)}$ and $\mathcal{A,E,G,H}$ are projections of $\mathcal{Z}$ over the spaces $A,E,H$ and $H$ respectively. Let $\mathcal{P}$ be a probability measure on $\mathcal{B(Z)}$, then $\mathcal{P}: \mathcal{B(Z)}\to[0,1]$.\\
+Then the evolution of the asset distribution is:
+\begin{align}
+\Phi'(\mathcal{A},\mathcal{E},\mathcal{G,H}) = F(\Phi) (\mathcal{A},\mathcal{E},\mathcal{G,H})= \int_{a,e,g,h}& Q((a,e,g,h)(\mathcal{A},\mathcal{E},\mathcal{G,H})) d \Phi\\
+&+\psi^{h'}\Phi((a',e,g,h')(\mathcal{A},\mathcal{E},\mathcal{G,H}))\nonumber
+\end{align}
+Which is the fraction of people with assets in $\mathcal{A}$, education $\mathcal{E}$,type $\mathcal{G}$ and HIV status $\mathcal{H}$ as measured by $\Phi$, that transits to ($\mathcal{A,E,G,H}$) as measured by $\mathcal{Q}$. The fertility rate now depends on the HIV status of the individual. For simplicity I assume that $\psi^{h'}=\psi^{h}=\psi$, that is there is no difference between the fertility rate of the people infected with HIV and the non infected.\\
+
+I now derive the evolution of the asset distribution explicitly for the case in which $h=\{0,1\}$ and $e=\{0,1\}$.
+Let:
+\begin{align*}
+   \Gamma=
+  \left[ {\begin{array}{cc}
+   \gamma_{e}(0) & 0 \\
+   0 & \gamma_{e}(1) \\
+  \end{array} } \right]
+   \Lambda=
+  \left[ {\begin{array}{cc}
+   1-\lambda(x) & 0 \\
+   \lambda(x) & 1 \\
+  \end{array} } \right]
+   \Psi=
+  \left[ {\begin{array}{cc}
+   \hat{\psi^{0}} & 0 \\
+   0 & \hat{\psi^{1}} \\
+  \end{array} } \right]
+\end{align*}
+Where matrix $\Gamma$ collects the survival probabilities of both types. The transition matrix $\Lambda$ contains the probabilities of infection, note that once infected it is impossible to be cured, then $\Lambda_{1,1}=1-\lambda(x)$ is the probability of staying healthy, $\Lambda_{2,1}=\lambda(x)$ is the probability of turning HIV positive. Matrix $\Psi$ collects the fertility rates, where $\hat{\psi^{h}}=1+\psi^{h}$, as before I assume $\psi^{1}=\psi^{0}=\psi$. \\
+Then the evolution of the population with education $e$, before choosing $a$ follows:
+\begin{align*}
+\left[ {\begin{array}{c}
+   \phi_{t+1}(a_{t},e,g,0)\\
+   \phi_{t+1}(a_{t},e,g,1)\\
+  \end{array} } \right]=\Psi\times \Lambda \times \Gamma\times 
+\left[ {\begin{array}{c}
+   \phi_{t}(a_{t},e,g,0)\\
+   \phi_{t}(a_{t},e,g,1) \\
+  \end{array} } \right] 
+\end{align*}
+Define:
+\begin{align*}
+\Lambda \times \Gamma=
+\left[ {\begin{array}{cc}
+   (1-\lambda(x))\gamma_{e}(0)&0\\
+   \lambda(x)\gamma_{e}(0)&\gamma_{e}(1)\\
+  \end{array} } \right]=\Omega
+\end{align*}
+Then, together with the decision rule $a(a,e,g,h,\Phi)$ the transition matrix $\mathcal{Q}((a,e,g,h)(\mathcal{A,E,G,H}))$is constructed as follows:
+\begin{align*}
+\mathcal{Q}((a,e,g,h)(\mathcal{A,E,G,H}))=\sum_{h'\in \mathcal{H}}\textbf{1}_{a\in \mathcal{A}} \Omega(h'|h)
+\end{align*} 
+And the endogenous asset distribution can be rewritten as: 
+\begin{align}
+\boldsymbol{\phi}_{t+1}(a_{t+1},e,g,h_{t+1})=\int_{a,e,g,h}\sum_{h_{t+1}|h_{t}}&\textbf{1}_{a_{t+1}=a(a,e,g,h)}\gamma_{e}(h_{t+1})\lambda_{e}(h_{t+1}|h_{t})d \boldsymbol{\phi}_{t}(a,e,g,h) \nonumber\\
+&+\psi\boldsymbol{\phi}_{t}(a_{t+1},e,g,h_{t+1})
+\end{align} 
+This is equivalent to Equation\ref{eq5}.
+ 
+ \subsection*{Stationary equilibrium}
+ The \textit{stationary equilibrium of the myopic stage} is:
+ \begin{itemize}
+ \item An interest rate $r$ and price $p$
+ \item Policy functions $a(a,e,g,h;\Phi), x(a,e,g,h;\Phi), c(a,e,g,h;\Phi), l(a,e,g,h;\Phi)$
+ \item A stationary distribution $\Phi(\mathcal{A},\mathcal{E},\mathcal{G,H})$
+ \end{itemize}
+ Such that:
+ \begin{enumerate}[label=\alph*]
+ \item Given $r$ and $p$ the policy functions  $a(a,e,g,h;\Phi), x(a,e,g,h;\Phi), c(a,e,g,h;\Phi), l(a,e,g,h;\Phi)$ solve the sex buyers and sex producers problem respectively. 
+ \item The stationary probability distribution $\Phi'(\mathcal{A},\mathcal{E},\mathcal{G,H})$ is induced by the optimal policy $a(a,e,g,h;\Phi)$.
+ \item All markets clear. 
+  \end{enumerate}
+ \begin{align*}
+\int_{a,e,g,h} a(a,e,g,h;\Phi) d\Phi &= 0 \\
+\int_{a,e,g,h} x(a,e,g,h;\Phi) d \Phi &= \int_{a,e,-g,h} x(a,e,-g,h;\Phi) d\Phi
+\end{align*} 
+With zero net supply of assets. The sex markets clears and the consumption market clears by Walras law. 
+
+\subsection{Difussion and maturity of the epidemic}\label{maturity}
+This stage is similar to the previous one apart from two major differences:
+\begin{itemize}
+\item During the maturity of the epidemic agents now recognize that there is a probability of infection due to non-marital risky sex. This probability of infection is more accurately understood by those who are more educated $e=1$. This means that $\rho$ now depends on the the education level of the individual $\rho_{e}$, moreover $\rho_{1}>\rho_{0}$.
+\item The agents are not myopic anymore. That is, they assign the correct continuation value when solving their maximization problem.
+\end{itemize}
+\noindent\textbf{Sex buyers}\\
+For agents of type $g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,g,h;\Phi) = \max_{c,x,a'} \quad  & u(c,x) + \beta \sum_{h'|h} \gamma_e(h') \lambda(x,h'|h) V(a',e,g,h';\Phi)\\
+\mbox{s.t}\\
+c+ px +a'&= y(e,h) + (1+r(\Phi))a 
+\end{align*}
+\noindent\textbf{Sex Producers}\\
+For agents of type $-g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,-g,h;\Phi) = \max_{c,l,a'} \quad &  u(c) + \beta  \sum_{h'|h} \gamma_e(h') \lambda(x,h'|h)  V(a',e,-g,h';\Phi)\\
+\mbox{s.t}\\
+c +a'&= pl^{\alpha} + y(e,h)(1-l) + (1+r(\Phi))a   
+\end{align*}
+The FOC's and solution to the sequential formulation are analogous to the previous stage.\\
+The construction of the transition function and the stationary distribution is identical to the previous stage.\\
+The definition of the \textit{stationary equilibrium of the maturity of the epidemic} is the same as the stationary equilibrium of the previous stage.
+
+\subsection{Antiretroviral treatment (ART's)}\label{arts}
+In this stage:
+\begin{itemize}
+\item There is anti-retroviral (ART) treatment $d=\{0,1\}$ for everyone that is infected, this means that $h=1\Rightarrow d=1$. 
+\item  ART drugs change affect survival rates $\gamma_{e}(h,d)$, probabilities of infection $\lambda(x,h,d)$ and individual productivity $y(e,h,d)$ of those who are infected $h=1$, there is no difference on the benefits of the drug among types $g$ of agents.
+\begin{itemize}
+\item Then the new survival rate of the infected $\gamma_{e}(1,1)$ is larger than before.
+\item Also $y(e,0,0)>y(e,1,1)\,\,\forall e\in E$.
+
+\end{itemize}
+\end{itemize}
+
+\noindent\textbf{Sex buyers}\\
+For agents of type $g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,g,h;\Phi) = \max_{c,x,a'} \quad  & u(c,x) + \beta \sum_{h'|h} \gamma_e(h',d) \lambda(x,h'|h,d) V(a',e,g,h';\Phi)\\
+\mbox{s.t}\\
+c+ px +a'&= y(e,h,d) + (1+r(\Phi))a 
+\end{align*}
+\noindent\textbf{Sex Producers}\\
+For agents of type $-g$ the dynamic problem is: 
+ \begin{align*}
+V(a,e,-g,h;\Phi) = \max_{c,l,a'} \quad &  u(c) + \beta  \sum_{h'|h} \gamma_e(h',d) \lambda(x,h'|h,d)  V(a',e,-g,h';\Phi)\\
+\mbox{s.t}\\
+c +a'&= pl^{\alpha} + y(e,h,d)(1-l) + (1+r(\Phi))a   
+\end{align*}
+
+The FOC's and solution to the sequential formulation are analogous to the previous stage.\\
+The construction of the transition function and the stationary distribution is identical to the previous stage.\\
+The definition of the \textit{stationary equilibrium of the last stage of the epidemic} is the same as the stationary equilibrium of the previous stage.\\
+An algorithm to find the stationary equilibrium of each of the epidemic stages is provided in the Appendix\ref{stationary}.
+\newpage
+\section{Solution algorithm, keeping track of the HIV epidemic }\label{algorithm}
+The following algorithm intends to join the stages $1-4$ to provide a full dynamic characterization of the HIV epidemic.  
+For the following algorithm, define the following stages according to the description in Section\ref{sec1}:
+\begin{enumerate}
+\item[]\textbf{Stage 1} (\textit{Pre-Epidemic}): There is no probability of infection $\lambda(x,h)=0$. Agents solve the maximization problem described in Section\ref{pre}.
+\item[]\textbf{Stage 2} (\textit{Miopic onset}): Agents are faced with a positive infection rate $\lambda(x)>0$, however they are not aware of it. Denote $\hat{\phi}(a,e,g,h=1)$ the initial distribution of infected individuals. The agents solve the maximization problem explained in Section\ref{mio}
+\item[]\textbf{Stage 3} (\textit{Maturity}): Agents acknowledge the risk of HIV infection, and correct their beliefs accounting for the probability of infection. They solve the problem described in Section\ref{maturity}. 
+\item[]\textbf{Stage 4} (\textit{ART's}): All infected individuals receive ART treatment. They face the maximization problem in Section\ref{arts}
+\end{enumerate}
+\newpage
+\subsection*{Algorithm}
+\noindent$Initialization$ \\
+
+\begin{tabular}{p{2cm}p{12cm}}
+\textbf{Step 1:}& Find the stationary equilibrium for the \underline{\textit{pre-epidemic stage}}\footnote{For an algorithm to compute the stationary equilibrium refer to the Appendix\ref{stationary}}.\\
+\textbf{Step 2:}& \underline{\textit{The Myopic stage}} arrives as an unexpected shock that hits the steady state of the \textit{pre-epidemic stage}. However agents are not aware of it. Solve forward using the decision rules of the\textit{pre-epidemic stage} but with the productivity levels, infection probabilities and survival rates of the  \textit{myopic stage}. \\
+\textbf{Step 3:}& The \underline{\textit{maturity of the epidemic}} arrives as an unexpected shock that hits the transition of the \textit{myopic stage} after $t$ periods. This means that the \textit{myopic stage} never arrives to the steady state because the economy gets hit by the \textit{maturity} during the transition. Find the steady state of the \textit{maturity stage}, start solving backwards for the proportion $\mu$ of agents that fully understand the probability of infection. Solve forward for those agents $1-\mu$ that are not aware of the risk. At some point, all agents will be aware of the risk.\\
+\textbf{Step 4:}& The introduction of \underline{\textit{anti retro viral treatment ART}} arrives as an unexpected shock that hits the transition after $\hat{t}$ periods of \textit{maturity}. Again \textit{maturity} never reaches the steady state. First compute the steady state of the \textit{ARTs stage} and solve backwards until the turning point with \textit{maturity} is reached.\\
+\end{tabular}

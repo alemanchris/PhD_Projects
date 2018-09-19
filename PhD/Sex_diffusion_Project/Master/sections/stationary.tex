@@ -1,0 +1,34 @@
+\noindent The follow algorithm explains the steps to find the stationary equilibrium of each of the stages of the epidemic.  The enviroment is characterized by the stages $i=(1,2,3,4)$ explained in Section\ref{algorithm}.\\
+
+\noindent$Initialization$ \\
+\textbf{Step $1$:} 
+\begin{enumerate}
+\item[] Guess prices  $p,r$. 
+
+
+\begin{enumerate}[label*=\arabic*.]
+\setcounter{enumi}{1}
+\item We are in \underline{Stage $i$}.
+\item Use the first order conditions of the agents in \underline{Stage $i$} to solve the problems for sex buyers and sex producers.
+\item Use the decision rules and the associated transition function $\mathcal{Q}((a,e,g,h)(\mathcal{A,E,G,H}))$ to find an invariant distribution $\Phi(\mathcal{A,E,G,H})$.
+\item Compute:
+\begin{align*}
+Ea_{g}(p,r)&=\int_{a,e,g,h} a(a,e,g,h;\Phi) d\Phi \,\,\forall g\in\mathcal{G}\\
+Ex_{g}(p,r)&=\int_{a,e,g,h} x (a,e,g,h;\Phi) d \Phi \,\,\forall g\in\mathcal{G}
+\end{align*}
+\item Compute:
+\begin{align*}
+d^{a}(r,p)&=Ea_{g}(p,r)-Ea_{-g}(p,r)\\
+d^{x}(r,p)&=Ex_{g}(p,r)-Ex_{-g}(p,r)
+\end{align*}
+
+\end{enumerate}
+\end{enumerate}
+\textbf{Step $2$:} 
+
+\begin{enumerate}[label*=\arabic*.]
+\setcounter{enumi}{1}
+
+\item If both $d^{a}(r,p),d^{x}(r,p)$ are substantially different than zero, update $r,p$ and go back to Step $1.1$. Otherwise stop.
+\end{enumerate}
+%\newpage
