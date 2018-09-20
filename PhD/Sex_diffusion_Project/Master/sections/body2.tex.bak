@@ -1,0 +1,102 @@
+\section{Introduction}
+The esto es para probar si sirven las citas \cite{acemo} growing discussion involving the relevancy of factor demand linkages as sources and propagation channels for business cycles motivates the inclusion of input output structure into General equilibrium analysis. Among others \cite{acemo} show that industry specific shocks can generate important aggregate fluctuations, accordingly \cite{horvath} argues in favor of the inclusion of demand linkages as these amplify the transmission of shocks to the economy, \cite{horvath} also mentions that it is expected that sectoral technology shocks have proportional impact on output on other sectors. Along this line \cite{atalay} tries to estimate sector specific aggregate shocks, confirming interdependency. Additionally \cite{santoro} state that multi-sector DSGE models need to replicate the inherent sectoral co-movement feature of business cycles. 
+Furthermore, the models in this framework serve as a powerful tool when discussing the impact of future policy decision.\footnote{For a further discussion on this topic see \cite{santoro}.}
+The following document presents an analysis of input-output interactions of the German economy divided into three main sectors: agriculture, industry and services, the model also introduces non sector specific labor frictions in a multi-sector general equilibrium model. National accounts publicly available data for 2013 is used for the calibration of the model. 
+The objective of this exercise is to provide an analytical framework to characterize the nature of German Business fluctuations, as to contribute to the business fluctuations discussion with recent empirical evidence. In particular the effects of Sector specific shocks are contrasted against those affecting the whole economy. Following the discussion on sectoral demand linkages,the main results obtained from this exercise are in line with the results presented by \cite{long} and \cite{horvath}. The model shows both co-movement and persistence; both necessary to explain real business cycles, where input flows across sectors explains positive co-movement.  
+Section(\ref{model}) presents the key assumptions and the model setup. Section (\ref{calib}) summarizes the steady state calculation procedure, the data used and the model calibration. Finally Section\ref{results} and Section\ref{conclu} discuss the main results and conclusions respectively.
+\section{The Model} \label{model}
+\subsection{Model Framework}
+The model assumes the following:
+\begin{itemize}
+\item Rational expectations.
+\item Complete information.
+\item Non trivial capitalistic economy.
+\item No money.
+\item No other market distortions apart from hiring cost.
+\item There is no government sector nor deterministic technical progress.
+\item Full labor and input mobility across sectors.
+\item Constant returns to scale technology.
+\item Diminishing marginal productivity across production factors.
+\end{itemize}
+
+\subsection{The Social Planner Optimization Problem}
+The economy is composed of a single infinitely living representative household and a finite arbitrary number of firms, each corresponding to a single sector of the economy. In this set up households provide labor inputs to the different firms and in accordance to a capitalistic economy \cite{long} the outputs corresponding to each individual sector can either be consumed or used as an input by other firms. In addition hiring frictions are introduced following \cite{christiano} as it is shown that they play an important role when explaining business cycles. Business cycle empirical evidence suggests that labor market flows are large and highly cyclical, therefor relevant when understanding employment and unemployment cycles \cite{yashiv}. As explained in \cite{shimer} given a positive technology shock, hiring will increase as the value of hiring increases; however modeling hiring costs as forgone output as in \cite{yashiv} the marginal cost of hiring is affected by the value one additional unit of production, when this value falls, cost of hiring also falls; following \cite{yashiv}when the marginal value of one unit of output declines due to a technology shock, then employment and hiring should rise.   
+The household maximization problem can ultimately be seen from the perspective of a benevolent social planner. Under this assumption the objective of the social planner is to maximize total utility across time. The representative household increases its utility through consumption ($c_{t}$)and leisure ($Z_{t}$); in other words the household increases utility by working less hours:
+\begin{align}
+ u(c_{t}, Z_{t}) \,\,\,    \mbox{With:} \, \frac{\partial u}{\partial c_t}>0  \mbox{ and } \frac{\partial u}{\partial Z_{t}}>0 
+\end{align}
+The following functional form of the utility function is assumed, therefore the social planner maximization problem looks as follows: 
+\begin{align}
+\underset{n_{k,t}}{\max}  \sum_{t = 0}^{\infty} \beta^{t} &\Big[(log(c_{t}) - \frac{A^{L}\epsilon^{L_{t}}\Big[\sum_{k} n_{k,t}\Big]^{1 + \sigma^{L}}}{1 + \sigma^{L}} \Big] \\
+\mbox{s.t.} \,\,\, &
+P_{t}c_{t} = P_{t}Y_{t} \label{eq: Static market clearing} \\
+%P_{t}Y_{t} =&  \sum_{k} p_{k,t} y_{k,t} \label{eq: Total  Production} \\
+%\mbox{Rewriting ($5$):}& \\
+Y_{t}=&  \sum_{k} w_{k,t} y_{k,t} \,\,\, \mbox{where:} \,\,\, w_{k,t}=\frac{p_{k,t}}{P_{t}}\label{eq: Total weighted Production} \\
+\vspace{0.5cm}
+N_{t} =& \sum_{k}  n_{k,t} \label{eq: Total hours of work} \\
+H_{t} =&  \sum_{k}  h_{k,t} \label{eq: Total hiring}\\
+U_{t} =& 1-(1-\delta)N_{t-1}\\
+y_{k,t} =& \epsilon_{k,t} \, a_{k} n_{k,t}^{\alpha_{k}} \, \prod_{j=1}^{M} x_{k,j,t}^{\gamma_{k,j}}-\sum_{j=1}^{M} x_{j,k,t} -\frac{mch_{t} h_{k,t}^{\psi}}{\psi} \label{eq:  Sectoral production function} \\
+h_{k,t}=&n_{k,t}-(1-\delta)n_{k,t-1}\label{eq: Hiring law of motion}\\
+mch_{t}=&\frac{\xi}{\nu}\Big(\frac{H_{t}}{U_{t}}\Big)^{\nu} \label{eq: Marginal Costs of Hiring}
+\end{align}
+A detailed description of the variables and parameters can be found in the appendix of this document\ref{appendix}.
+%\begin{itemize}
+%\item $P_{t}$ is the price index of the consumption bundle
+%\item $p_{k,t}$ are the respective production price indexes
+%\item $w_{k,t}$ consumption to production price index ratio   
+%\item $c_{t}$ represents aggregate consumption
+%\item $y_{k,t}$ Output-commodity from sector $k$ at time $t$ 
+%\item $H_{t}$ Total hiring at time $t$
+%\item $h_{k,t}$ Total hiring in region $k$at time $t$
+%\item $N_{t}$ Total number of hours worked at time $t$
+%\item $n_{k,t}$ Number of hours worked in sector $k$ at time $t$
+%\item $x_{k,j,t}$ Input-commodity from sector $j$ to sector ${k}$ at time ${t}$
+%\item $mch_{t}$ Marginal cost of hiring at time $t$
+%\item $\gamma_{k,j}$ and $\alpha_{k}$ are the respective labor and input shares in the production process.
+%\item $A^{L}$ Leisure Preference constant 
+%\item $\epsilon^{L}_{t}$ Leisure Preference Shock
+%\end{itemize}
+The model FOC's with respect to labor and each sectors commodity inputs can be described by the following $K$ equations for labor and $K$ x $K$ equations for Inputs:
+\begin{align}
+\frac{{w_{k,t}}\, {\alpha_{k}}\, \epsilon_{k,t} \, a_{k} \, n_{k,t}^{{\alpha_{k}}-1} \prod_{j=1}^{M} x_{k,j,t}^{\gamma_{k, j}} - mch_{t} \, h_{k,t}^{{\psi}-1}}{Y_{t}}&+\frac{(1-{\delta})\, {w_{k,t}}\, {\beta}\, mch_{t+1}\, {h_{k,t+1}^{{\psi}-1}}}{Y_{t+1}}=\,A^{L}\epsilon^{L}_{t}N_{k,t}^{\sigma^{L}} \label{eq: FOC labor} \\
+\epsilon_{k,t}\, {a_{k}}\, n_{k,t}^{\alpha_{k}}\,{\gamma_{k,z,t}}\,x_{k,z,t}^{-1}\prod_{j=1}^{M} x_{k,j,t}^{\gamma_{k,j}}&=1 \label{eq: FOC Inputs}
+\end{align}
+\section{Calibration and Steady State Calculation} \label{calib}
+
+For the calibration of the model, the German economy has been divided in three sectors: agriculture, industry and services.Being agriculture the first sector and services the third. In the following set-up of the model, the calibrated  parameters take the values presented in Table \ref{tab1}: \\
+
+\begin{table}[H]
+\centering
+  \begin{tabular}{ C | r | C | r | C | r }
+    \hline
+    \mbox{Parameter} & Value & \mbox{Parameter} & Value & \mbox{Parameter} & Value \\ \hline \hline
+    A^L 		 & 1 	& \gamma_{11} & 0.14		& l_1 		& 0.015\\ 
+    \sigma^L & 2	&	\gamma_{12} & 0.51		& l_2 		& 0.246\\
+		\rho 		 & 0.8& \gamma_{13}	&0.02			&l_3 		& 0.749\\
+		\rho^L 	 & 0.7& \gamma_{21}	&0.0035		&w_1 		& 1.012\\
+		\delta 	 & 0.5& \gamma_{22}	&0.29	  &w_2 	& 0.97\\
+		\beta 	 & 1	& \gamma_{23}	& 0.05	&w_3 	& 0.937\\
+		B 			 & 2	&	\gamma_{31}&0.04		& 	\,	&  \, \\
+		\nu 			 & 2	& \gamma_{32}	& 0.12	& 	\,	& \,\\
+		\psi 		 & 2	& \gamma_{33}	& 0.29	& 	\,	& \,\\
+    \hline \hline
+  \end{tabular}
+	\caption{Parameter Values}
+	\label{tab1}
+	\end{table}
+
+Parameters $\alpha_{k}$ , $\gamma_{k,j}$ , $\delta$ , $w_{k}$ , $l_{k}$ were directly obtained from the Official National Accounts (include data base reference) database. 
+The parameters in the shock processes, persistence parameters and shock standard deviations, are set around $0.8$ and $0.01$ following\cite{kim}.
+The rest of the parameters are calibrated according to stylized values found on the relevant literature \cite{sims}, \cite{fisher} among others. 
+It is important to remark that although the problem is set as to include labor inputs as endogenous variables. The model is calibrated and solved as to include labor inputs from the empirical data and solve for the respective Technology constants ($a_{j,k}$) as a residual. In this case the labor force is divided according to its respective share among the three analyzed sectors. Clearly there is higher participation in the services sector than on the other two combined. This is not a surprise as the provision of services to GDP ratio is also high.  
+The solution to the deterministic steady state with no shocks is first provided to  then obtain a stochastic simulation around this steady state. The model permits to analyze the effects individual technology shocks on individual sectoral output, input demand and sectoral hiring.  
+For more details on the model equations and conditions to calculate the steady state refer to the appendix(\ref{appendix}).
+
+
+
+
+ 
+
+

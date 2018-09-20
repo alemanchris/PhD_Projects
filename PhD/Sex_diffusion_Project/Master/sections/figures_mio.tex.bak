@@ -1,0 +1,95 @@
+\begin{figure}[H]\caption{Miopic onset of the epidemic}
+% first row: 3 subfigures
+\begin{subfigure}{0.5\textwidth}\caption{PF asset holdings (Edu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG1.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF asset holdings (Unedu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG2.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{PF asset holdings (Edu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG3.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF asset holdings (Unedu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG4.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{PF consumption (Edu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG6.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF consumption (Unedu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG5.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{PF consumption (Edu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG8.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF consumption (Unedu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG7.png}
+    \label{fig:x_b}
+\end{subfigure}
+\hspace*{\fill}
+\end{figure}
+
+\newpage
+\begin{figure}[H]\caption{Miopic onset of the epidemic, continuation:}
+% first row: 3 subfigures
+\begin{subfigure}{0.5\textwidth}\caption{PF sex consumption (Edu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG9.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF sex consumption (Unedu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG10.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{PF sex production (Edu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG11.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{PF sex production (Unedu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG12.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{Value Function (Edu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG13.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{Value Function (Unedu-Males)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG14.png}
+    \label{fig:x_b}
+\end{subfigure}
+% 2nd row: 3 more subfigures
+\bigskip
+\begin{subfigure}{0.5\textwidth}\caption{Value Function (Edu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG15.png}
+    \label{fig_dert}
+\end{subfigure}
+\hspace*{\fill}
+\begin{subfigure}{0.5\textwidth}\caption{Value Function (Unedu-Females)}
+   \includegraphics[width=\linewidth,height = 0.22\textheight]{figures/mio/FIG16.png}
+    \label{fig:x_b}
+\end{subfigure}
+\hspace*{\fill}
+\end{figure}
+
