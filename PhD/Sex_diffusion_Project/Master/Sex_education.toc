@@ -1,0 +1,25 @@
+\contentsline {section}{List of Tables}{i}{section*.1}
+\contentsline {section}{List of Figures}{i}{section*.2}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {2}Relevant literature}{3}{section.2}
+\contentsline {section}{\numberline {3}Country Profile Malawi}{6}{section.3}
+\contentsline {section}{\numberline {4}The model}{9}{section.4}
+\contentsline {subsection}{\numberline {4.1}Model characteristics}{9}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Pre-epidemic stage}{10}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Miopic stage of the epidemic}{14}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Difussion and maturity of the epidemic}{18}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Antiretroviral treatment (ART's)}{18}{subsection.4.5}
+\contentsline {section}{\numberline {5}Solution algorithm, keeping track of the HIV epidemic }{20}{section.5}
+\contentsline {subsection}{\numberline {5.1}Calibration}{21}{subsection.5.1}
+\contentsline {section}{\numberline {6}Results}{23}{section.6}
+\contentsline {subsection}{\numberline {6.1}A linear probability model}{24}{subsection.6.1}
+\contentsline {section}{\numberline {7}Conclusions}{28}{section.7}
+\contentsline {section}{\numberline {A}Appendix}{30}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Stationary equilibrium computation}{30}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}Figures}{31}{subsection.A.2}
+\contentsline {subsubsection}{\numberline {A.2.1}Education gradient Sub Saharan Africa}{31}{subsubsection.A.2.1}
+\contentsline {subsubsection}{\numberline {A.2.2}Malawian HIV/AIDS epidemic}{31}{subsubsection.A.2.2}
+\contentsline {subsubsection}{\numberline {A.2.3}Pre-epidemic stage}{32}{subsubsection.A.2.3}
+\contentsline {subsubsection}{\numberline {A.2.4}Miopic stage of the epidemic}{32}{subsubsection.A.2.4}
+\contentsline {subsubsection}{\numberline {A.2.5}Maturity of the epidemic}{32}{subsubsection.A.2.5}
+\contentsline {subsubsection}{\numberline {A.2.6}Antiretrovial treatment (ARTs)}{32}{subsubsection.A.2.6}
