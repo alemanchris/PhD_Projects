@@ -1,11 +1,16 @@
 function [ex_sa,distrib]=excess(rate_price,edu,gender)
-[~,~,~,a,na,~,pp,~,~,pp1,amin1,amax1,~,nk,~,ag,n_st,ngk,~,~,~,~,~,gamma,phy]=parameters(1);
+[~,~,~,a,na,~,pp,~,~,pp1,amin1,amax1,~,nk,~,ag,n_st,ngk,~,~,~,~,~,gamma_all,phy]=parameters(1);
 r  = rate_price(1);
 price = rate_price(2); 
-if gender==1
-[aopt,~,xopt,~]=partial_male(r,price,edu);
+if edu ==1
+    gamma = gamma_all(:,1);
 else
-[aopt,~,xopt,~]=partial_female(r,price,edu);
+    gamma = gamma_all(:,2);
+end
+if gender==1
+[aopt,~,xopt,~]=partial_gs(r,price,edu,gender);
+else
+[aopt,~,xopt,~]=partial_gs(r,price,edu,gender);
 end
      q1    = 0;   % Iteration counter for invariant distribution 
 	  kritg = 1;   % Remember we will be updating kritg as kritg = sum(abs(gk0-gk));

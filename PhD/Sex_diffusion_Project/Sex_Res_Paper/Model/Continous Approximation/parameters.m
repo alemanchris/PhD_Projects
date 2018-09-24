@@ -8,20 +8,22 @@ sigma	=1.5;
 neg		=-1e10;
 
 %/* fertility values if Onset*/
-gamma    =[0.98; %hg hb lg lb
-           0.98;
-           0.90;
-           0.90]; % Survival rate = gamma \ Mortality rate (1-gamma)
+gamma    =[0.98,0.97; %hg hb lg lb
+           0.98,0.97;
+           0.90,0.89;
+           0.90,0.89]; % Survival rate = gamma \ Mortality rate (1-gamma)
 phy    =[0.7,0.7,0.4,0.4; %Fertility rate Educated
          0.8,0.8,0.5,0.5];% 
      
      %/* fertility values if Pre-Epidemic*/
-gamma    =[0.98; %hg hb lg lb
-           0.98;
-           0.98;
-           0.98]; % Survival rate = gamma \ Mortality rate (1-gamma)
+gamma    =[0.98,0.97; %hg hb lg lb
+           0.98,0.97;
+           0.98,0.97;
+           0.98,0.97]; % Survival rate = gamma \ Mortality rate (1-gamma)
 phy    =[0.7,0.7,0.7,0.7; %Fertility rate Educated
          0.8,0.8,0.8,0.8];% 
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     %{
 		      %/* fertility values if Pre-Epidemic*/
 gamma    =[1; %hg hb lg lb
            1;
@@ -29,6 +31,7 @@ gamma    =[1; %hg hb lg lb
            1]; % Survival rate = gamma \ Mortality rate (1-gamma)
 phy    =[0,0,0,0; %Fertility rate Educated
          0,0,0,0];% 
+     %}
 
 
 %/* endowment Onset*/
@@ -42,14 +45,18 @@ eh_g	  = 1;			% Healthy_goodtimes
 el_g	  = 1;			% Infected_goodtimes
 eh_b      = 0.4;          % Healthy_badtimes
 el_b      = 0.4;          % Infected_badtimes
+% Education heterogeneity
+educ = 0.2;
 %}
-endow	= [eh_g,eh_g;
-           eh_b,eh_b;
-           el_g,el_g;
-           el_b,el_b];  %second column is non edu
+endow	= [eh_g,eh_g-educ;
+           eh_b,eh_b-educ;
+           el_g,el_g-educ;
+           el_b,el_b-educ];  %second column is non edu
 %pp		= [0.925 0.075;0.5 0.5];
-prob_tauchen_h   = [0.70 0.30; 0.40 0.60]; % prob(i,j) = probability (s(t+1)=sj | s(t) = si)
-prob_infection   = [0.50 0.50; 0.50 0.50];
+prob_tauchen_h   = [0.70 0.30;
+                    0.40 0.60]; % prob(i,j) = probability (s(t+1)=sj | s(t) = si)
+prob_infection   = [0.50 0.50;
+                    0.50 0.50];
 %prob_inf   = [ .8 .2; 0.4 0.6]; % prob(i,j) = probability (s(t+1)=sj | s(t) = si)
 
 pp = kron(prob_infection,prob_tauchen_h);% makes hg hb lg lb
@@ -58,7 +65,7 @@ pp1		= equivec1(pp);
 % /* asset grid */
 amin1	= -5;   % -2 works well with-5  15   9         
 amax1	= 28;    %  4 works well with 8  28   15
-na		= 20;  %/*na=101;*/ na30 300 funca 70 ultimo
+na		= 7;  %/*na=101;*/ na30 300 funca 70 ultimo % 20
 astep	= (amax1-amin1)/(na-1);
 a		= linspace(amin1,amax1,na);
 %/* asset grid for distribution */
