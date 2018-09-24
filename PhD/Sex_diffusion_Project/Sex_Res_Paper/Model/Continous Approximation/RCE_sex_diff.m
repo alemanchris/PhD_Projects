@@ -53,8 +53,8 @@ rate_price = [rate,price];
 %rate  = rate_price(1);
 %price = rate_price(2);
 type =1;
-[aopt_m,copt_m,xopt_m,v_m] = partial_male(rate,price,type);
-[aopt_f,copt_f,xopt_f,v_f] = partial_female(rate,price,type);
+[aopt_m,copt_m,xopt_m,v_m] = partial_gs(rate,price,type,1);
+[aopt_f,copt_f,xopt_f,v_f] = partial_gs(rate,price,type,2);
 %
 %% save some results
 %{
@@ -69,7 +69,8 @@ Try2 do it with the fsolve rate:0.0047 price:0.6778. excess: -7.1 2.9
 clear all
 [sigma,endow,neg,a,na,beta,pp,eh,el,pp1,amin1,amax1,astep,nk,agstep,ag,n_st]=parameters(1);
 %[aopt_m,copt_m,xopt_m,v_m] = partial_male(0.0035,0.056,1);
-[aopt_m,copt_m,xopt_m,v_m] = partial_male_interp(0.0035,0.056,1);
+%[aopt_m,copt_m,xopt_m,v_m] = partial_male_interp(0.0035,0.056,1);
+[aopt_m,copt_m,xopt_m,v_m] = partial_gs(0.0035,0.056,1,1);
 figure(1)
 plot(a',v_m,'-o')
 ylabel('Value Function')
@@ -137,19 +138,19 @@ ylabel('% OF AGENTS');
 %}
 %% Retrieving income distrution 
 %% Retrieving income distrution 
-inc = zeros(size(ag,2),8);
-for i =1:8
-inc(:,i) = endow(i)+(1+rate)*(ag');
+inc = zeros(size(ag,n_st),n_st*2);
+for i =1:n_st*2
+    inc(:,i) = endow(i)+(1+rate)*(ag');
 end
 aux_inc = inc(:);
 min_inc = min(aux_inc);
 max_inc = max(aux_inc);
 income_grid = linspace(min_inc,max_inc,size(ag,2));
 income_dist = zeros(1,size(ag,2));
-for i = 1:8
+for i = 1:n_st*2
     for j = 1:size(ag,2)
     [~,index_inc] = min(abs(income_grid-inc(j,i)));
-    income_dist(1,index_inc) = income_dist(1,index_inc)+gk(j,i);
+    income_dist(1,index_inc) = income_dist(1,index_inc)+gk(j,i); % gk 16 columns
     end
 end
 figure(10)
