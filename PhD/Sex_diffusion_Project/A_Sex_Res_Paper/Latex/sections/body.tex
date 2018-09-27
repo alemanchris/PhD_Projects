@@ -172,7 +172,7 @@ Step 4: For all $a'\in A$, $e \in E$, $g \in G$ and $s \in S$compute the followi
     \phi_{t+1}(a',e,g,s')=\sum_{a,e,s}\sum_{s'|s}\textbf{1}_{a'\in\mathcal{A}}\gamma_{e}\pi(s'|s)\phi_{t}(a,e,g,s) + \psi_{e}\phi_{t}(a',e,g,s')
 \end{align}
 \textit{
-Step 5: If $|\phi_{t+1}-\phi_{t}|<exp^{-12}$ stop, otherwise set $\phi_{t}=\phi_{t+1}$ and return to Step 3.}\\
+Step 5: If $|\phi_{t+1}-\phi_{t}|<exp(-12)$ stop, otherwise set $\phi_{t}=\phi_{t+1}$ and return to Step 3.}\\
 
 For simplicity reasons the grid chosen for \textit{Algorithm No.2} is the same as the grid chosen for the value function iteration procedure in \textit{Algorithm No.1}, otherwise if the grid would be finer it would be necessary to include the probabilities of $a'(a,e,g,s)$ falling between the respective points in the grid.\\
 
@@ -188,15 +188,105 @@ For \textit{Step2} of \textit{Algorithm No.2} I choose the uniform distribution 
 \begin{center}
 \begin{tabular}{r|c}
 \hline%
-\textbf{Price of sex} &0.4\\
+\textbf{Price of sex} &0.32\\
 \hline
-\textbf{Interest Rate} & 2.3\%\\
+\textbf{Interest Rate} & 9.25\%\\
 \hline%
 \end{tabular}
 \end{center}
 \end{table}
 
 %\begin{figure}[t!]
+
+\begin{figure}[H]
+\caption{Equilibrium}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{cc}
+\multicolumn{1}{c}{(a) Sex Market} &  
+\multicolumn{1}{c}{(b) Asset Market} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG14.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG15.png} 
+
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
+\end{tabular}
+\end{center}
+\label{fig:6}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Distributions}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{cc}
+\multicolumn{1}{c}{(a) Asset Distribution} &  
+\multicolumn{1}{c}{(b) Income Distribution} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG9.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG10.png} 
+\end{tabular}
+\end{center}
+\label{fig:4}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Policy Functions Educated Buyers}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{cc}
+\multicolumn{1}{c}{(a) Value function} &  
+\multicolumn{1}{c}{(b) Assets function} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG1.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG3.png} \\
+\multicolumn{1}{c}{(c) Consumption function} &  
+\multicolumn{1}{c}{(d) Sex consumption function } \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG2.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG4.png} \\
+%\multicolumn{1}{c}{(a) Value function} &  
+%\multicolumn{1}{c}{(b) Assets function} \\
+\end{tabular}
+\end{center}
+\label{fig:2}
+\end{figure}
+
+\begin{figure}[H]
+\caption{Policy Functions Educated Sellers}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{cc}
+\multicolumn{1}{c}{(a) Value function} &  
+\multicolumn{1}{c}{(b) Asset function} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG5.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG7.png} \\
+\multicolumn{1}{c}{(c) Consumption function} &  
+\multicolumn{1}{c}{(d) Sex Production function } \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG6.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG8.png} \\
+\end{tabular}
+\end{center}
+\label{fig:3}
+\end{figure}
+
+
+
+\begin{figure}[H]
+\caption{Comparison plots}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{cc}
+\multicolumn{1}{c}{(a) Asset Policy Functions} &  
+\multicolumn{1}{c}{(b) Consumption Policy Functions} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG11.png}   & 
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG12.png}\\ 
+\multicolumn{2}{c}{(c) No Capital Income} \\  
+%\multicolumn{2}{c}{(d) Equilibrium(repeated)} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/FIG13.png} 
+%& 
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
+\end{tabular}
+\end{center}
+\label{fig:5}
+\end{figure}
+
 \begin{figure}[H]
 \caption{General equilibrium surface plots}
 \hspace{-2.0cm}
@@ -204,35 +294,14 @@ For \textit{Step2} of \textit{Algorithm No.2} I choose the uniform distribution 
 \begin{tabular}{cc}
 \multicolumn{1}{c}{(a) Excess demand of Sex} &  
 \multicolumn{1}{c}{(b) Excess demand of Assets} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM2.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM1.png}\\ 
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM2.png}   & 
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM1.png}\\ 
 \multicolumn{2}{c}{(c) Equilibrium} \\  
 %\multicolumn{2}{c}{(d) Equilibrium(repeated)} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
 %& 
 %\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
 \end{tabular}
 \end{center}
-\label{fig:5}
+\label{fig:1}
 \end{figure}
-\begin{comment}
-
-\begin{figure}[H]
-\caption{Policy Functions}
-\hspace{-2.0cm}
-\begin{center}
-\begin{tabular}{cccccc}
-\multicolumn{1}{c}{(a) Assets function} &  
-\multicolumn{1}{c}{(b) Consumption function} \\
-%\includegraphics[angle=0,width=.5\textwidth]{NewGraphs/LS_r.png}  \\ & 
-%\includegraphics[angle=0,width=.5\textwidth]{NewGraphs/LS_r_IPP.png} 
-\multicolumn{1}{c}{(c) Sex function} &  
-\multicolumn{1}{c}{(d) Assets Distribution} \\
-%\includegraphics[angle=0,width=.5\textwidth]{NewGraphs/LS_r.png}  \\ & 
-%\includegraphics[angle=0,width=.5\textwidth]{NewGraphs/LS_r_IPP.png} 
-\end{tabular}
-\end{center}
-\label{fig:5}
-\end{figure}
-
-\end{comment}
