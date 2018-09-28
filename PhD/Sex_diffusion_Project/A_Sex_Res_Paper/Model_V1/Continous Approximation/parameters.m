@@ -89,7 +89,7 @@ pp = kron(prob_infection,prob_tauchen_h);% makes hg hb lg lb
 pp1		= equivec1(pp);
 % /* asset grid */
 %+10e-6
-amin1	= -2;   % -2 works well with-5  15   9         
+amin1	= -10;   % -2 works well with-5  15   9         
 amax1	= 10;    %  4 works well with 8  28   15
 na		= 12;  %/*na=101;*/ na30 300 funca 70 ultimo % 20
 astep	= (amax1-amin1)/(na-1);
