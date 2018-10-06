@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{comment}
+\title{Model choice and specification}
+\author{Christian Aleman}
+\date{October 2018}
+
+\begin{document}
+
+\maketitle
+\section{Some facts about Mexico and the credit market}
+\begin{itemize}
+    \item \textbf{Creditos de la banca de desarrollo}: Look at this website\\ https://www.gob.mx/haciendaterespalda/articulos/estas-son-las-9-instituciones-que\\
+    or this one:\\
+    http://www.shcp.gob.mx/ApartadosHaciendaParaTodos/banca_desarrollo/index.html
+\end{itemize}
+\subsection*{Dependent variables}
+
+\begin{enumerate}
+    \item Loans to non-financial private sector.(Freq.M|Unit:|Start.dec11|End.dec2018)\\
+    Description: Measures the.
+    \item Note that housing has a counter cyclical behaviour therefore it is worth modeling differently, than consumption loans and commercial loans.
+    \item Employment can be a very good leading indicator, for consumption loans, but not so much for commercial loans.
+    \item Fixed capital formation might be a good indicator. but im not sure about leading.
+    \item CETES a 19,28 y mas dias.
+    \item Tasa de Interés Interbancaria de Equilibrio TIIE.
+    \item inflacion.
+    \item morosidad.
+\end{enumerate}
+
+\subsection*{Variables not apt to be leading indicators}
+\begin{enumerate}
+    \item Private consumption: First comes the loan, then comes consumption. It would be wise to spend the borrowed amount as soon as possible as to get the return faster. However it could also be the other way around.
+    \item 
+\end{enumerate}
+
+\begin{comment}
+\subsection*{Independent variables \footnote{Not true because if I'm doing a VAR all are dependent variables.}}
+\begin{enumerate}
+    \item Loans to non-financial private sector.
+\end{enumerate}
+\end{comment}
+
+\end{document}

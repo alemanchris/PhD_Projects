@@ -168,7 +168,7 @@ For the computation of the decision rules I make use of value function iteration
 Step 2: Set a time iteration counter $t=0$ and choose an initial (discrete) density function $\phi_{0}(a,e,g,s)$ over the state space.\\
 Step 3: Initialize $\phi_{t+1}(a',e,g,s')$\footnote{$\phi_{t+1}$ is of dimensions $n\times (m*w*q)$, where $m=2$, $w=2$ and $q=2$ since education, type and stochastic states can only be of two sorts.} and compute the optimal next period wealth $a'$ with the help of the decision rule.\\
 Step 4: For all $a'\in A$, $e \in E$, $g \in G$ and $s \in S$compute the following expression:}
-\begin{align}
+\begin{align}\label{eq:10}
     \phi_{t+1}(a',e,g,s')=\sum_{a,e,s}\sum_{s'|s}\textbf{1}_{a'\in\mathcal{A}}\gamma_{e}\pi(s'|s)\phi_{t}(a,e,g,s) + \psi_{e}\phi_{t}(a',e,g,s')
 \end{align}
 \textit{
@@ -227,7 +227,46 @@ For \textit{Step2} of \textit{Algorithm No.2} I choose the uniform distribution 
 \end{center}
 \label{fig:4}
 \end{figure}
+\subsection{Miopic stage of the epidemic}
+In this stage there exists a positive probability of getting HIV infected. $\lambda(x,h) >=0$. The particular characteristic of this stage is that the agents are not aware of the risk of infection, therefore they keep their sex consumption profile intact.\\
+The probability of infection depends on the amount of sex consumed by the individuals following the following relation:
+\begin{align}
+    \lambda(x,0)=\frac{e^{x}}{e^{x}+\rho e^{-x}}
+\end{align}
+The infection transition matrix: 
+\begin{align}
+     \lambda(x,h'|h) = Prob(h_{t+1}=h'|h_{t}=h)=    \begin{bmatrix}%
+    1-\lambda(x,0) & \lambda(x,0)\\
+    \lambda(x,1)=0 & \lambda(x,1)=1
+    \end{bmatrix}
+\end{align}
+Additionally, individuals that are HIV infected have a higher probability of dying and more educated individuals tend to consume have a lower probability of infection for no reason.\\
+\textbf{Solving the Miopic stage}\\
+The Miopic stage was solved by iterating forward over the policy rules obtained from the Pre-epidemic stage but keeping track of the evolution of the epidemic and demographics acording to Equation \ref{eq:10}\\
+\textbf{Calibration of  the Miopic stage}\\
+\input{sections/latex_def2}
+\textbf{Results}\\
 
+\begin{figure}[H]
+\caption{Evolution of the prevalence overtime}
+\hspace{-2.0cm}
+\begin{center}
+\begin{tabular}{c}
+\multicolumn{1}{c}{Evolution of the prevalence overtime} \\  
+%\multicolumn{1}{c}{(b) Asset Market} \\
+\includegraphics[angle=0,width=.5\textwidth]{figures/PREV.png}   
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG15.png} 
+
+%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
+\end{tabular}
+\end{center}
+\label{fig:6}
+\end{figure}
+
+
+
+\section{Aprendix}
+\subsection{Pre-Epidemic graphs}
 \begin{figure}[H]
 \caption{Policy Functions Educated Buyers}
 \hspace{-2.0cm}
