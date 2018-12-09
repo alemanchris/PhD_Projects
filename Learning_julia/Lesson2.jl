@@ -1,9 +1,8 @@
-# Text arrays and touples
+﻿# Text arrays and touples
 actions = ["surf","ski"]
 actions_2 = ( "surf" , "ski")
 # some logicals not to confuse
 #=
-
 P && Q is true if both are true, otherwise it’s false
 P || Q is false if both are false, otherwise it’s true
 =#

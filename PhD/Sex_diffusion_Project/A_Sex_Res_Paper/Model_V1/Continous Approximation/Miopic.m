@@ -1,0 +1,1 @@
+% Miopic stage

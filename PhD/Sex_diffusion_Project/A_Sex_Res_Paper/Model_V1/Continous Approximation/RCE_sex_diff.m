@@ -76,15 +76,17 @@ Try2 do it with the fsolve rate:0.0047 price:0.6778. excess: -7.1 2.9
 %}
 
 %% Figures
-%clear all
+clear all
 [sigma,endow,neg,a,na,beta,pp,eh,el,pp1,amin1,amax1,astep,nk,agstep,ag,n_st]=parameters(1);
 %[aopt_m,copt_m,xopt_m,v_m] = partial_male(0.0035,0.056,1);
 %[aopt_m,copt_m,xopt_m,v_m] = partial_male_interp(0.0035,0.056,1);
 %[aopt_m_edu,copt_m_edu,xopt_m_edu,v_m_edu] = partial_gs(0.02,0.6,1,1); %-19.7
 %[aopt_m_edu,copt_m_edu,xopt_m_edu,v_m_edu] = partial_gs(0.015,0.8,1,1); %-19.7
-[aopt_m_edu,copt_m_edu,xopt_m_edu,v_m_edu] = partial_gs(0.08,0.32,1,1); %-19.7 %new 0.185
+[aopt_m_edu,copt_m_edu,xopt_m_edu,v_m_edu] = partial_gs(0.04,0.32,1,1); %-19.7 %new 0.185
+method = 'spline';
+%
 figure(1)
-plot(a',v_m_edu,'-o')
+plot(ag',interp1(a',v_m_edu,ag',method),'-o')
 ylabel('Value Function')
 xlabel('Current asset holdings')
 legend('Not-Infected-G','Not-Infected_B','Infected-G','Infected_B')

@@ -2,8 +2,9 @@ function [sigma,endow,neg,a,na,beta,pp,eh_g,el_g,pp1,amin1,amax1,astep,nk,agstep
 %[sigma,endow,neg,a,na,beta,pp,eh,el,pp1,amin1,amax1,astep,nk,agstep,ag,n_st,nkg,alpha]=parameters(1);
 if p==1
 %/* parameter values */
-beta    =0.99322;
+%beta    =0.99322;
 beta    = 0.9;
+%beta    = 0.96;
 alpha   =0.1;
 sigma	=1.5;
 neg		=-1e10;
@@ -41,7 +42,7 @@ phy    =[0.02,0.02,0.02,0.02; %Fertility rate Educated
          0.03,0.03,0.03,0.03];% 
 %phy    =[0,0,0,0; %Fertility rate Educated
 %         0,0,0,0];% 
-     shock = 0.8; 
+shock = 0.8; 
      % 0.6;
 %/* endowment if preepidemic */
 eh_g	  = 1;		%0.8	% Healthy_goodtimes
@@ -89,8 +90,8 @@ pp = kron(prob_infection,prob_tauchen_h);% makes hg hb lg lb
 pp1		= equivec1(pp);
 % /* asset grid */
 %+10e-6
-amin1	= -10;   % -2 works well with-5  15   9         
-amax1	= 10;    %  4 works well with 8  28   15
+amin1	= -2;   % -2 works well with-5  15   9         
+amax1	= 14;    %  4 works well with 8  28   15
 na		= 12;  %/*na=101;*/ na30 300 funca 70 ultimo % 20
 astep	= (amax1-amin1)/(na-1);
 a		= linspace(amin1,amax1,na);
