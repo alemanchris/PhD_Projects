@@ -6,9 +6,10 @@ activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.4");
 
 using LinearAlgebra, Statistics, Compat
 using StatPlots, Distributions, Random, Statistics
-#using Plots, Distributions, Random, Statistics
 
-gr(fmt = :png, size = (900, 500))
+#using Plots, Distributions, Random, Statistics
+plotly()
+#gr(fmt = :png, size = (900, 500))
 function exercise1(distribution = Uniform(0, π/2); n = 250, k = 10_000, g = sin, g′ = cos)
     μ, σ = mean(distribution), std(distribution)
     y = rand(distribution, n, k)
@@ -18,6 +19,7 @@ function exercise1(distribution = Uniform(0, π/2); n = 250, k = 10_000, g = sin
     density(error_obs, label = "Empirical Density")
     return plot!(Normal(0, g′(μ) .* σ), linestyle = :dash, label = "Asymptotic",
                  color = :black)
+    #return gp
     #return plot(x=Normal(0, g′(μ) .* σ), Geom.line)
     #return μ, σ
 end
