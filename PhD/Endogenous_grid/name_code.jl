@@ -51,8 +51,8 @@ function aiyagari_fun(; β   = 0.96,
                         α   = 1/3,
                         δ   = 0.08,
                         ρ   = 0.9,
-                        r   = 0.035, #0.029
-                        w   = 0.0,
+                        r   = 0.036, #0.029
+                        w   = 0.1,#0.0,
                         σe  = 0.1,
                         my  = 0.0,
                         ny  = 7,
@@ -66,7 +66,7 @@ function aiyagari_fun(; β   = 0.96,
     ub      = 1.0/β-1.0-0.0001
     my      = 0
     σy      = sqrt((σe^2)/(1-ρ^2))
-    amax    = 60.0
+    amax    = 10#60.0
     a_temp  = log.(range(exp(0.0), na, length=na))
     agrid   = (cumsum(a_temp)/sum(a_temp) * amax)
 
@@ -281,8 +281,8 @@ function compute_supply(ay::AiyagariEconomy, rr)
     #ay.K = inv_mpk(ay, ay.r)
     #ay.w = mpl_fun(ay, ay.K)
 
-    ay.r = ay.r-ay.r+rr
-    
+    #ay.r = ay.r-ay.r+rr
+
 
     copyto!(ay.cpol_mat, cpol_init)
 
