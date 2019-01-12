@@ -1,4 +1,22 @@
-﻿# Graphing
+﻿# installing IPython
+watch tutorial
+# installing IJulia
+check this folder and delete the images in folder julia-1.0
+C:\Users\Aleman\AppData\Roaming\jupyter\kernels\julia-1.0
+# follow this steps
+# set the enviroment where you have installed the jupyter
+ENV["JUPYTER"] = "C:\\Users\\Aleman\\AppData\\Local\\Programs\\Python\\Python37\\Scripts\\jupyter.exe"
+# then
+] add IJulia
+# then 
+] build IJulia
+using IJulia
+notebook()
+
+if there is IJulia already the type
+] rm IJulia
+
+# Graphing
 # To clear all Vars
 Ctr+D to restart Julia
 Press enter to star again

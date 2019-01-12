@@ -1,0 +1,14 @@
+function H = sol_aux(ax)
+H=zeros(2,size(ax,2));
+for k=1:size(ax,2)
+    r          = ax(1,k);
+    price      = ax(2,k);
+    rate_price = [r,price];
+    [excess]=clearing()
+    
+    H(1,k)=exp(-exp(-(x1+x2)))-x2*(1+x1^2);
+    H(2,k)=x1*cos(x2)+x2*sin(x1)-pap;
+end
+
+
+end
