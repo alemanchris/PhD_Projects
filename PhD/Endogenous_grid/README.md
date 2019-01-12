@@ -1,2 +1,4 @@
-Piecewise linear approximation of the invariant distribution of assets in Aiyagari(94)
-a_try
+# Piecewise linear approximation of the invariant distribution of assets 
+The following code solves Aiyagari(94) using the endogenous grid method.
+It then approximates the invariant distribution using global methods
+
