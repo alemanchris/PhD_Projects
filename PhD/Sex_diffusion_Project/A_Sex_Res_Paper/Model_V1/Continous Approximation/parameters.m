@@ -42,11 +42,11 @@ phy    =[0.02,0.02,0.02,0.02; %Fertility rate Educated
          0.03,0.03,0.03,0.03];% 
 %phy    =[0,0,0,0; %Fertility rate Educated
 %         0,0,0,0];% 
-shock = 0.8; 
-     % 0.6;
+shock = 0.6; 
+     % 0.8;
 %/* endowment if preepidemic */
-eh_g	  = 1;		%0.8	% Healthy_goodtimes
-el_g	  = 1;		%0.8	% Infected_goodtimes
+eh_g	  = 0.8;		%0.8	% Healthy_goodtimes
+el_g	  = 0.8;		%0.8	% Infected_goodtimes
 eh_b      = eh_g*(1-shock);          % Healthy_badtimes 0.4 0.7
 el_b      = el_g*(1-shock);          % Infected_badtimes
 
@@ -91,8 +91,8 @@ pp1		= equivec1(pp);
 % /* asset grid */
 %+10e-6
 amin1	= -2;   % -2 works well with-5  15   9         
-amax1	= 14;    %  4 works well with 8  28   15
-na		= 12;  %/*na=101;*/ na30 300 funca 70 ultimo % 20
+amax1	= 4;    %  4 works well with 8  28   15
+na		= 10;  %/*na=101;*/ na30 300 funca 70 ultimo % 20
 astep	= (amax1-amin1)/(na-1);
 a		= linspace(amin1,amax1,na);
 %/* asset grid for distribution */

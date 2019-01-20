@@ -16,15 +16,16 @@ v1 = zeros(na,n_st);
 aopt = zeros(na,n_st);
 dif = 1;
 its = 0;
-while dif > 10e-10
-    %while dif>tol && its < maxits
+%while dif > 10e-10
+maxits = 1000;
+ while dif>tol && its < maxits
         for i = 1:na
             for j = 1:n_st
             a0 = a(1,i);
-            %a1 = fminbnd(@(a_prime)bellman_int(a_prime,j,v0,r,price,type,a0,gender),amin1-10e-6,amax1+10e-6); % I add this cuz the maximization does not include the bounds
+            a1 = fminbnd(@(a_prime)bellman_int(a_prime,j,v0,r,price,type,a0,gender),amin1-10e-6,amax1+10e-6); % I add this cuz the maximization does not include the bounds
             %fmincon(fun,x0,A,b,Aeq,beq,lb,ub)
             %a1 = fminbnd(@(a_prime)bellman_int(a_prime,j,v0,r,price,type,a0,gender),amin1,amax1);
-            a1 = fmincon(@(a_prime)bellman_int(a_prime,j,v0,r,price,type,a0,gender),a0,[],[],[],[],amin1,amax1);
+            %a1 = fmincon(@(a_prime)bellman_int(a_prime,j,v0,r,price,type,a0,gender),a0,[],[],[],[],amin1,amax1);
 
             v1(i,j) = -bellman_int(a1,j,v0,r,price,type,a0,gender);
             aopt(i,j) = a1;
@@ -34,6 +35,7 @@ while dif > 10e-10
     dif =max(max(abs((v1-v0)./v1)));
     v0  = v1;
     its = its+1;
+    disp(its)
 end
 v = v0;
 % retrive policy functions
