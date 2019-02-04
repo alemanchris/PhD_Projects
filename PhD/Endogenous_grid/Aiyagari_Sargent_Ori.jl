@@ -4,7 +4,7 @@ plotly()
 # functions
 
 param = @with_kw (
-        #
+        #=
         beta  = 0.97, # Discount Factor
         gamma = 3,  # Risk Aversion (inverse)
         alpha1 = 0.33,  # Capital Share
@@ -25,47 +25,70 @@ param = @with_kw (
         na = length(agrid),
         agrid_finer = range(amin,step=0.05,stop=amax),
         b = -phi,
-        #
+        =#
         #=
         beta  = 0.96, # Discount Factor
         gamma = 2.0,  # Risk Aversion (inverse)
         alpha1 = 1/3,  # Capital Share
         delta = 0.08, # Depreciation Rate
         r = 0.036,
-        w = 0.2,       # Wage
+        w = 0.1,       # Wage
 
         # GRID Parameters
 
          # more unknowns
         #
         na = 100,
-        amax = 20,
+        amax = 10,#10
         a_temp = log.(range(exp(0.0), na, length=na)),
-        #a_temp = range(-2, na, length=na),
-        agrid = (cumsum(a_temp)/sum(a_temp) * amax), # Asset Grid
-        a_finer_temp  = log.(range(exp(0.0), 3*na, length=3*na)),
-        #a_finer_temp  = range(-2, 3*na, length=3*na),
-        agrid_finer   = (cumsum(a_finer_temp)/sum(a_finer_temp) * amax),
-
+        agrid = range(0, amax, length=na),
+        #agrid = (cumsum(a_temp)/sum(a_temp) * amax), # Asset Grid
+        a_finer_temp  = log.(range(exp(0.0), 2na, length=2*na)),
+        agrid_finer  = range(0, amax, length=3*na),
+        #agrid_finer   = (cumsum(a_finer_temp)/sum(a_finer_temp) * amax),
+        #agrid_finer = agrid,
 
         b = agrid[1],
         =#
+        beta  = 0.96, # Discount Factor
+        gamma = 3.0,  # Risk Aversion (inverse)
+        alpha1 = 0.36,# Capital Share
+        delta = 0.08, # Depreciation Rate
+        r = 0.036,
+        w = 0.2,       # Wage
+        phy = minimum([0,w*0.301194211912202/r]),
+
+        # GRID Parameters
+
+         # more unknowns
+        #
+        na = 81,
+        amax = 16,#10
+        #a_temp = log.(range(exp(0.0), na, length=na)),
+        agrid = range(-phy, amax, length=na),
+        #agrid = (cumsum(a_temp)/sum(a_temp) * amax), # Asset Grid
+        #a_finer_temp  = log.(range(exp(0.0), 2na, length=2*na)),
+        agrid_finer  = range(-phy, amax, length=2*na),
+        #agrid_finer   = (cumsum(a_finer_temp)/sum(a_finer_temp) * amax),
+        #agrid_finer = agrid,
+
+        b = agrid[1],
 
         # Iteration options
-        dist_tol = 1e-5,
+        dist_tol = 1e-7,
         maxit = 1000,
         #lb = beta+2, # Lower bound
         lb = 0.037, # Lower bound
         ub = 1.0/beta-1.0-0.0001)
 
 function rouwenhorst(;
-                    rho = 0.5,
+                    rho = 0.9,
                     p = (1.0+rho)/2, #p = (1.0+rho)/2,
                     q = p,
-                    sigma_e = 0.4, # Dont know
+                    sigma_e = 0.1, # Dont know
                     sigma_y = sqrt((sigma_e^2)/(1-rho^2)),
                     ny = 7, # NUmber of states
-                    my = 1) # mean of y
+                    my = 0.0) # mean of y
 
         phy = sigma_y*sqrt(ny-1)
         ymax = phy
@@ -109,16 +132,29 @@ function compute_aiyagari(mcm;
     @unpack r, w, maxit, dist_tol, b = mcm
     #@unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = param()
     #@unpack r, w, maxit, dist_tol, b = param()
-    @unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
+    #@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
+    # Only prob and s=egrid and Pyinv egrid is exp of ygrid=logs
+    egrid = [0.301194211912202,0.449328964117222,0.670320046035639,1,1.49182469764127,2.22554092849247,3.32011692273655]
+    Pyinv = [0.00628217827163228,0.0608491084936224,0.241700981199883,0.382335464069726,0.241700981199883,0.0608491084936224,0.00628217827163229]
+    Piy =  [0.0262397497796233 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0152660804766739 0.000778286512441828;
+            0.0160443669891157 0.114741751017859 0.328567584707170 0.361483063911415 0.152923483594817 0.0247005562212874 0.00153919355833587;
+            0.00945177150556068	0.0828345049143809 0.287445156270025 0.382789297365280 0.196113758787202 0.0384369616149092 0.00292854954264210;
+            0.00536221880153007	0.0575309935179400 0.242023809517260 0.390165956326541 0.242023809517260 0.0575309935179400 0.00536221880153009;
+            0.00292854954264206	0.0384369616149092 0.196113758787202 0.382789297365280 0.287445156270025 0.0828345049143808 0.00945177150556065;
+            0.00153919355833585	0.0247005562212875 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0160443669891157;
+            0.000778286512441806 0.0152660804766738 0.114741751017859 0.328567584707170 0.361483063911416 0.152923483594817 0.0262397497796233]
+
+    ygrid = log.(egrid)
+    ny = 7
     H = dot(egrid, Pyinv)
-    #K = 0.0
+    K = 0.0
     income_grid = egrid*w
     snodes      = [repeat(agrid_finer, ny) kron(ygrid, agrid_finer)]
     num_nodes   = size(snodes, 1)
 
     ### Utility Function and F.O.C. ###
-    uprime(c) = (c.^(-gamma))
-    upinv(vv) = (vv.^(-1.0/gamma))
+    uprime(c) = c.^(-gamma)
+    upinv(vv) = vv.^(-1.0/gamma)
 
     ### Production Function and F.O.C. ###
     prod_fun(K) = K^alpha1*H^(1.0-alpha1)                               # computes output
@@ -127,8 +163,8 @@ function compute_aiyagari(mcm;
     inv_mpk(rate1) = H^(1.0-alpha1)*(alpha1/(rate1+delta))^(1.0/(1.0-alpha1))  # computes k
 
     # Initial Values
-    #r0_fixed = -0.1*delta + 0.9*(1.0/beta - 1.0)
-    r0_fixed = 0.02
+    r0_fixed = -0.1*delta + 0.9*(1.0/beta - 1.0)
+    #r0_fixed = 0.02
     KK0   = inv_mpk(r0_fixed)
     ww0   = mpl_fun(KK0)
     income0 = egrid*ww0
@@ -138,8 +174,8 @@ function compute_aiyagari(mcm;
     #
     for (i_z, z_v) in enumerate(income0)
         for (i_a, a_v) in enumerate(agrid)
-            #c_max = (1.0 + r0_fixed)*a_v + ww0*z_v-0.05
-            c_max = (1.0 + r0_fixed)*a_v + ww0*z_v+20000000000
+            c_max = (1.0 + r0_fixed)*a_v + ww0*z_v-0.05
+            #c_max = (1.0 + r0_fixed)*a_v + ww0*z_v+20000000000
             cpol_mat[i_a, i_z] = c_max
         end
     end
@@ -198,15 +234,31 @@ function compute_invariant(mcm;)
     # retrieving parameters
     @unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = mcm
     @unpack r, w, maxit, dist_tol, b = mcm
-    @unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
+    #@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
+    egrid = [0.301194211912202,0.449328964117222,0.670320046035639,1,1.49182469764127,2.22554092849247,3.32011692273655]
+    Pyinv = [0.00628217827163228,0.0608491084936224,0.241700981199883,0.382335464069726,0.241700981199883,0.0608491084936224,0.00628217827163229]
+    Piy =  [0.0262397497796233 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0152660804766739 0.000778286512441828;
+            0.0160443669891157 0.114741751017859 0.328567584707170 0.361483063911415 0.152923483594817 0.0247005562212874 0.00153919355833587;
+            0.00945177150556068	0.0828345049143809 0.287445156270025 0.382789297365280 0.196113758787202 0.0384369616149092 0.00292854954264210;
+            0.00536221880153007	0.0575309935179400 0.242023809517260 0.390165956326541 0.242023809517260 0.0575309935179400 0.00536221880153009;
+            0.00292854954264206	0.0384369616149092 0.196113758787202 0.382789297365280 0.287445156270025 0.0828345049143808 0.00945177150556065;
+            0.00153919355833585	0.0247005562212875 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0160443669891157;
+            0.000778286512441806 0.0152660804766738 0.114741751017859 0.328567584707170 0.361483063911416 0.152923483594817 0.0262397497796233]
+    ygrid = log.(egrid)
+    ny = 7
+    income_grid = egrid*w
     @unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(mcm,plots=1)
     # Initial Values
     Λ_invariant_init = zeros(length(agrid_finer), ny)
+    #val_aux = 1/length(agrid_finer)*ny
+    #Λ_invariant_init = zeros(length(agrid_finer), ny).+val_aux
+    #
     for i_y=1:ny
         for (i_a, a_v) in enumerate(agrid_finer)
             Λ_invariant_init[i_a, i_y] = (a_v - agrid[1]) / (agrid[end] - agrid[1]) * Pyinv[i_y]
         end
     end
+    #
     # Initialize Matrices
     length_aux = length(agrid_finer)
     Λn_mat   = zeros(length(agrid_finer), ny) # Distribution
@@ -217,6 +269,7 @@ function compute_invariant(mcm;)
     a_ast_itp = LinearInterpolation((agrid, ygrid), a_ast) # next period's assets, current y
 
     while iter<2000 && dist>1e-4
+    #while dist>dist_tol
         iter += 1
         for i_y = 1:ny # next period
             for (i_a, a_v) in enumerate(agrid_finer) # next period
@@ -226,7 +279,7 @@ function compute_invariant(mcm;)
                     aval  = minimum([maximum([aux_ast, agrid[1]]), agrid[end]]) # today's assets (endogenous grid)
                     aux_ast_pos = searchsortedfirst(agrid_finer, aval)
                     ind_r = minimum([maximum([aux_ast_pos, 2]), length_aux])
-                    # Interpolation
+                    #
                     Λval = Λnm1_mat[ind_r-1, i_y0] + (Λnm1_mat[ind_r, i_y0]- Λnm1_mat[ind_r-1, i_y0]) / (agrid_finer[ind_r] - agrid_finer[ind_r-1]) * (aval - agrid_finer[ind_r-1])
                     vec_temp[i_y0] = Λval
                 end
@@ -240,10 +293,45 @@ function compute_invariant(mcm;)
         dist = norm(Λn_mat - Λnm1_mat)
         Λnm1_mat .= Λn_mat
 
+
         # if iter%200 == 0.0
         #     @printf("Iteration # %d on distribution with distance %.3g\n", iter, dist)
         # end
     end
+        # Discretization Sanrgent
+        # Getting the indices
+        ind_asg = Array{Int64}(undef,na,ny)
+        for i_z = 1:ny
+            for i_a = 1:na
+                  ind_aux = minimum([searchsortedfirst(agrid, apol_egm[i_a,i_z]),na])
+                  ind_asg[i_a,i_z] = ind_aux
+            end
+        end
+    gmat = zeros(na,na,ny)
+    trans = zeros(567,567)
+    for j = 1:ny
+       for k = 1:na
+          gmat[k,ind_asg[k,j],j] = 1
+       end
+       trans[(j-1)*na+1:j*na,:] = kron(Piy[j,:]',gmat[:,:,j])
+    end
+    trans=trans'
+    probst = (1/(ny*na))*ones(ny*na,1)
+    test=1
+    while test > dist_tol
+        probst1 = trans*probst
+        test = maximum(abs.(probst1-probst))
+        probst = probst1
+    end
+
+    #   vectorize the decision rule to be conformable with probst
+    #   calculate new aggregate capital stock  meanK
+
+
+    kk=apol_egm[:]
+    meank=probst'*kk
+
+    # Calculate according to Baumeister
     A_supply = 0
     # This is calculating an integral manually
     for i_y = 1:ny
@@ -271,10 +359,14 @@ function compute_invariant(mcm;)
     #    mean_K2_aux += dot(agrid_finer,Λnm1_mat[:,i_y])
     #end
 
-    return (mean_K= A_supply2, D_invariant=Λnm1_mat, mean_K2=mean_K2, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
+    return (mean_K= A_supply2, meank=meank,D_invariant=Λnm1_mat, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
     #return (mean_K= A_supply2)
 end
+#=
+function simulation_inv(mcm;)
 
+end
+=#
 
 
 

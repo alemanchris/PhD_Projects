@@ -22,7 +22,7 @@ end
 % the second term is natural limit
 %--------------------------------------------------------------------                               
 %   form capital grid
-maxkap = 70;%16                     % maximum value of capital grid  
+maxkap = 16; %16                    % maximum value of capital grid  
 minkap = -phi;                   % borrowing constraint
 inckap = 0.2;                    % size of capital grid increments
 kap    = minkap:inckap:maxkap;   % state of assets 
@@ -74,6 +74,18 @@ nkap   = length(kap);            % number of grid points
    [xs,ykap] = meshgrid(s,kap);
    condecis = wage*xs+(1+r)*ykap-decis;
    
+   figure (1)
+   plot(kap,decis)
+   title('Assets Policy Function')
+   xlabel('asset of current period')
+   ylabel('asset of next period')
+      figure (2)
+   plot(kap,condecis)
+   title('Assets Policy Function')
+   xlabel('asset of current period')
+   ylabel('asset of next period')
+
+
    if indi == 1
       
       subplot(1,2,1)
@@ -81,7 +93,7 @@ nkap   = length(kap);            % number of grid points
       title('evolution of assets,shock Smin and Smax')
       xlabel('asset of current period')
       ylabel('asset of next period')
-      %legend('b=0','r= -0.02',2)
+      legend('b=0','r= -0.02',2)
       
       hold on
       plot(kap,kap,'r-')
@@ -134,16 +146,6 @@ nkap   = length(kap);            % number of grid points
    kk=decis(:);
    meank=probst'*kk
    r
-      figure (1)
-   plot(kap,decis)
-   title('Assets Policy Function')
-   xlabel('asset of current period')
-   ylabel('asset of next period')
-      figure (2)
-   plot(kap,condecis(:,1:6))
-   title('Consumption Policy Function')
-   xlabel('asset of current period')
-   ylabel('asset of next period')
    
    % My Approximation
    %{
@@ -207,4 +209,5 @@ end
 invariant = lambda(:)';
 decis_asset = aprime2(:);
 kmean = invariant*decis_asset
-%}
+   %}
+

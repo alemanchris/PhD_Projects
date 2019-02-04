@@ -8,14 +8,14 @@ crit = 10^(-6);
 % maximum iterations (avoids infinite loops)
 maxiter = 10^(3);%10^(3);
 %% 1. parameters and functional forms
-r0 = 0.015; %0.04 0.015
+r0 = 0.02; %0.04
 % parameters
-alpha  = 0.36;                   % capital income share
-b      = -36;  %OR-2 -35                  % borrowing constraint
+alpha  = 1/3;                   % capital income share
+b      = 0;  %OR-2 -35                  % borrowing constraint
 beta   = 0.97;%97/100;                % subjective discount factor
 delta  = 0.08;%5/100;                 % depreciation rate of physical capital
 gamma  = 3;%mu%1.13/2;              % inverse elasticity of intertemporal substitution
-%varphi = 0.8;%1/3;%0.5;%2/3;                   % Frisch elasticity of labor supply
+%varphi = 0.8;%1/3;%0.5;%2/3;       % Frisch elasticity of labor supply
 %rho    = 5/10;                  % persistence parameter prodictivity
 N      = 2;                     % number of possible productivity realizations
 
@@ -55,10 +55,13 @@ invup = @(x) x.^(-1/gamma);      % inverse of marginal utility of consumption
 %% 2. discretization
 
 % set up asset grid
-M  = 150;%150250 or 400 good;                        % number of asset grid points
-aM = 70;%20;%45;                         % maximum asset level
-A  = linspace(b,aM,M)';          % equally-spaced asset grid from a_1=b to a_M
-
+M  = 100;%150250 or 400 good;                        % number of asset grid points
+aM = 60;%20;%45;                         % maximum asset level
+%A  = linspace(b,aM,M)';          % equally-spaced asset grid from a_1=b to a_M
+a_temp  = log(linspace(exp(0), M, M)); 
+amax = 90;
+A = (cumsum(a_temp)/sum(a_temp) * amax)'; 
+ 
 % set up productivity grid
 Y  = [y1,y2]';                   % grid for productivity
 
@@ -188,29 +191,26 @@ fprintf('Inner loop, running... \n');
 % Prepare for interpolation
 %
 clear aprime
-agrid = linspace(b,aM,M*2);
-aprime(:,1) = interp1(a0(:,1),Amat(:,1),agrid,'pchip'); % This is not| yes it is
+agrid = A;
+aprime(:,1) = interp1(a0(:,1),Amat(:,1),agrid,'pchip');
 aprime(:,2) = interp1(a0(:,2),Amat(:,2),agrid,'pchip');
 cpol(:,1) = interp1(a0(:,1),cp0(:,1),agrid,'pchip');
 cpol(:,2) = interp1(a0(:,2),cp0(:,2),agrid,'pchip');
 %a0_tream = a0(a_aux1,2);
-%{
 figure(1)
 plot(agrid,cpol)
 title('Consumption')
 figure(4)
 plot(agrid',aprime)
 title('Assets')
-%{
- My Invariant
-
-%{
-%THIS WAS UNCOMMENTED
+%}
+%% Chirs Mueller
 %end
 %M  = 100;
-K = 2*M;
-agrid_finer = linspace(b,aM,K);
-%endog_grid = Amat;
+K = 3*M;
+%agrid_finer = linspace(b,aM,K);
+a_finer_temp  = log(linspace(exp(0), K, K)); 
+agrid_finer   = (cumsum(a_finer_temp)/sum(a_finer_temp) * amax)'; 
 endog_grid = a0;
 Lambda0 = zeros(K,N);
 for j = 1:N
@@ -225,27 +225,20 @@ Ln_mat   = zeros(K, N) ;
 
 
 [amesh,ymesh]=meshgrid(agrid,Y');
-%
-% With 3D dimensional
+% With two dimensional
 %a_ast_itp = @(a_ipo,b_ipo) interp2(amesh,ymesh,endog_grid',a_ipo,b_ipo,'spline'); % whi not linear, cuz NaN will always be ataken as a minimum
 
-% With 2D dimensional
+% With One dimensional
 %a_ast_itp = @(a_ipo,pos) interp1(agrid,endog_grid(:,pos),a_ipo,'linear','extrap');
-a_ast_itp = @(a_ipo,pos) interp1(agrid,endog_grid(:,pos),a_ipo,'pchip'); 
-% Make the distribution contonous
-% Make it continous % This is the mistake
-%l0 = @(a,lambdarg) min(max(interp1(agrid_finer,lambdarg,a,'linear','extrap'),0),1); % not linear cuz it doesnt extrapolater
+a_ast_itp = @(a_ipo,pos) interp1(agrid,endog_grid(:,pos),a_ipo,'pchip');   
 %mesh(amesh,ymesh,endog_grid') 
-X0 = 0;
-options = optimset('Display','off');
-    while iter2<250 && dist>1e-4 
+    while iter2<20 && dist>1e-4 
  
        iter2 = iter2+1 
 
  
       for i_y = 1:N %# next period 
            for i_a =1:K %# next period 
-           %for i_a =K:1 %# next period 
               % a_v is the value
                     % i_a is the index
               a_v = agrid_finer(i_a);
@@ -253,34 +246,24 @@ options = optimset('Display','off');
 
                  for i_y0 = 1:N   % # last period y 
                      y0_v = Y(i_y0);
-                     %3 D
                      %aval  = min(max(a_ast_itp(a_v, y0_v), agrid(1)), agrid(end));% # today's assets (endogenous grid) 
-                     %2 D
                      aval  = min(max(a_ast_itp(a_v, i_y0), agrid(1)), agrid(end));% # today's assets (endogenous grid) 
-                     % Solver
-                     %aval = 
-                     %aval_aux=fsolve(@(a) invaprime(a,Y,r0,a0,cp0,agrid_finer(i_a),i_y0,w0),X0,options);
-                     %aval = min(max(aval_aux,agrid(1)),agrid(end));
-                     
+
                      %ind_r = min(max(searchsortedfirst(ay.agrid_finer, aval), 2), K) 
-                     %index_aux = nearestpoint(aval,agrid_finer,'nearest'); % nice trick
+                     %ind_r = min(max(nearestpoint(aval,agrid_finer,'nearest'),2),K); % nice trick
                      index_aux = find(agrid_finer>=aval,1,'first');
                      if isempty(index_aux)
-                          index_aux=K;
+                          index_aux=K+1;
                      end
-                     %ind_r = index_aux;
-                     %ind_r = min(index_aux,K-1);
-                     ind_r = max(index_aux,2);
+                     ind_r = min(max(index_aux,2),K);
  %                   ?val = ?nm1_mat[ind_r-1,i_y0] + (?nm1_mat[ind_r, i_y0]- ?nm1_mat[ind_r-1, i_y0]) / (agrid_finer[ind_r] - agrid_finer[ind_r-1]) * (aval - agrid_finer[ind_r-1]) 
                      Lval = Lnm1_mat(ind_r-1,i_y0) + (Lnm1_mat(ind_r, i_y0)- Lnm1_mat(ind_r-1, i_y0)) / (agrid_finer(ind_r) - agrid_finer(ind_r-1)) * (aval - agrid_finer(ind_r-1)); 
-                     %Lval = Lnm1_mat(ind_r,i_y0) + (Lnm1_mat(ind_r+1, i_y0)- Lnm1_mat(ind_r, i_y0)) / (agrid_finer(ind_r+1) - agrid_finer(ind_r)) * (aval - agrid_finer(ind_r)); 
-                     %Lval = Lnm1_mat(ind_r,i_y0) + l0(aval,Lnm1_mat(:,i_y));
                      vec_temp(i_y0) = Lval; 
                  end 
  
  
                  %Ln_mat(i_a, i_y) = dot(pi(:, i_y),vec_temp); 
-                  Ln_mat(i_a, i_y) = dot(pi(:, i_y),vec_temp); 
+                 Ln_mat(i_a, i_y) = dot(pi(:, i_y),vec_temp); 
             end 
       end 
          dist = max(max(abs(Ln_mat - Lnm1_mat))); 
@@ -291,7 +274,6 @@ options = optimset('Display','off');
          %#     @printf("Iteration # %d on distribution with distance %.3g\n", iter, dist) 
          %# end 
     end 
-    
     invariant = Lnm1_mat;
     %copy!(?_invariant, ?nm1_mat) 
    % Void 
@@ -302,22 +284,16 @@ figure(10)
 plot(agrid_finer,pr);
 figure(11)
 plot(agrid_finer,pr0);
-%
-grid_even_finer = linspace(b,aM,300*K);
-new_pr = interp1(agrid_finer,pr,grid_even_finer,'pchip');
 
-normalization = 1-new_pr(end);
-newpr= new_pr+normalization;
-pdfpr = diff(newpr);
-figure(12)
-plot(grid_even_finer,[0,pdfpr]);
-%}
 
-%% transition matrix
+
+
+%% transition matrix My version 
 %{
 % Piecewise linear interpolation of the invariant distribution
 %b = -2; aM = 20; %M  = 200; K=M;
-K = 100;%2000;
+%K = 2000;
+K = 200;
 agrid2 = linspace(b,aM,K);
 Lambda0 = zeros(K,N);
 for j = 1:N
@@ -326,7 +302,7 @@ for j = 1:N
     end
 end
 % Make it continous % This is the mistake
-l0 = @(a,lambdarg) interp1(agrid2,lambdarg,a,'pchip'); % not linear cuz it doesnt extrapolater
+l0 = @(a,lambdarg) interp1(agrid2,lambdarg,a,'pchip'); % not use "linear" cuz it doesnt extrapolater
 % update distribution for every pair
 crit1 = 0.001;%10^(-10);
 dist1 = 1;
@@ -336,17 +312,16 @@ X0 = 0;
 iter2 = 0;
 options = optimset('Display','off');
 %
-while dist1>crit1 && iter2<130%dist1>crit1 %dist>crit&&iter<maxiter
+while dist1>crit1 && iter2<40%dist1>crit1 %dist>crit&&iter<maxiter
     iter2 = iter2+1    
         for k = 1:K
             for j = 1:N
                 for i = 1:N
                     
                     %fsolve(@(x)sin(x.*x),x0);
-                    asol_aux=fsolve(@(a) invaprime(a,Y,r0,a0,cp0,agrid2(k),i,w0),X0,options);
-                    asol = min(max(asol_aux,agrid(1)),agrid(end));
+                    asol=fsolve(@(a) invaprime(a,Y,r0,a0,cp0,agrid2(k),i,w0),X0,options);
                     l1(k,j) = l1(k,j)+pi(j,i)*l0(asol,lambda(:,i));
-                    %l1(k,j) = l1(k,j)+pi(j,i)*Linterp(k,i,lambda,asol,agrid2);
+                     %l1(k,j) = l1(k,j)+pi(j,i)*Linterp(k,i,lambda,asol,agrid2);
                     dert = 1;
                 end
             end
@@ -363,12 +338,6 @@ figure(10)
 plot(agrid2,pr);
 figure(11)
 plot(agrid2,pr0);
-
-normalization = 1-pr(end);
-newpr= pr+normalization;
-pdfpr = diff(newpr);
-figure(12)
-plot(agrid2,[0,pdfpr]);
 
 %}
 

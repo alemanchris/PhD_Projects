@@ -3,8 +3,10 @@ compute_aiyagari(param())
 ones(2,2)
 compute_invariant(param())
 
-@unpack mean_K, mean_K2,D_invariant, pdf_a, cdf_a = compute_invariant(param(r=0.01))
-
+@unpack mean_K,meank,D_invariant, pdf_a, cdf_a = compute_invariant(param(r=0.036))
+dert = [1 4;
+        2 6;
+        3 10]
 0.96*(1+0.042)
 (1-0.96)/(0.96)
 wage*egrid[1]/0.02
@@ -19,10 +21,11 @@ for (i,v) in enumerate(rate)
 end
 plot(mean_K_line,rate)
 @unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(param(),plots=1)
+@unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(param(r= 0.036))
 
 cpol_mat2 = compute_aiyagari(param())
 compute_aiyagari(param(),plots=1)
-@unpack agrid, agrid_finer,w = param(r=0.01)
+@unpack agrid, agrid_finer,w = param(r=0.036)
 plot(agrid, cpol_mat)
 plot(agrid_finer, D_invariant)
 plot(agrid_finer, pdf_a)
@@ -51,3 +54,6 @@ dert = [1 2 3 4 5]'
 dert2 = range(10,step=1,stop=14)
 dot(dert2,dert)
 sum(pdf_a)
+
+dert = searchsortedfirst([1, 2, 4, 5, 14], 0)
+typeof(dert)

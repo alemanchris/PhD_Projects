@@ -54,7 +54,7 @@ function aiyagari_fun(; β   = 0.96,
                         r   = 0.036, #0.029
                         w   = 0.1,#0.0,
                         σe  = 0.1,
-                        my  = 0.0,
+                        my  = 0.0, # Repeated Below
                         ny  = 7,
                         ne  = ny,
                         na  = 100,
@@ -72,7 +72,8 @@ function aiyagari_fun(; β   = 0.96,
 
 
     """ Rouwenhorst Method """
-    p = (1.0+ρ)/2; q = p
+    p = (1.0+ρ)/2
+    q = p
     ψ = σy * sqrt(ny-1)
 
     ymax  = ψ; ymin = -ψ

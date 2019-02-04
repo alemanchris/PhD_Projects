@@ -1,5 +1,6 @@
 % Piecewise linear interpolation of the invariant distribution
-%b = -2; aM = 20; %M  = 200; K=M;
+b = 0; aM = 20;
+M  = 100; %K=M;
 K = 200;
 agrid2 = linspace(b,aM,K);
 % Endowment process
@@ -39,8 +40,8 @@ while dist1>crit1 %dist>crit&&iter<maxiter
         for k = 1:K
             for j = 1:N
                 for i = 1:N
-                    asol=@(a) fsolve(invaprime(a,Y,r0,a0,cp0,agrid2(k),i),a0);
-                    l1(k,j) = l1(k,j)+pi(j,i)*l0(asol,lambda(:,i));
+                    asol=min(@(a) fsolve(invaprime(a,Y,r0,a0,cp0,agrid2(k),i),a0));
+                    l1(k,j) = l1(k,j)+pi(i,j)*l0(asol,lambda(:,i));
                 end
             end
         end

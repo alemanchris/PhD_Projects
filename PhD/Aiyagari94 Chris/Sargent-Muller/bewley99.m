@@ -43,13 +43,20 @@ sigma    = sigmaint*sqrt(1-rho^2); % standard deviation of error_t
 s = exp(logs);
 labor = s*invdist2;
 
-fixw = 0;          % if fixw=0, compute bewley model with production
+fixw = 1;          % if fixw=0, compute bewley model with production
 indi = 0;          % if indi=1, draw asset choice and consumption graph 
 
-
+%% 
+varphi = 0.2;
+up    = @(c) c.^(-mu);        % marginal utility of consumption
+invup = @(x) x.^(-1/mu);      % inverse of marginal utility of consumption
+%vp    = @(h) h.^(1/varphi);      % marginal disutility of labor supply
+invvp = @(x) x.^(varphi);   
+H  = @(c,y,w) invvp(up(c).*y.*w);
+%%
 
 b =0;%3;
-k1 = aiyagari2(0.01);
+k1 = aiyagari2(0.036);
 pdf_a = sum(reshape(probst,nkap,N),2);
 pdf_b = reshape(probst,nkap,N);
 %{

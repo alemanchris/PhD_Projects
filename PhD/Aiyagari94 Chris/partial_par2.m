@@ -204,6 +204,7 @@ figure(4)
 plot(agrid',aprime)
 title('Assets')
 %}
+%% Chirs Mueller
 %end
 %M  = 100;
 K = 3*M;
@@ -287,8 +288,8 @@ plot(agrid_finer,pr0);
 
 
 
-%% transition matrix
-%
+%% transition matrix My version 
+%{
 % Piecewise linear interpolation of the invariant distribution
 %b = -2; aM = 20; %M  = 200; K=M;
 %K = 2000;
@@ -301,7 +302,7 @@ for j = 1:N
     end
 end
 % Make it continous % This is the mistake
-l0 = @(a,lambdarg) interp1(agrid2,lambdarg,a,'pchip'); % not linear cuz it doesnt extrapolater
+l0 = @(a,lambdarg) interp1(agrid2,lambdarg,a,'pchip'); % not use "linear" cuz it doesnt extrapolater
 % update distribution for every pair
 crit1 = 0.001;%10^(-10);
 dist1 = 1;
