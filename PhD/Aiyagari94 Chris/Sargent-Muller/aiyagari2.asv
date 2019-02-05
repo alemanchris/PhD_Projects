@@ -132,6 +132,9 @@ nkap   = length(kap);            % number of grid points
    end
    trans=trans';
    %
+      for k = 1:nkap
+          gmat(k,tdecis1(k,1),1) = 1;
+      end
 
         %}
    probst = (1/(N*nkap))*ones(N*nkap,1);

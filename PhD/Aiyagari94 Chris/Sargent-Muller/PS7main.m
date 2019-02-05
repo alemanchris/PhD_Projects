@@ -12,9 +12,9 @@ b      = 0;                     % borrowing constraint
 beta   = 0.96;%97/100;                % subjective discount factor
 delta  = 0.08;%5/100;                 % depreciation rate of physical capital
 gamma  = 3;%3/2;                   % inverse elasticity of intertemporal substitution
-varphi = 0.2;%%2/3                   % Frisch elasticity of labor supply
+varphi = 2/3;%%2/3                   % Frisch elasticity of labor supply
 %rho    = 5/10;                  % persistence parameter prodictivity
-N      = 2;                     % number of possible productivity realizations
+N      = 7;                     % number of possible productivity realizations
 %y1     = 95/100;                % low productivity realization
 %y2     = 105/100;               % high productivity realization
 
@@ -46,10 +46,18 @@ sigma    = sigmaint*sqrt(1-rho_auto^2); % standard deviation of error_t
 % rho and standard deviation of log labor income in Markov chain
 %
 [pi,logs,invdist2,alambda,asigma]=markovappr(rho_auto,sigma,3,N);
+pi(:,end)=ones(N,1)-sum(pi(:,1:end-1),2);
 %pi=pi';
 s_income = exp(logs);
-y1 = s_income(1);
-y2 = s_income(2);
+ 
+    y1 = s_income(1);
+    y2 = s_income(2);
+    %
+    y3 = s_income(3);
+    y4 = s_income(4);
+    y5 = s_income(5);
+    y6 = s_income(6);
+    y7 = s_income(7);
 %}
 %% 2. discretization
 
@@ -59,7 +67,8 @@ aM = 50;  %50                        % maximum asset level
 A  = linspace(b,aM,M)';          % equally-spaced asset grid from a_1=b to a_M
 
 % set up productivity grid
-Y  = [y1,y2]';                   % grid for productivity
+Y  = [y1,y2,y3,y4,y5,y6,y7]';                   % grid for productivity
+%Y  = [y1,y2]';                   % grid for productivity
 
 % vectorize the grid in two dimensions
 Amat = repmat(A,1,N);            % values of A change vertically
@@ -91,19 +100,20 @@ crit = 10^(-6);
 % distribution. Choose a high T >= 10^(-4) once the algorithm is running.
 I = 10^(4);             % number of individuals
 T = 10^(4);             % number of periods
-
+%I = 500;
+%T = 3000;
 % choose interval where to search for the stationary interest rate
 % note: 
 % the staionary distribution is very sensitive to the interst rate. 
 % make use of the theoretical result that the stationary rate is slightly 
 % below 1/beta-1
 r0  = (1/beta-1)-[10^(-12),10^(-4)];
-r0 = [0.001, 0.316];
+%r0 = [0.001, 0.316];
 % set up an anonymous function
 fprintf('Start solving the Aiyagari model... \n');
 
 tic;
-myfun   = @(r) stationary_equilibrium(r,crit,I,T,Amat,Ymat,alpha,b,delta,pi(1,1),varphi,A0,C0,H);
+myfun   = @(r) stationary_equilibrium(r,crit,I,T,Amat,Ymat,alpha,b,delta,pi,varphi,A0,C0,H);
 %{
 options = optimset('display','iter','TolX',1e-8,'MaxIter',20);
 rstar   = fzero(myfun,r0,options);
@@ -112,10 +122,10 @@ fprintf('Done with the Aiyagari model in %f sec. \n',toc);
 % get the simulated asset levels
 fprintf('Fetching the wealth distribution... \n');
 rstar = 0.036;
-[r,at] = stationary_equilibrium(rstar,crit,I,T,Amat,Ymat,alpha,b,delta,pi(1,1),varphi,A0,C0,H);
+[r,at,K] = stationary_equilibrium(rstar,crit,I,T,Amat,Ymat,alpha,b,delta,pi,varphi,A0,C0,H);
 
 %% 5. plot the wealth distribution
-
+K = mean(mean(at(:,T-100:T)));
 % use the last 100 periods
 [n,xout] = hist(at(:,T-100:T),M);     % choose M bins
 bar(xout,n/sum(n));                   % relative frequency is n/sum(n)

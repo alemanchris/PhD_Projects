@@ -1,5 +1,9 @@
 using Plots, Interpolations, LinearAlgebra, Parameters
 #using Statistics, Compat, Expectations, NLsolve, Roots, Random, StatPlots # Distributions and Interpolations posible failure
+using InstantiateFromURL
+activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.5");
+using Statistics, QuantEcon,Compat
+
 plotly()
 # functions
 
@@ -80,7 +84,22 @@ param = @with_kw (
         #lb = beta+2, # Lower bound
         lb = 0.037, # Lower bound
         ub = 1.0/beta-1.0-0.0001)
-#=
+
+#
+function markov_aprox(;
+                     ny = 7,
+                     rho = 0.2,
+                     sigmaint = 0.4,
+                     sigma    = sigmaint*sqrt(1-rho^2),
+                     mc = tauchen(ny, rho, sigma),
+                     Pyinv = stationary_distributions(mc)[1],
+                     Piy = mc.p,
+                     ygrid = mc.state_values,
+                     egrid = exp.(ygrid))
+
+    return (Pyinv=Pyinv, Piy=Piy ,egrid=egrid ,ny=ny, ygrid=ygrid)
+end
+
 function rouwenhorst(;
                     rho = 0.9,
                     p = (1.0+rho)/2, #p = (1.0+rho)/2,
@@ -124,28 +143,17 @@ function rouwenhorst(;
         #return Pyinv
            # Persistence of the income process
 end
-=#
+#
 
 function compute_aiyagari(mcm;
                          plots=0)
     @unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = mcm
     @unpack r, w, maxit, dist_tol, b = mcm
-    #@unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = param()
-    #@unpack r, w, maxit, dist_tol, b = param()
     #@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
+    @unpack Pyinv, Piy, egrid, ny, ygrid = markov_aprox()
     # Only prob and s=egrid and Pyinv egrid is exp of ygrid=logs
-    egrid = [0.301194211912202,0.449328964117222,0.670320046035639,1,1.49182469764127,2.22554092849247,3.32011692273655]
-    Pyinv = [0.00628217827163228,0.0608491084936224,0.241700981199883,0.382335464069726,0.241700981199883,0.0608491084936224,0.00628217827163229]
-    Piy =  [0.0262397497796233 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0152660804766739 0.000778286512441828;
-            0.0160443669891157 0.114741751017859 0.328567584707170 0.361483063911415 0.152923483594817 0.0247005562212874 0.00153919355833587;
-            0.00945177150556068	0.0828345049143809 0.287445156270025 0.382789297365280 0.196113758787202 0.0384369616149092 0.00292854954264210;
-            0.00536221880153007	0.0575309935179400 0.242023809517260 0.390165956326541 0.242023809517260 0.0575309935179400 0.00536221880153009;
-            0.00292854954264206	0.0384369616149092 0.196113758787202 0.382789297365280 0.287445156270025 0.0828345049143808 0.00945177150556065;
-            0.00153919355833585	0.0247005562212875 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0160443669891157;
-            0.000778286512441806 0.0152660804766738 0.114741751017859 0.328567584707170 0.361483063911416 0.152923483594817 0.0262397497796233]
 
-    ygrid = log.(egrid)
-    ny = 7
+    ########
     H = dot(egrid, Pyinv)
     K = 0.0
     income_grid = egrid*w
@@ -235,17 +243,7 @@ function compute_invariant(mcm;)
     @unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = mcm
     @unpack r, w, maxit, dist_tol, b = mcm
     #@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
-    egrid = [0.301194211912202,0.449328964117222,0.670320046035639,1,1.49182469764127,2.22554092849247,3.32011692273655]
-    Pyinv = [0.00628217827163228,0.0608491084936224,0.241700981199883,0.382335464069726,0.241700981199883,0.0608491084936224,0.00628217827163229]
-    Piy =  [0.0262397497796233 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0152660804766739 0.000778286512441828;
-            0.0160443669891157 0.114741751017859 0.328567584707170 0.361483063911415 0.152923483594817 0.0247005562212874 0.00153919355833587;
-            0.00945177150556068	0.0828345049143809 0.287445156270025 0.382789297365280 0.196113758787202 0.0384369616149092 0.00292854954264210;
-            0.00536221880153007	0.0575309935179400 0.242023809517260 0.390165956326541 0.242023809517260 0.0575309935179400 0.00536221880153009;
-            0.00292854954264206	0.0384369616149092 0.196113758787202 0.382789297365280 0.287445156270025 0.0828345049143808 0.00945177150556065;
-            0.00153919355833585	0.0247005562212875 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0160443669891157;
-            0.000778286512441806 0.0152660804766738 0.114741751017859 0.328567584707170 0.361483063911416 0.152923483594817 0.0262397497796233]
-    ygrid = log.(egrid)
-    ny = 7
+    @unpack Pyinv, Piy, egrid, ny, ygrid = markov_aprox()
 
     income_grid = egrid*w
     @unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(mcm,plots=1)
@@ -332,8 +330,13 @@ function compute_invariant(mcm;)
 
     kk=apol_egm[:]
     meank=probst'*kk
-
-    # Calculate according to Baumeister
+    # Using QuantEcon Invariant finder
+    trans3 = trans2
+    trans3[:,end]=ones(length(trans2),1)-sum(trans3[:,1:end-1],dims=2)
+    mc2 = MarkovChain(trans3)
+    stationary_probs = stationary_distributions(mc2)[:, 1][1]
+    meank_s = dot(stationary_probs,kk)
+    # Calculate according to Muller
     A_supply = 0
     # This is calculating an integral manually
     for i_y = 1:ny
@@ -360,8 +363,10 @@ function compute_invariant(mcm;)
     #for i_y = 1:ny
     #    mean_K2_aux += dot(agrid_finer,Λnm1_mat[:,i_y])
     #end
+    ### SIMULATION
 
-    return (mean_K= A_supply2, meank=meank,D_invariant=Λnm1_mat, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
+
+    return (mean_K= A_supply2, meank=meank, meank_s=meank_s, D_invariant=Λnm1_mat, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
     #return (mean_K= A_supply2)
 end
 #=

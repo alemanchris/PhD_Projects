@@ -7,7 +7,8 @@
 %				Aiyagari's model( with related Bewley models )
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-clear
+clear all
+clc
 global beta mu A delta alpha s N prob b fixw indi kk kap probst nkap invdist2
 
 tic

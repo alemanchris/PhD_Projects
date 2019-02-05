@@ -1,4 +1,4 @@
-function [residual,at,K] = stationary_equilibrium(r0,crit,I,T,Amat,Ymat,alpha,b,delta,rho,varphi,A0,C0,H)
+function [residual,at] = stationary_equilibrium(r0,crit,I,T,Amat,Ymat,alpha,b,delta,rho,varphi,A0,C0,H)
 % this function
 % (1) solves for the consumption decision rule, given an
 % intereste rate, r0
@@ -125,22 +125,17 @@ for i =1:I
     [~,state] = markov(rho,T+1,s1);
     state_it(i,:,:) =state;  
 end
-Y_aux = zeros(I,T);
-for t = 1:T
+
+for t = 1:T+1
    % consumption
    Y_aux(:,t) = sum(Y.*state_it(:,:,t),2);
    ct(:,t)   = (Y_aux(:,t)==y1).*interp1(Amat(:,1),cp0(:,1),at(:,t),'spline')...
               +(Y_aux(:,t)==y2).*interp1(Amat(:,2),cp0(:,2),at(:,t),'spline')...
               +(Y_aux(:,t)==y3).*interp1(Amat(:,3),cp0(:,3),at(:,t),'spline')...
-              +(Y_aux(:,t)==y4).*interp1(Amat(:,4),cp0(:,4),at(:,t),'spline')...
-              +(Y_aux(:,t)==y5).*interp1(Amat(:,5),cp0(:,5),at(:,t),'spline')...
-              +(Y_aux(:,t)==y6).*interp1(Amat(:,6),cp0(:,6),at(:,t),'spline')...
-              +(Y_aux(:,t)==y7).*interp1(Amat(:,7),cp0(:,7),at(:,t),'spline');
-   % labor supply
-   ht(:,t)   = H(ct(:,t),Y_aux(:,t),w0);
-
-   % future assets
-   at(:,t+1) = (1+r0)*at(:,t)+ht(:,t).*Y_aux(:,t).*w0-ct(:,t); 
+              +(yY_aux(:,t)==y4).*interp1(Amat(:,4),cp0(:,4),at(:,t),'spline')...
+              +(yt(:,t)==y5).*interp1(Amat(:,5),cp0(:,5),at(:,t),'spline')...
+              +(yt(:,t)==y6).*interp1(Amat(:,6),cp0(:,6),at(:,t),'spline')...
+              +(yt(:,t)==y7).*interp1(Amat(:,7),cp0(:,7),at(:,t),'spline');
 end
 %{
 for t=1:T
