@@ -15,8 +15,8 @@ results = solve(aiyagari_ddp, PFI)
 @unpack z_size, a_size, n, a_min = am
 a_star = reshape([a_vals[results.sigma[s_i]] for s_i in 1:n], a_size, z_size)
 a_star_idx = reshape([results.sigma[s_i] for s_i in 1:n], a_size, z_size)
-p_astar1 = polyfit(a_vals,a_star[:,1],5)
-p_astar2 = polyfit(a_vals,a_star[:,2],5)
+p_astar1 = polyfit(a_vals,a_star[:,1],1)
+p_astar2 = polyfit(a_vals,a_star[:,2],1)
 a_star1 = p_astar1(a_vals)
 a_star2 = p_astar2(a_vals)
 typeof(a_star[:,1])
@@ -127,16 +127,23 @@ histogram(data[:])
 a_ast=repeat(a_vals, 1, z_size) + c_star - repeat(z_vals*w, a_size, 1)/(1+r)
 #a_ast2=repeat(a_vals, 1, z_size) + c_star2 - repeat(z_vals*w, a_size, 1)/(1+r)
 #@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_star)
-@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast)
+@unpack A_supply3, iter, cdf_a, pdf_d  = compute_invariant(Household(),a_ast)
 #@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast2)
 
-pdf_b =pdf_a[1:end-1300]
-norm_lis = pdf_b./(sum(pdf_b))
+pdf_b =pdf_a[1:end-200]
 help_1 = length(pdf_b)
 agrid_finer2 = range(0,20,length=help_1)
-#plot(agrid_finer, cdf_a[1:end-1])
-#plot(agrid_finer, pdf_a)
+plot(agrid_finer, cdf_a[1:end-1])
+plot(agrid_finer, pdf_a)
+norm_lis = pdf_b./(sum(pdf_b))
 plot(agrid_finer2,norm_lis)
+pdf_an = pdf_a./(sum(pdf_a))
+plot(agrid_finer,pdf_an)
+
+
+agrdi_finer3 = range(0,20,length=length(pdf_d))
+plot(agrdi_finer3,pdf_d)
+
 #################################
 # My inverse
 

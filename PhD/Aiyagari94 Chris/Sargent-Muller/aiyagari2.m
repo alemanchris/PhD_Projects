@@ -156,7 +156,7 @@ nkap   = length(kap);            % number of grid points
 
 
    % My Approximation
-   %{
+   %
    % Piecewise linear interpolation of the invariant distribution
 aM = maxkap;
 aL = minkap;
