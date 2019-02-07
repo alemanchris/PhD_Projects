@@ -3,10 +3,9 @@ compute_aiyagari(param())
 ones(2,2)
 compute_invariant(param())
 
-@unpack mean_K,meank,meank_s,D_invariant, pdf_a, cdf_a = compute_invariant(param(r=0.036))
-dert = [1 4;
-        2 6;
-        3 10]
+@unpack at, mean_K,meank,meank_s,D_invariant, pdf_a, cdf_a = compute_invariant(param(r=0.036))
+
+histogram(at[:,10001])
 0.96*(1+0.042)
 (1-0.96)/(0.96)
 wage*egrid[1]/0.02

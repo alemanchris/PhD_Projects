@@ -2,7 +2,7 @@ using Plots, Interpolations, LinearAlgebra, Parameters
 #using Statistics, Compat, Expectations, NLsolve, Roots, Random, StatPlots # Distributions and Interpolations posible failure
 using InstantiateFromURL
 activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.5");
-using Statistics, QuantEcon,Compat
+using Statistics, QuantEcon,Compat , Random
 
 plotly()
 # functions
@@ -59,6 +59,7 @@ param = @with_kw (
         alpha1 = 0.36,# Capital Share
         delta = 0.08, # Depreciation Rate
         r = 0.036,
+        #w = (1-alpha1)*((alpha1/(r+delta))^alpha1)^(1/(1-alpha1)),
         w = 0.2,       # Wage
         phy = minimum([0,w*0.301194211912202/r]),
 
@@ -97,53 +98,10 @@ function markov_aprox(;
                      ygrid = mc.state_values,
                      egrid = exp.(ygrid))
 
-    return (Pyinv=Pyinv, Piy=Piy ,egrid=egrid ,ny=ny, ygrid=ygrid)
+    return (Pyinv=Pyinv, Piy=Piy ,egrid=egrid ,ny=ny, ygrid=ygrid, mc=mc)
 end
 
-function rouwenhorst(;
-                    rho = 0.9,
-                    p = (1.0+rho)/2, #p = (1.0+rho)/2,
-                    q = p,
-                    sigma_e = 0.1, # Dont know
-                    sigma_y = sqrt((sigma_e^2)/(1-rho^2)),
-                    ny = 7, # NUmber of states
-                    my = 0.0) # mean of y
 
-        phy = sigma_y*sqrt(ny-1)
-        ymax = phy
-        ymin = -phy
-        ygrid = range(ymin, ymax, length=ny)
-
-        Piy2 = [[p 1.0-p];[1.0-q q]]
-        Piyn1 = copy(Piy2)
-
-        for jj = 1:(ny-2)
-            num_rows = size(Piyn1,1)
-            mat1     = zeros(num_rows+1, num_rows+1)
-            mat2, mat3, mat4 = copy(mat1), copy(mat1), copy(mat1)
-
-            mat1[1:end-1, 1:end-1]  = Piyn1
-            mat2[1:end-1, 2:end]    = Piyn1
-            mat3[2:end, 1:end-1]    = Piyn1
-            mat4[2:end, 2:end]      = Piyn1
-
-            Piyn1 = p*mat1 + (1-p)*mat2 + (1-q)*mat3 + q*mat4
-            Piyn1[2:end-1, :] = Piyn1[2:end-1, :] / 2
-        end
-        Piy     = copy(Piyn1)
-        Piy_aux = copy(Piy')
-        vals = eigvals(Piy_aux)
-        vecs = eigvecs(Piy_aux)
-        todelete, ind_val  = findmin(abs.(vals.-1.0))
-        Pyinv       = vecs[:, ind_val]/sum(vecs[:, ind_val])
-
-        sum(Pyinv.>=0.0) == ny || throw(error("Negative elements in invariant distribution"))
-        egrid   = exp.(ygrid + my*ones(ny))
-        return (Pyinv=Pyinv, Piy=Piy ,egrid=egrid ,ny=ny, ygrid=ygrid)
-        #return Pyinv
-           # Persistence of the income process
-end
-#
 
 function compute_aiyagari(mcm;
                          plots=0)
@@ -221,7 +179,7 @@ function compute_aiyagari(mcm;
         cpol_mat .= cpol_next
     end
     # Policy function assets
-    apol_egm = (1.0+r) * repeat(agrid, 1, ny) + w*repeat(egrid', na, 1) - cpol_mat
+    apol_egm = (1.0+r) * repeat(agrid, 1, ny) + w*repeat(egrid', na, 1)*H - cpol_mat
 
     # Plots
     if plots==1
@@ -243,11 +201,12 @@ function compute_invariant(mcm;)
     @unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = mcm
     @unpack r, w, maxit, dist_tol, b = mcm
     #@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
-    @unpack Pyinv, Piy, egrid, ny, ygrid = markov_aprox()
+    @unpack Pyinv, Piy, egrid, ny, ygrid, mc= markov_aprox()
 
     income_grid = egrid*w
     @unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(mcm,plots=1)
     # Initial Values
+    H = dot(egrid, Pyinv)
     Λ_invariant_init = zeros(length(agrid_finer), ny)
     #val_aux = 1/length(agrid_finer)*ny
     #Λ_invariant_init = zeros(length(agrid_finer), ny).+val_aux
@@ -267,7 +226,7 @@ function compute_invariant(mcm;)
     dist = 10.0
     a_ast_itp = LinearInterpolation((agrid, ygrid), a_ast) # next period's assets, current y
 
-    while iter<2000 && dist>1e-4
+    while iter<200 && dist>1e-4
     #while dist>dist_tol
         iter += 1
         for i_y = 1:ny # next period
@@ -331,8 +290,10 @@ function compute_invariant(mcm;)
     kk=apol_egm[:]
     meank=probst'*kk
     # Using QuantEcon Invariant finder
-    trans3 = trans2
-    trans3[:,end]=ones(length(trans2),1)-sum(trans3[:,1:end-1],dims=2)
+    trans3 = trans
+    for i = 1:size(trans,2)
+        trans3[i,:] =trans[i,:]./sum(trans[i,:])
+    end
     mc2 = MarkovChain(trans3)
     stationary_probs = stationary_distributions(mc2)[:, 1][1]
     meank_s = dot(stationary_probs,kk)
@@ -364,30 +325,44 @@ function compute_invariant(mcm;)
     #    mean_K2_aux += dot(agrid_finer,Λnm1_mat[:,i_y])
     #end
     ### SIMULATION
+    T = 10^4
+    Noind = 10^4
+    at      = zeros(Noind,T+1)
+    yt      = zeros(Noind,T)
+    ct      = zeros(Noind,T)
+    ht      = zeros(Noind,T)
 
+    #at[:,1] = ones(Noind,1)           # initial asset level
+    state_it = zeros(Noind,T)
+    state_idx = zeros(Noind,T)
+    t_s = [1/ny]
+    for i =1:Noind
+        #rng = MersenneTwister(1234)
+        #s0 = rand(rng, 1)
+        s0 = rand(1)
+        s1 = (s0<=t_s)+(s0>t_s&&s0<=(t_s.*2)).*2+(s0>(t_s.*2)&&s0<=(t_s.*3)).*3+(s0>(t_s.*3)&&s0<=(t_s.*4)).*4+(s0>(t_s.*4)&&s0<=(t_s.*5)).*5+(s0>(t_s.*5)&&s0<=(t_s.*6)).*6+(s0>(t_s.*6)).*7
+        state_it[i,:] = exp.(simulate(mc, T; init = s1))
+        # Extract index
+    end
+    for i = 1:T
+        #try to trace them nigrows
+        #=
+         ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
+         # future assets
+         at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
+         #extract index
+         =#
+         ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
+         # future assets
+         at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w.*H-ct[:,i]
 
-    return (mean_K= A_supply2, meank=meank, meank_s=meank_s, D_invariant=Λnm1_mat, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
+    end
+    K_simul = mean(mean(at[:,T-100:T]))
+    return (at = at,mean_K= A_supply2, meank=meank, meank_s=meank_s, K_simul=K_simul, D_invariant=Λnm1_mat, pdf_a = pdf_a, cdf_a=cdf_a[1:end-1])
     #return (mean_K= A_supply2)
 end
-#=
-function simulation_inv(mcm;)
 
+function c_interp(Amat,cpo,val)
+    c_aux = interp(Amat, cpo)
+    return c_aux.(val)
 end
-=#
-
-
-
-
-#compute_aiyagari(param())
-#plot(cpol_mat)
-
-
-#=
-function solveaiyagari(param;
-    )
-rouwenhorst()
-H = dot(egrid, Pyinv)
-K = 0
-
-cpol_mat = zeros(param.na)
-=#

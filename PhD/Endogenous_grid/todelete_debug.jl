@@ -3,62 +3,84 @@ mcm = param()
     # retrieving parameters
 @unpack beta, delta, na, agrid, agrid_finer, gamma, alpha1 = param()
 @unpack r, w, maxit, dist_tol, b = param()
+@unpack Pyinv, Piy, egrid, ny, ygrid, mc = markov_aprox()
 
-#@unpack Pyinv, Piy, egrid, ny, ygrid = rouwenhorst()
-egrid = [0.301194211912202,0.449328964117222,0.670320046035639,1,1.49182469764127,2.22554092849247,3.32011692273655]
-Pyinv = [0.00628217827163228,0.0608491084936224,0.241700981199883,0.382335464069726,0.241700981199883,0.0608491084936224,0.00628217827163229]
-Piy =  [0.0262397497796233 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0152660804766739 0.000778286512441828;
-        0.0160443669891157 0.114741751017859 0.328567584707170 0.361483063911415 0.152923483594817 0.0247005562212874 0.00153919355833587;
-        0.00945177150556068	0.0828345049143809 0.287445156270025 0.382789297365280 0.196113758787202 0.0384369616149092 0.00292854954264210;
-        0.00536221880153007	0.0575309935179400 0.242023809517260 0.390165956326541 0.242023809517260 0.0575309935179400 0.00536221880153009;
-        0.00292854954264206	0.0384369616149092 0.196113758787202 0.382789297365280 0.287445156270025 0.0828345049143808 0.00945177150556065;
-        0.00153919355833585	0.0247005562212875 0.152923483594817 0.361483063911416 0.328567584707170 0.114741751017859 0.0160443669891157;
-        0.000778286512441806 0.0152660804766738 0.114741751017859 0.328567584707170 0.361483063911416 0.152923483594817 0.0262397497796233]
-ygrid = log.(egrid)
-ny = 7
 income_grid = egrid*w
 @unpack cpol_mat, a_ast, apol_egm = compute_aiyagari(mcm,plots=1)
-    # Discretization Sargent
-    # Getting the indices
-    ind_asg = Array{Int64}(undef,na,ny)
-    for i_z = 1:ny
-        for i_a = 1:na
-              useles = findmin(abs.(agrid.-apol_egm[i_a,i_z]))
-              #ind_aux = minimum([searchsortedfirst(agrid, apol_egm[i_a,i_z]),na])
-              ind_asg[i_a,i_z] = minimum([useles[2],80])
-        end
-    end
 
-gmat = zeros(na,na,ny)
-trans = zeros(567,567)
-for j = 1:ny
-   for k = 1:na
-      gmat[k,ind_asg[k,j],j] = 1
-   end
-   trans[(j-1)*na+1:j*na,:] = kron(Piy[j,:]',gmat[:,:,j])
+T = 3000
+Noind = 3000
+at      = zeros(Noind,T+1)
+yt      = zeros(Noind,T)
+ct      = zeros(Noind,T)
+ht      = zeros(Noind,T)
+
+at[:,1] = ones(Noind,1)           # initial asset level
+state_it = zeros(Noind,T)
+
+t_s = [1/ny]
+
+
+#for t = 1:T
+H = dot(egrid, Pyinv)
+mpl_fun(K)  = (1.0-alpha1)*K^alpha1*H^-alpha1                        # computes w
+inv_mpk(rate1) = H^(1.0-alpha1)*(alpha1/(rate1+delta))^(1.0/(1.0-alpha1))
+KK0   = inv_mpk(r)
+ww0   = mpl_fun(KK0)
+for i =1:Noind
+    s0 = rand(1)
+    s1 = (s0<=t_s)+(s0>t_s&&s0<=(t_s.*2)).*2+(s0>(t_s.*2)&&s0<=(t_s.*3)).*3+(s0>(t_s.*3)&&s0<=(t_s.*4)).*4+(s0>(t_s.*4)&&s0<=(t_s.*5)).*5+(s0>(t_s.*5)&&s0<=(t_s.*6)).*6+(s0>(t_s.*6)).*7
+    state_it[i,:] = exp.(simulate(mc, T; init = s1))
+end
+for i = 1:T
+     ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
+     # future assets
+     at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
+end
+#=
+for i = 1:T
+     ct[:,i] = (state_it[:,i].==repeat([egrid[1]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==repeat([egrid[2]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==repeat([egrid[3]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==repeat([egrid[4]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==repeat([egrid[5]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==repeat([egrid[6]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==repeat([egrid[7]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,7],at[:,i])
+     # future assets
+     at[:,i+1] = (1+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
+end
+=#
+#=
+for i = 1:T
+     ct[:,t] = (state_it[:,i].==repeat([egrid[1]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,1],at[:,i])
+                  +(state_it[:,i].==repeat([egrid[2]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,2],at[:,i])
+                   +(state_it[:,i].==repeat([egrid[3]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,3],at[:,i])
+                    +(state_it[:,i].==repeat([egrid[4]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,4],at[:,i])
+                     +(state_it[:,i].==repeat([egrid[5]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,5],at[:,i])
+                      +(state_it[:,i].==repeat([egrid[6]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,6],at[:,i])
+                       +(state_it[:,i].==repeat([egrid[7]],inner=(Noind,1))).*c_interp(agrid,cpol_mat[:,7],at[:,i])
+       # future assets
+     at[:,i+1] = (1+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
+end
+=#
+K_simul = mean(mean(at[:,T-100:T]))
+histogram(at[:,3001])
+10^4
+function c_interp(Amat,cpo,val)
+    c_aux = LinearInterpolation(Amat, cpo)
+    return c_aux(val)
 end
 
+repeat([1 2; 3 4], inner=(2, 1))
+A = [1 2 3 4 5]
+A.==2
+dert = zeros(5,1)
+rand(1)
+dert[1,1]=rand(1)
+for i =1:5
+    #rng = MersenneTwister(1234)
+    #s0 = rand(rng, 1)
+    dert2 = rand(1)
+    dert[i,1] = dert2
 
-trans2 = trans'
-
-probst = (1/(ny*na))*ones(ny*na,1)
-test=1
-probst1 = trans2*probst
-probst = probst1
-while test > dist_tol
-    global probst1 = trans2*probst
-    global test = maximum(abs.(probst1-probst))
-    global probst = probst1
 end
-dot(trans2,probst)
-#   vectorize the decision rule to be conformable with probst
-#   calculate new aggregate capital stock  meanK
+length(agrid)
+plot(agrid,cpol_mat)
 
-sum(probst)
-kk=apol_egm[:]
-meank=dot(probst,kk)
-plot(probst)
-probst2 = reshape(probst, (81, 7))
-plot(probst2)
 
-plot(apol_egm)
+repeat(egrid', na, 1)*w*H
+minimum(minimum(ct[:,T-100:T]))
