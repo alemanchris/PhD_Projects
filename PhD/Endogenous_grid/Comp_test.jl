@@ -123,108 +123,22 @@ histogram(data[:])
 
 #######################################################333
 # Piecewise Linear Approximation
-
-a_ast=repeat(a_vals, 1, z_size) + c_star - repeat(z_vals*w, a_size, 1)/(1+r)
-#a_ast2=repeat(a_vals, 1, z_size) + c_star2 - repeat(z_vals*w, a_size, 1)/(1+r)
-#@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_star)
-@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast)
-#@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast2)
-
-pdf_b =pdf_a[1:end-1300]
+    start = time()
+    a_ast=repeat(a_vals, 1, z_size) + c_star - repeat(z_vals*w, a_size, 1)/(1+r)
+    #a_ast2=repeat(a_vals, 1, z_size) + c_star2 - repeat(z_vals*w, a_size, 1)/(1+r)
+    #@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_star)
+    @unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast)
+    #@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast2)
+    elapsed = time() - start
+    #250/4
+#pdf_b =pdf_a[1:end-1300]
+pdf_b =pdf_a[1:end-105]
 norm_lis = pdf_b./(sum(pdf_b))
 help_1 = length(pdf_b)
 agrid_finer2 = range(0,20,length=help_1)
 #plot(agrid_finer, cdf_a[1:end-1])
 #plot(agrid_finer, pdf_a)
 plot(agrid_finer2,norm_lis)
+sum(norm_lis)
+dot(agrid_finer2,norm_lis)
 #################################
-# My inverse
-
-@unpack A_supply2, iter3, cdf_b, pdf_b = m_invariant(Household(),a_STAR)
-
-@unpack na, agrid, agrid_finer= Household()
-@unpack maxit, dist_tol, b = Household()
-@unpack Pyinv, Piy, egrid, ny,a_min,a_max = Household()
-Lambda0 = zeros(na*2,ny)
-for j = 1:ny
-    for k = 1:na*2
-        Lambda0[k,j] = (agrid_finer[k]-a_min)/(a_max-a_min)*Pyinv[j]
-    end
-end
-# Make it continous
-#l0 = @(a,lambda) interp1(agrid2,lambda,a,'linear'); %  I can condition de densities
-#l0(agrid_finer,lambda,a)
-# update distribution for every pair
-#crit1 = 10^(-8);
-
-lambda = Lambda0
-l1 = zeros(na*2,ny)
-aprime2 = zeros(na*2,ny)
-for i=1:ny
-    for j=1:na*2
-        #aux = interp(agrid,a_STAR[:,i],agrid_finer[j])
-        #aux2 = interp1(kap,condecis(:,i),agrid_finer[j])
-        aprox = i_STAR(agrid,a_STAR[:,i],agrid_finer[j])
-        aprime2[j,i] = maximum([minimum([aprox,a_max]),a_min])
-        #condecis2(j,i) = max(aux2,0);
-    end
-end
-#maxiter = 10
-#Inverse mapping
-#invaprime(a,i) =interp(a_STAR[:,i],agrid_finer,a)
-#a_star_int = zeros(length(agrid_finer),z_size)
-
-int_star_1 = interp(agrid,a_STAR[:,1])
-int_star_2 = interp(agrid,a_STAR[:,2])
-a_star_int1 = int_star_1.(agrid_finer)
-a_star_int2 = int_star_2.(agrid_finer)
-a_star_int = [a_star_int1 a_star_int2]
-iter3 = 0
-dist1 = 1
-l1 = zeros(na*2,ny)
-#range  = [a_min,amax]
-asol = invaprime(agrid_finer[100],a_star_int[:,2],agrid_finer)
-while iter<2000 && dist1>1e-4
-    global iter3 = iter3+1
-        for k = 1:na*2
-            for j = 1:ny
-                for i = 1:ny
-                    #%dert= invaprime(a,s,r,agrid2',condecis2,agrid2(k),i,wage),X0)
-                    #asol = fzero(invaprime(a,s,r,agrid2',condecis2,agrid2(k),i,wage))
-                    #asol = invaprime(agrid_finer[k],i)
-                    asol = invaprime(agrid_finer[k],a_star_int[:,i],agrid_finer)
-                    asol2= maximum([minimum([asol,a_max]),a_min])
-                    l1[k,j] = l1[k,j]+Piy[i,j]*lo(agrid_finer,lambda[:,i],asol2)
-                end
-            end
-        end
-
-
-    global dist1 = maximum(maximum(abs.(lambda-l1)))
-    #dist1 = norm(abs.(lambda-l1)
-    global lambda = l1
-end
-A_supply2 = 0
-# This is calculating an integral manually
-for i_y = 1:ny
-    sum_val_a = 0.0
-    for i_a = 1:(length(agrid_finer)-1)
-        anp1 = agrid_finer[i_a+1]
-        an   = agrid_finer[i_a]
-        sum_val_a += 0.5*(lambda[i_a+1, i_y] - lambda[i_a, i_y]) * (anp1 + an)
-    end
-
-    A_supply2 += sum_val_a + lambda[1, i_y]*agrid_finer[1]
-end
-
-length_aux =length(agrid_finer)
-cdf_b = zeros(length_aux+1)
-
-for i_a=1:length_aux
-    cdf_b[i_a] = sum(lambda[i_a, :])
-end
-cdf_b[length_aux+1] = cdf_b[length_aux]
-#repeat the last value with the same so that the pdf of the last is zero
-# GET THE PDF
-pdf_b = diff(cdf_b)
-plot(agrid_finer,pdf_b)

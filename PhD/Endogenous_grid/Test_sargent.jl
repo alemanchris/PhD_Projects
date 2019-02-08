@@ -12,11 +12,11 @@ Household = @with_kw (r = 0.03,
                       delta = 0.05,
                       alpha1 = 0.33,
                       beta = 0.96,
-                      #z_chain = MarkovChain([0.9 0.1; 0.1 0.9], [0.1; 1.0]),
-                      z_chain = MarkovChain([0.7 0.3; 0.3 0.7], [0.1; 1.0]),
+                      z_chain = MarkovChain([0.9 0.1; 0.1 0.9], [0.1; 1.0]),
+                      #z_chain = MarkovChain([0.7 0.3; 0.3 0.7], [0.1; 1.0]),
                       Pyinv = stationary_distributions(z_chain)[:, 1][1],
-                      Piy = [0.7 0.3; 0.3 0.7],
-                      #Piy = [0.9 0.1; 0.1 0.9],
+                      #Piy = [0.7 0.3; 0.3 0.7],
+                      Piy = [0.9 0.1; 0.1 0.9],
                       z_vals = [0.1 1.0],
                       egrid =[z_vals[1];z_vals[2]],
                       a_min = 1e-10,
@@ -28,7 +28,7 @@ Household = @with_kw (r = 0.03,
                       maxit = 2000,
                       a_size = 200,#200,
                       na = a_size,
-                      a_size2 =3000,#250 #550
+                      a_size2 =350,#250 #550 #3000
                       a_vals = range(a_min, a_max, length = a_size),
                       agrid_finer = range(a_min, a_max, length = a_size2),
                       agrid = a_vals,
@@ -142,7 +142,7 @@ function compute_invariant(mcm,a_ast)
                 for (i_y0, y0_v) in enumerate(egrid) # last period y
                     aux_ast = a_ast_itp(a_v, y0_v)
                     aval  = minimum([maximum([aux_ast, agrid[1]]), agrid[end]]) # today's assets (endogenous grid)
-                    aux_ast_pos = searchsortedfirst(agrid_finer, aval)
+                    aux_ast_pos = searchsortedfirst(agrid_finer, aval) # Subtitute of interpolating aval
                     ind_r = minimum([maximum([aux_ast_pos, 2]), length_aux])
                     #
                     Λval = Λnm1_mat[ind_r-1, i_y0] + (Λnm1_mat[ind_r, i_y0]- Λnm1_mat[ind_r-1, i_y0]) / (agrid_finer[ind_r] - agrid_finer[ind_r-1]) * (aval - agrid_finer[ind_r-1])
@@ -153,15 +153,10 @@ function compute_invariant(mcm,a_ast)
             end
         end
 
-        #dist = maximum(abs.(Λn_mat - Λnm1_mat))
-        #copyto!(Λnm1_mat, Λn_mat)
+
         dist = norm(Λn_mat - Λnm1_mat)
         Λnm1_mat .= Λn_mat
 
-
-        # if iter%200 == 0.0
-        #     @printf("Iteration # %d on distribution with distance %.3g\n", iter, dist)
-        # end
     end
     A_supply = 0
     # This is calculating an integral manually

@@ -39,7 +39,9 @@ end
 # Compute the stationary distribution:
 ####################################################33
 # Sargets way
-stationary_probs = stationary_distributions(results.mc)[:, 1][1]
+    start = time()
+    stationary_probs = stationary_distributions(results.mc)[:, 1][1]
+    elapsed = time() - start
 K1 = dot(am.s_vals[:, 1], stationary_probs)
 # Plot distribution
 distrib = reshape(stationary_probs,a_size,z_size)
@@ -77,10 +79,7 @@ distrib2 = reshape(probst,a_size,z_size)
 pdf_b = sum(distrib2,dims=2)
 plot(a_vals,pdf_b)
 #
-p_dert = polyfit(a_vals,pdf_b[:],6)
-typeof(pdf_b[:])
-fited = p_dert(a_vals)
-plot(a_vals,fited)
+
 # Calculate interpolations of the consumption policy rule
 # Two Options:
 # 1: Add 1 to the grid and get new interpolated policy rule
@@ -101,48 +100,53 @@ at[:,1] = ones(Noind,1)           # initial asset level
 state_it = zeros(Noind,T)
 state_idx = zeros(Noind,T)
 t_s = [1/z_size]
-for i =1:Noind
-    s0 = rand(1)
-    s1 = (s0<=t_s)+(s0>t_s).*2
-    state_it[i,:] = simulate(z_chain, T; init = s1)
-end
-#indicator = zeros(Noind,1)
+    start = time()
+    for i =1:Noind
+        s0 = rand(1)
+        s1 = (s0<=t_s)+(s0>t_s).*2
+        state_it[i,:] = simulate(z_chain, T; init = s1)
+    end
+    #indicator = zeros(Noind,1)
 
-for i = 1:T
-     ct[:,i] = (state_it[:,i].==z_vals[1]).*c_interp(a_vals,c_star[:,1],at[:,i])+(state_it[:,i].==z_vals[2]).*c_interp(a_vals,c_star[:,2],at[:,i])
-     at[:,i+1] = (1.0+r)*at[:,i].+state_it[:,i]*w.-ct[:,i]
-     ct2[:,i] = (state_it[:,i].==z_vals[1]).*c_interp(a_vals,c_star2[:,1],at2[:,i])+(state_it[:,i].==z_vals[2]).*c_interp(a_vals,c_star2[:,2],at2[:,i])
-     at2[:,i+1] = (1.0+r)*at2[:,i].+state_it[:,i]*w.-ct2[:,i]
-     #indicator= at[:,i+1].>a_max_1
-     #at[indicator,i+1].=a_max_1
-end
+    for i = 1:T
+         ct[:,i] = (state_it[:,i].==z_vals[1]).*c_interp(a_vals,c_star[:,1],at[:,i])+(state_it[:,i].==z_vals[2]).*c_interp(a_vals,c_star[:,2],at[:,i])
+         at[:,i+1] = (1.0+r)*at[:,i].+state_it[:,i]*w.-ct[:,i]
+         ct2[:,i] = (state_it[:,i].==z_vals[1]).*c_interp(a_vals,c_star2[:,1],at2[:,i])+(state_it[:,i].==z_vals[2]).*c_interp(a_vals,c_star2[:,2],at2[:,i])
+         at2[:,i+1] = (1.0+r)*at2[:,i].+state_it[:,i]*w.-ct2[:,i]
+         #indicator= at[:,i+1].>a_max_1
+         #at[indicator,i+1].=a_max_1
+    end
+    elapsed = time() - start
 K_simul = mean(mean(at[:,T-100:T]))
 data = at[:,T-100:T]
 histogram(data[:])
-
+dert_auxiliary_Der = 1
 
 #######################################################333
 # Piecewise Linear Approximation
+    start = time()
+    a_ast=repeat(a_vals, 1, z_size) + c_star - repeat(z_vals*w, a_size, 1)/(1+r)
+    @unpack A_supply3, iter, cdf_a, pdf_d  = compute_invariant(Household(),a_ast)
+    elapsed = time() - start
 
-a_ast=repeat(a_vals, 1, z_size) + c_star - repeat(z_vals*w, a_size, 1)/(1+r)
-#a_ast2=repeat(a_vals, 1, z_size) + c_star2 - repeat(z_vals*w, a_size, 1)/(1+r)
-#@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_star)
-@unpack A_supply3, iter, cdf_a, pdf_d  = compute_invariant(Household(),a_ast)
-#@unpack A_supply, iter, cdf_a, pdf_a, agrid_finer = compute_invariant(Household(),a_ast2)
-
-pdf_b =pdf_a[1:end-200]
-help_1 = length(pdf_b)
-agrid_finer2 = range(0,20,length=help_1)
-plot(agrid_finer, cdf_a[1:end-1])
-plot(agrid_finer, pdf_a)
-norm_lis = pdf_b./(sum(pdf_b))
-plot(agrid_finer2,norm_lis)
-pdf_an = pdf_a./(sum(pdf_a))
-plot(agrid_finer,pdf_an)
+agrid_finer3 = range(0,20,length=length(pdf_d))
+plot(agrid_finer3,pdf_d)
+dot(agrid_finer3,pdf_d)
 
 
-agrdi_finer3 = range(0,20,length=length(pdf_d))
-plot(agrdi_finer3,pdf_d)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #################################
 # My inverse
@@ -152,6 +156,7 @@ plot(agrdi_finer3,pdf_d)
 @unpack na, agrid, agrid_finer= Household()
 @unpack maxit, dist_tol, b = Household()
 @unpack Pyinv, Piy, egrid, ny,a_min,a_max = Household()
+
 Lambda0 = zeros(na*2,ny)
 for j = 1:ny
     for k = 1:na*2
@@ -211,6 +216,7 @@ while iter<2000 && dist1>1e-4
     #dist1 = norm(abs.(lambda-l1)
     global lambda = l1
 end
+
 A_supply2 = 0
 # This is calculating an integral manually
 for i_y = 1:ny
