@@ -1,5 +1,5 @@
-\section{The model}\label{sec4}
-\subsection{Model characteristics}
+\section{\sf The model}\label{sec4}
+%\subsection{Model characteristics}
 The model features two types agents: sex consumers and sex producers. They are finitely lived, have rational expectations and intend to maximize future discounted utility, $E_{0}\sum_{t}^{\infty}\beta^{t}u$, subject to their respective budget constraints. I assume the function $u:[0,\infty)\to \mathbb{R}$ is strictly increasing, strictly concave and twice continuously differentiable and has a CRRA form\footnote{$u(c)=\nicefrac{c^{1-\sigma}}{(1-\sigma)}$ for sex producers and $u(c,x)=\nicefrac{c^{1-\sigma}}{(1-\sigma)}+\nicefrac{x^{1-\sigma}}{(1-\sigma)}$ for sex buyers.  Note that all agents regardless of their type share the same relative risk aversion. }, with relative risk aversion parameter $\sigma>0$.
 
  Agents interact in three competitive markets in this economy: The goods market, the sex market and the assets market.  
@@ -39,14 +39,16 @@ The features of each stage will be described in detail in the upcoming sections.
 The model features additional dynamics, in the sense that it intends to capture the evolution of the HIV epidemic starting from stage one until stage four. For presentation purposes each stage characterizes a stationary equilibrium, but later on they will be linked with the intention to describe the complete evolution of the HIV epidemic.
 \end{comment}
 
+\noindent \textbf{Remark.} The amount of sex consumers and producers in the economy is exogenously given. That is, we do not endogeneize the decision on who becomes a sex consumer/producer. This is clearly a caveat of this exercise which is overcome, for example, by XXX. At the same time, the fact that we introduce heterogeneity within each of the two groups implies that part of our sex consumers will consume a positive but negligible amount of sex, and part of our sex producers will produce a negligible amont of sex. The size of this population with that transactions a small amount of sex, which is endogenous, determines the size of the population that consumes/sells risk sex.
 
 In the following sections I describe in detail the characteristics of each of the stages of the model.  
 
-\subsection{Pre-epidemic stage}\label{pre}
-There is no probability of infection, namely $\lambda(x,h)=0$ and $\psi_{e}^{h=1}=\psi_{e}^{h=0}=\psi_{e}$. Agents differ on their type $g$, assets $a$ and education level $e$.\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection*{\sf Stage 0: Pre-Epidemic Years}\label{sec:stage1}
+There is no probability of infection, namely $\lambda(x,h)=0$ and $\psi_{e}^{h=1}=\psi_{e}^{h=0}=\psi_{e}$. Agents differ on their type $g$, assets $a$ and education level $e$.
 
-\noindent\textbf{Sex Buyers:}\\
-For agents of type $g$ the dynamic problem is:
+\noindent \textbf{Sex buyers problem.} For agents of type $g$ the dynamic problem is:
 \begin{align}
 V(a,e,g,s;\Phi) &= \mathop{\max_{c\geq 0,x \geq 0,a' \geq 0}}  u(c,x) + \beta \gamma_{e} \sum_{s'|s}\pi(s'|s)V(a',e,g,s';\Phi') \label{eq1}\\
 \mbox{s.t}\nonumber\\
@@ -56,23 +58,8 @@ a' &\leq b
 
  Agents buys non-marital risky sex $x$ at price $p$ and save or borrow $a'$ with return $r$. Agents cannot borrow amounts that exceed $b$. Note that labor is supplied in elastically and depends on their level of education $e$, then their labor income is $y(e)$, where $y(1)>y(0)$.\\
  This problem is characterized by three individual state variables ($a,e,g,s$) and one aggregate state variable $\Phi$, which represents the population distribution over the states $a,e,g,s$. The choice variables are $c,x$ and $a'$.\\
-\begin{comment}
- The above problem can be written in sequential form: 
-\begin{align*}
-\mathop{\max_{c_{t},x_{t},a_{t+1}}}&E_{0}\sum^{\infty}_{t=0}\beta^{t}u(c_{t},x_{t})  \\
-\mbox{s.t}\\ 
-c_{t}+p_{t}x_{t}+a_{t+1}&=y(e)+(1+r_{t})a_{t}
-\end{align*}
- \textbf{FOC's:}\\
- \begin{align*}
- \frac{\partial u(c_{t},x_{t})}{\partial x_{t}}&=-u'_{c}(c_{t},x_{t})p_{t}+u'_{x}(c_{t},x_{t})=0\\
- \frac{\partial u(c_{t},x_{t})}{\partial a_{t+1}}&=-u'_{c}(c_{t},x_{t})+u'_{c}(c_{t+1},x_{t+1})(1+r_{t})\beta=0
- \end{align*}
- Given the price system $\{p_{t}\}_{t=0}^{\infty},\{r_{t}\}_{t=0}^{\infty}$ the solution is characterized by the sequence of allocations $\{c_{t}\}_{t=0}^{\infty}, \{x_{t}\}_{t=0}^{\infty}, \{a_{t}\}_{t=0}^{\infty}$ such that they solve the above maximization problem.\\
-\end{comment}
 
-\noindent \textbf{Sex Producers:}\\
-For agents of type $-g$ the dynamic problem is:
+\noindent \textbf{Sex producers problem.} For agents of type $-g$ the dynamic problem is:
 \begin{align}
 V(a,e,-g,s;\Phi) &= \mathop{\max_{c\geq 0, 1\geq l\geq 0,a' \geq 0}}  u(c) + \beta \gamma_{e} \sum_{s'|s}\pi(s'|s)V(a',e,-g,s';\Phi') \label{eq3}\\
 \mbox{s.t}\nonumber\\
@@ -80,7 +67,6 @@ c +a'&= pl^{\alpha}+zy(e)(1-l) + (1+r(\Phi))a \label{eq4}\\
 a' &\leq b
 \end{align}
 Note that for these agents, extra marital risky sex ($x$) does not generate any utility, then the utility function only depends on the amount of consumed ($c$). Additionally, these agents produce sex with a decreasing return to scale production function $x=l^{\alpha}$ where $\alpha\in(0,1)$. In other words, these agents produce non-marital risky-sex $x$ using time $l$ and sell it a price $p$. Where $l$ is the fraction of labor dedicated to the production of extramarital risky sex, the remaining labor ($1-l$), which is not allocated to sex production, is sold in the market for labor income $y(e)$. As before, agents are allowed to save or borrow assets $a$ at rate $r$.\\
-
 \begin{comment}
 \noindent The above problem can be written in sequential form: 
 \begin{align*}
@@ -207,11 +193,9 @@ For \textit{Step2} of \textit{Algorithm No.2} I choose the uniform distribution 
 \multicolumn{1}{c}{(b) Asset Market} \\
 \includegraphics[angle=0,width=.5\textwidth]{figures/FIG14.png}   & 
 \includegraphics[angle=0,width=.5\textwidth]{figures/FIG15.png} 
-
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
 \end{tabular}
 \end{center}
-\label{fig:6}
+\label{fig:61}
 \end{figure}
 
 \begin{figure}[H]
@@ -227,22 +211,90 @@ For \textit{Step2} of \textit{Algorithm No.2} I choose the uniform distribution 
 \end{center}
 \label{fig:4}
 \end{figure}
-\subsection{Miopic stage of the epidemic}
-In this stage there exists a positive probability of getting HIV infected. $\lambda(x,h) >=0$. The particular characteristic of this stage is that the agents are not aware of the risk of infection, therefore they keep their sex consumption profile intact.\\
-The probability of infection depends on the amount of sex consumed by the individuals following the following relation:
-\begin{align}
-    \lambda(x,0)=\frac{e^{x}}{e^{x}+\rho e^{-x}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection*{\sf \textbf{Stage 1: The Myopic Onset of the Epidemic}}\label{sec:stage2}
+The HIV epidemics starts in this stage, but agents are unaware. Specifically, agents live under myopia in two dimensions. First, agents are not aware of the permanent changes associated with mortality and income risk. Every period, agents observe higher mortality rates ($\gamma$) and lower productivity ($\pi$) for some part of the population  those observations as unexpected one-time transitory shocks in mortality rates and productivity levels. Second, agents are not aware of the fact that the probability of HIV infection depends on the amount of risky sex transactioned (either consumed or produced), $x$. Specifically:
+\begin{align}\label{eq:HIV-Infection-Individual}
+    \lambda_\rho(x)=\frac{e^{x}}{e^{x}+\rho e^{-x}},
 \end{align}
-The infection transition matrix: 
+where $\rho$ is a parameter that governs the mapping from the amount of sex transactioned to the probability of HIV infection. The lower is $\rho$ the higher is the probability of HIV infection per amount of sex transactioned.\footnote{\sf In the Appendix we conduct some robustness to this function, in particular we allow for the aggregate rate of HIV infection in the economy to explicitly affect this probability.} 
+
+The main characteristic of this stage is that agents do not know that the HIV epidemic is unravelling. They treat the observed increases in mortality and declines in productivity as unexpected per-period transitory shocks. Precisely, agents  observe that at a given period $t$ part of the population is hit by a mortality and productivity shock. Specifically, every period mortality and productivity will be higher than what they actually expected. In other words, every period agents solve the dynamic problem (XX) under the myopic assumption that $\lambda_{t+1}=\lambda_{t}$ and $\gamma_{t+1}=\gamma_{t}\,\,\, \forall t$. This implies that every period the agents' believe the new realized features of the economy will remain forever, however this is not the case, they are myopic in that sense.
+ 
+Although agents are not aware of it, HIV infection does occurs with the following transition matrix: 
 \begin{align}
      \lambda(x,h'|h) = Prob(h_{t+1}=h'|h_{t}=h)=    \begin{bmatrix}%
     1-\lambda(x,0) & \lambda(x,0)\\
     \lambda(x,1)=0 & \lambda(x,1)=1
     \end{bmatrix}
 \end{align}
-Additionally, individuals that are HIV infected have a higher probability of dying and more educated individuals tend to consume have a lower probability of infection for no reason.\\
+Additionally, individuals that are HIV infected have a higher probability of dying.\\
 \textbf{Solving the Miopic stage}\\
-The Miopic stage was solved by iterating forward over the policy rules obtained from the Pre-epidemic stage but keeping track of the evolution of the epidemic and demographics acording to Equation \ref{eq:10}\\
+Computation of transition dynamics to a new steady state at every point in time.\\
+\noindent \textbf{\textit{Algorithm No.3}: Computation of the Myopic stage:}\\
+
+The economy's underlying population now gets infected with HIV which affects survival rates ($\gamma$) and income ($\pi$), but individuals are unaware of the mechanism of infection. That is, although individuals are aware of the changes in $\gamma$ and $\pi$, they are myopic with respect to $\lambda(x)$. That is, they do not know that it is risky sexual behavior what changes the survival rates and the income process. In other words, they assume $\lambda=I$. For this reason, individuals take the observed changes in survival probabilities and in the income process as permanent unexpected shocks $\gamma$ and $\pi$. Clearly, the shocks to $\gamma$ and $\pi$ is endogenous to risky sexual behavior, $\lambda(x)$, but again, individuals are myopic on this. The underlying law of motion of the adult population is:
+    \begin{align}\label{eq:under1}
+        \begin{bmatrix} \Phi'_{+} \\ \Phi'_{-} \end{bmatrix} = \begin{bmatrix} \gamma_{+} \\ \gamma_{-} \end{bmatrix} \begin{bmatrix}  1  & \lambda(x) \\ 0 & 1-\lambda(x) \end{bmatrix} \begin{bmatrix} \Phi_{+} \\ \Phi_{-} \end{bmatrix}
+    \end{align} and the underlying law of motion of income,
+    \begin{align}\label{eq:under2}
+        \begin{bmatrix} y'_{+} \\ y'_{-} \end{bmatrix} =  \begin{bmatrix}  1  & \lambda(x) \\ 0 & 1-\lambda(x) \end{bmatrix} \begin{bmatrix} y_{+} \\ y_{-} \end{bmatrix}
+    \end{align}
+The true population and income dynamics follow (\ref{eq:under1}) and (\ref{eq:under2}), but our agents only observe the outcomes for $\Phi$ and $y$ and they assume that that both the new survival rates and income process will last forever. \\
+\begin{comment}
+\begin{align}
+    \widetilde{\gamma}_{t+1} = \widetilde{\gamma}_t + \varepsilon_{t,\gamma} \\
+    y_{t+1} = y_t + \varepsilon_{t,y}
+\end{align}
+Notice that there is no stochastic process for $\varepsilon$ known to the agents. Instead, our agents take $\varepsilon$ as unexpected one-time events that last forever.\\ 
+\end{comment}
+
+\noindent \textbf{Sex buyers problem.} For agents of type $g$ the dynamic problem is:
+\begin{align}
+V(a,e,g,s;\Phi_m) &= \mathop{\max_{c\geq 0,x \geq 0,a' \geq 0}}  u(c,x) + \beta \gamma_{e,m} \sum_{s',y'|s,y}\pi_m(s',y'|s,y)  V(a',e,g,s';\Phi'_m) \label{eq1}\\
+\mbox{s.t}\nonumber\\
+c+ px +a'&= zy(e,s)_m + (1+r(\Phi_m))a \label{eq2}\\
+a' &\leq b \\
+\pi_m(s',y'|s,y) & = \pi_{s}(s'|s) \otimes\pi_{y}(y'|y) 
+\end{align}
+
+
+
+ Agents buys non-marital risky sex $x$ at price $p$ and save or borrow $a'$ with return $r$. Agents cannot borrow amounts that exceed $b$. Note that labor is supplied in elastically and depends on their level of education $e$, then their labor income is $y(e)$, where $y(1)>y(0)$.\\
+ This problem is characterized by three individual state variables ($a,e,g,s$) and one aggregate state variable $\Phi$, which represents the population distribution over the states $a,e,g,s$. The choice variables are $c,x$ and $a'$.\\
+
+
+\noindent \textbf{Sex producers problem.} For agents of type $-g$ the dynamic problem is:
+\begin{align}
+V(a,e,-g,s;\Phi_m) &= \mathop{\max_{c\geq 0, 1\geq l\geq 0,a' \geq 0}}  u(c) + \beta \gamma_{e,m}  \sum_{s',y'|s,y}\pi_m(s',y'|s,y) V(a',e,-g,s';\Phi'_m) \label{eq3}\\
+\mbox{s.t}\nonumber\\
+c +a'&= pl^{\alpha}+zy(e,s)_m(1-l) + (1+r(\Phi))a \label{eq4}\\
+a' &\leq b \\
+\pi_m(s',y'|s,y) & = \pi_{s}(s'|s) \otimes\pi_{y}(y'|y) 
+\end{align}
+Note that for these agents, extra marital risky sex ($x$) does not generate any utility, then the utility function only depends on the amount of consumed ($c$). Additionally, these agents produce sex with a decreasing return to scale production function $x=l^{\alpha}$ where $\alpha\in(0,1)$. In other words, these agents produce non-marital risky-sex $x$ using time $l$ and sell it a price $p$. Where $l$ is the fraction of labor dedicated to the production of extramarital risky sex, the remaining labor ($1-l$), which is not allocated to sex production, is sold in the market for labor income $y(e)$. As before, agents are allowed to save or borrow assets $a$ at rate $r$.\\
+
+
+
+We are after a sequence of $g_1$. To get each of them we need to solve for the entire transition.
+
+At each period $\tau \in \{T_0+1,..., \infty\}$, agents get a permanent unexpected shock to $\gamma_m$ and $\pi_m$. Then, we need to solve the following algorithm %for each period $t$, that is, every time (which is every period) individuals receive an unexpected shock:\\
+
+\begin{itemize}
+\item Step 0: Set $\tau=T_0+1$,
+\item Step 1: Compute the recursive stationary equilibrium of the Myopic stage associated with the new $\gamma_m$ and $\pi_m$. 
+\item Step 2: Choose a very large number of transition  periods $(T-\tau)$.
+\item Step 3: Compute the equilibrium transition dynamics from the stationary equilibrium in item 1 (i.e., at $T$) to the  equilibrium in period $\tau$. We compute this standardaly going backwards.
+\item Step 4: Stop if $\tau=T_1$
+\item Step 5: Replace $\tau=\tau+1$ and go back to Step 1.
+\end{itemize}
+
+
+
+
 \textbf{Calibration of  the Miopic stage}\\
 \input{sections/latex_def2}
 \textbf{Results}\\
@@ -253,94 +305,70 @@ The Miopic stage was solved by iterating forward over the policy rules obtained 
 \begin{center}
 \begin{tabular}{c}
 \multicolumn{1}{c}{Evolution of the prevalence overtime} \\  
-%\multicolumn{1}{c}{(b) Asset Market} \\
 \includegraphics[angle=0,width=.5\textwidth]{figures/PREV.png}   
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG15.png} 
-
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
 \end{tabular}
 \end{center}
 \label{fig:6}
 \end{figure}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection*{\sf Stage 2: Awareness and Maturity of the Epidemic}
+
+At this stage, agents start to be aware of the epidemic. In particular, agents start to know that the risk of HIV infection depends on (risky) sexual activity. While the actual probability of infection, $\lambda_\rho(x)$ is specified in equation (\ref{eq:HIV-Infection-Individual}), the degree of awareness about this probability is heterogenous across education groups. That is, each education group has a prior belief about the distribution of $\lambda_\rho(x)$, denoted by the p.d.f 
+\begin{align}
+    \mathcal{P}_{e}(\lambda_\rho(x)\sim N(\lambda_\rho(x),\sigma^{2}_\varepsilon),
+\end{align} 
+Our agents learn about $\lambda_\rho(x)$ along this epidemic stage through Bayesian updates with some noise. Each period agents receive a signal $\widetilde{\lambda}_\rho(x)$ that contains information about the actual probability of infection plus some noise, $\varepsilon_{t}$, that is normally distributed with zero mean and variance $\sigma^{2}_{\varepsilon}$, that is,
+\begin{align}
+   \widetilde{\lambda}_\rho(x)= \lambda_\rho(x) + \varepsilon_t % \,\,\,\,\,\, \mbox{where:}\,\,\,\,\,\,\,v\sim N(0,\sigma^{2}_v) %\.\. \mbox{and} \.\. u\sim N(0,\sigma^{2}_u)
+\end{align}
+The signal follows the following covariance stationary process:
+\begin{align}
+   \varepsilon_t= v_{t} + \textbf{1}_{e=0} u_t % \,\,\,\,\,\, \mbox{where:}\,\,\,\,\,\,\,v\sim N(0,\sigma^{2}_v) %\.\. \mbox{and} \.\. u\sim N(0,\sigma^{2}_u)
+\end{align}
+where $v\sim N(0,\sigma^{2}_v)$ and $u\sim N(0,\sigma^{2}_u)$. The dummy $\textbf{1}_{e=0}$ equals one if an agent belongs to the less educated group, and zero otherwise. This introduces heterogeneity in the knowledge of $\lambda_\rho(x)$. In particular, the signal is noisier for the less educated individuals than for the more educated individuals
+\begin{align}\label{eq:noise}
+    \sigma^{2}_{\varepsilon} (e=0) = \sigma^{2}_{v} + \sigma^{2}_{u} > \sigma^{2}_{v}=\sigma^{2}_{\varepsilon}(e=1).
+\end{align}
+The fact that (\ref{eq:noise}) holds implies that the ability to learn about the probability of infection $\lambda_\rho(x)$ depends on education. In particular, every period $t$ agents update their beliefs $\mathcal{P}(\lambda_\rho(x))$ given the information up to $t-1$ according to Bayes rule:
+\begin{align}
+    \mathcal{P}_{e}(\lambda_\rho(x))=\mathcal{P}_{e}(\lambda_\rho(x)|\widetilde{\lambda}_\rho(x))=\frac{\mathcal{P}_{e}(\widetilde{\lambda}_\rho(x)|\lambda_\rho(x))\mathcal{P}_e(\lambda_\rho(x))}{\mathcal{P}_{e}(\widetilde{\lambda}_\rho(x))}
+\end{align}
+where the more educated individuals form more accurate priors due to  (\ref{eq:noise}). In other terms, the Bayesian updates will transit faster to the actual probability for the more educated individuals,\footnote{\sf We assume normality of the prior belief to simplify the calculations, however this can be adapted to mimic more complex formulations.} 
+
+%Notice that both the beliefs $P_{e}$ and the variance of the noise $\sigma_{e}$ depend on the level of education ($e$) of the individual. Educated individuals will have ad-hoc lower $\sigma_{e}$ than the less educated people,  $\sigma_{e=1}<\sigma_{e=0}$.%\footnote{This only means that the estimation of the probability of infection is more precise for those who are educated.} Then by construction educated individuals ($e=1$) tend to learn better about the evolution of the epidemic than the less educated individuals, technically this means educated individuals form better priors.\\
+
+\bigskip
+\noindent \textbf{Solving the Maturity of the Epidemic}
+
+Computation of the transition dynamics by guessing a finite-time path for prices.\\
+
+\noindent \textbf{\textit{Algorithm No.3}: Computation of the transition to the Maturity Stage:}\\
+
+\begin{itemize}
+\item Step 1: Choose the number of transition periods ($T_2-T_1$) that go from the last  period in Stage 1 (HIV Myopia) ($t=T_1$) to the recursive stationary equilibrium of Stage 2 of the epidemic (HIV Maturity) ($t=T_2$).  
+\item Step 2: Compute the recursive stationary equilibrium of Stage 2 of the epidemic. This stationary equilibrium is associated with $\lim_{t \rightarrow \infty }\widetilde{\rho}_{e,t}=\rho$. That is, in the stationary equilibrium both education groups have completed learning of the true probability of how HIV risk as a function of sex.
+\item Step 3: Guess a time path for the prices $p_{t}$ and $r_{t}$, and a time path for beliefs $\widetilde{\rho}_{e,t}$ by education group.
+%The values of these variables in the first period $t = 0$ and last period $t = T$ are implied by the last distribution of the myopic stage of the epidemic and the recursive stationary equilibrium associated with $\widetilde{\rho}_{e,t}=\rho$, i.e., complete learning of the true probability of HIV infection for both education groups.
+%\item Step 4: Make an initial guess of $\widetilde{\rho_{e,t}}$ for each education group. and iterate on Bayes rule to generate an exogenous learning path for $ \rho_{t}$ until $T$.
+\item Step 5: Compute the equilibrium policy (and value) functions iterating backwards in time, $t = T_2-1,...,T_1$.
+\item Step 6: Simulate the evolution of the distribution with the help of the optimal policy functions and the initial distribution for the transition from $t = T_1$ to $t = T_2$. 
+\item Step 7: Compute the time path of net asset level and excess demand for sex. If markets don't clear along the path, then return to step 3.
+\item Step 8: Compare the simulated distribution  with the stationary distribution function. If they are not the same try increasing the horizon $T$.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\subsection*{\sf Stage 3: The Era of ARVs}
 
 
 
-\section{Aprendix}
-\subsection{Pre-Epidemic graphs}
-\begin{figure}[H]
-\caption{Policy Functions Educated Buyers}
-\hspace{-2.0cm}
-\begin{center}
-\begin{tabular}{cc}
-\multicolumn{1}{c}{(a) Value function} &  
-\multicolumn{1}{c}{(b) Assets function} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG1.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG3.png} \\
-\multicolumn{1}{c}{(c) Consumption function} &  
-\multicolumn{1}{c}{(d) Sex consumption function } \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG2.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG4.png} \\
-%\multicolumn{1}{c}{(a) Value function} &  
-%\multicolumn{1}{c}{(b) Assets function} \\
-\end{tabular}
-\end{center}
-\label{fig:2}
-\end{figure}
-
-\begin{figure}[H]
-\caption{Policy Functions Educated Sellers}
-\hspace{-2.0cm}
-\begin{center}
-\begin{tabular}{cc}
-\multicolumn{1}{c}{(a) Value function} &  
-\multicolumn{1}{c}{(b) Asset function} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG5.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG7.png} \\
-\multicolumn{1}{c}{(c) Consumption function} &  
-\multicolumn{1}{c}{(d) Sex Production function } \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG6.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG8.png} \\
-\end{tabular}
-\end{center}
-\label{fig:3}
-\end{figure}
+\clearpage
 
 
 
-\begin{figure}[H]
-\caption{Comparison plots}
-\hspace{-2.0cm}
-\begin{center}
-\begin{tabular}{cc}
-\multicolumn{1}{c}{(a) Asset Policy Functions} &  
-\multicolumn{1}{c}{(b) Consumption Policy Functions} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG11.png}   & 
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG12.png}\\ 
-\multicolumn{2}{c}{(c) No Capital Income} \\  
-%\multicolumn{2}{c}{(d) Equilibrium(repeated)} \\
-\includegraphics[angle=0,width=.5\textwidth]{figures/FIG13.png} 
-%& 
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
-\end{tabular}
-\end{center}
-\label{fig:5}
-\end{figure}
 
-\begin{figure}[H]
-\caption{General equilibrium surface plots}
-\hspace{-2.0cm}
-\begin{center}
-\begin{tabular}{cc}
-\multicolumn{1}{c}{(a) Excess demand of Sex} &  
-\multicolumn{1}{c}{(b) Excess demand of Assets} \\
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM2.png}   & 
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM1.png}\\ 
-\multicolumn{2}{c}{(c) Equilibrium} \\  
-%\multicolumn{2}{c}{(d) Equilibrium(repeated)} \\
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
-%& 
-%\includegraphics[angle=0,width=.5\textwidth]{figures/FIG_EQUILIBIUM3.png} 
-\end{tabular}
-\end{center}
-\label{fig:1}
-\end{figure}
+
+
