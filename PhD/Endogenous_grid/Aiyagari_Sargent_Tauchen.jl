@@ -289,6 +289,7 @@ function compute_invariant(mcm;)
 
     kk=apol_egm[:]
     meank=probst'*kk
+
     # Using QuantEcon Invariant finder
     trans3 = trans
     for i = 1:size(trans,2)
@@ -297,6 +298,7 @@ function compute_invariant(mcm;)
     mc2 = MarkovChain(trans3)
     stationary_probs = stationary_distributions(mc2)[:, 1][1]
     meank_s = dot(stationary_probs,kk)
+
     # Calculate according to Muller
     A_supply = 0
     # This is calculating an integral manually
