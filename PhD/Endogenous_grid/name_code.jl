@@ -234,7 +234,7 @@ function compute_invariant_pwlinear!(ay::AiyagariEconomy, Λ_invariant)
                     aval  = minimum([maximum([aux_ast, ay.agrid[1]]), ay.agrid[end]]) # today's assets (endogenous grid)
                     aux_ast_pos = searchsortedfirst(ay.agrid_finer, aval)
                     length_aux = length(ay.agrid_finer)
-                    ind_r = minimum([maximum([aux_ast_pos, 2]), length_aux])
+                    ind_r = minimum([maximum([aux_ast_pos, 2]), length_aux]) # No one, cuz if not below I will have zero
 
                     Λval = Λnm1_mat[ind_r-1, i_y0] + (Λnm1_mat[ind_r, i_y0]- Λnm1_mat[ind_r-1, i_y0]) / (ay.agrid_finer[ind_r] - ay.agrid_finer[ind_r-1]) * (aval - ay.agrid_finer[ind_r-1])
                     vec_temp[i_y0] = Λval

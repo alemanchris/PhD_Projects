@@ -92,8 +92,8 @@ function markov_aprox(;
                      rho = 0.2,
                      sigmaint = 0.4,
                      sigma    = sigmaint*sqrt(1-rho^2),
-                     mc = tauchen(ny, rho, sigma),
-                     Pyinv = stationary_distributions(mc)[1],
+                     mc = tauchen(ny, rho, sigma), # Generates same process as markovappr in matlab Sargent
+                     Pyinv = stationary_distributions(mc)[1], #[1] is the method
                      Piy = mc.p,
                      ygrid = mc.state_values,
                      egrid = exp.(ygrid))
