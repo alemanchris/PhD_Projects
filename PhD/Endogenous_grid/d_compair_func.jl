@@ -3,6 +3,7 @@ activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.8");
 using LinearAlgebra, Statistics, Compat
 using Parameters, Plots, QuantEcon
 using Interpolations
+using StatsBase
 
 # These functions are for Sargents QuantEcon
 Household = @with_kw (r = 0.01,
@@ -94,7 +95,7 @@ function markov_tauchen(;
             rho = 0.2,
             sigmaint = 0.4,
             sigma    = sigmaint*sqrt(1-rho^2),
-            mc = tauchen(ny, rho, sigma), # Generates same process as markovappr in matlab Sargent
+            mc = tauchen(ny, rho, sigma), # Generates same process as markovappr in Sargent
             Pyinv = stationary_distributions(mc)[1], #[1] is the method
             Piy = mc.p,
             ygrid = mc.state_values,
@@ -198,7 +199,6 @@ function dist_sargent_A(am, r)
 end
 
 # These are functions for manual discretization
-# Getting the indices
 function dist_sargent_B(am,r)
     # Set up problem (I should create a function)
     w = r_to_w(r)
@@ -260,7 +260,6 @@ end
 
 # 3. Simulation
 
-### SIMULATION
 function simulation_C(am,r)
     # Set up problem (I should create a function)
     w = r_to_w(r)
@@ -293,7 +292,6 @@ function simulation_C(am,r)
         #s1 = (s0<=t_s)+(s0>t_s&&s0<=(t_s.*2)).*2+(s0>(t_s.*2)&&s0<=(t_s.*3)).*3+(s0>(t_s.*3)&&s0<=(t_s.*4)).*4+(s0>(t_s.*4)&&s0<=(t_s.*5)).*5+(s0>(t_s.*5)&&s0<=(t_s.*6)).*6+(s0>(t_s.*6)).*7
         s1 = (s0<=t_s)+(s0>(t_s)).*2
         state_it[i,:] = simulate(z_chain, T; init = s1)
-        # Extract index
     end
     for i = 1:T
         #try to trace them nigrows
@@ -303,20 +301,23 @@ function simulation_C(am,r)
          at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
          #extract index
          #
-        #= no H
+        #= Variant with no H (But with more income states, find a way to loopit)
          ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
          # future assets
          at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
          #extract index
          =#
-         #= with H
+        #= Variant with H (incomplete)
          ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
          # future assets
          at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w.*H-ct[:,i]
          =#
     end
     K_simul = mean(mean(at[:,T-100:T]))
-    return (Kap_C = K_simul, SSdist_C = 2)
+    # Obtain weights
+    data_vec = vec(at[:,T-100:T]) #Vectorize data
+    bin_it = fit(Histogram,data_vec; closed=:left,nbins=na)
+    return (Kap_C = K_simul, SSdist_C = bin_it.weights)
 #return (mean_K= A_supply2)
 end
 
@@ -326,6 +327,7 @@ function val_interp(Amat,cpo,val)
     return c_aux.(val)
 end
 
+# 4. Piece Wise Linear Interpolation (Failed attempt: Think again to find mistake)
 function PWLinear_D(am,r)
     # Set up problem (I should create a function)
     w = r_to_w(r)
@@ -403,6 +405,7 @@ function PWLinear_D(am,r)
     return (Kap_D = Kap_D ,SSdist_D =PDF_inv)
 end
 
+# Piece Wise linear Interpolation of CDF (Success!)
 function CDF_pwise_E(am,r)
     # Set up problem (I should create a function)
     w = r_to_w(r)
@@ -425,14 +428,20 @@ function CDF_pwise_E(am,r)
     log_del_1 = a_star[:,1].==concat1
     log_del_2 = a_star[:,2].==concat2
     # Start eliminating (VERY ADHOCK TILL NOW)
+    aopt_aux11 = a_vals[log_del_1]
+    aopt_aux12 = a_star[log_del_1,1]
+    aopt_aux21 = a_vals[log_del_2]
+    aopt_aux22 = a_star[log_del_2,2]
+    #=
     aopt_aux11 = copy(a_vals)
     aopt_aux12 = copy(a_star[:,1])
     aopt_aux21 = copy(a_vals)
     aopt_aux22 = copy(a_star[:,2])
-    deleteat!(aopt_aux11,log_del1)
-    deleteat!(aopt_aux12,log_del1)
-    deleteat!(aopt_aux21,log_del2)
-    deleteat!(aopt_aux22,log_del2)
+    deleteat!(vec(aopt_aux11),vec(log_del_1))
+    deleteat!(vec(aopt_aux12),vec(log_del_1))
+    deleteat!(vec(aopt_aux21),vec(log_del_2))
+    deleteat!(vec(aopt_aux22),vec(log_del_2))
+    =#
     aopte = [aopt_aux11 aopt_aux12]
     aoptu = [aopt_aux21 aopt_aux22]
     a1 = zeros(nk,ny)
@@ -449,7 +458,7 @@ function CDF_pwise_E(am,r)
             else
                 if a_vals_f[i] <= aoptu[1,2]
                     a1[i,l] = a_vals[1]-0.1
-                elseif ag[i]>=maximum(aoptu[:,2])
+                elseif a_vals_f[i]>=maximum(aoptu[:,2])
                     a1[i,l]=maximum(aoptu[:,1])
                 else
                     a1[i,l]=val_interp(aoptu[:,2],aoptu[:,1],a_vals_f[i])
@@ -470,12 +479,12 @@ function CDF_pwise_E(am,r)
            for i=1:nk
                k0 = a1[i,l]
                for l1 = 1:ny
-                   if k0<=ag[1]
+                   if k0<=a_vals_f[1]
                        gk[i,l1] = gk[i,l1]+0
-                   elseif k0>=ag[nk]
+                   elseif k0>=a_vals_f[nk]
                        gk[i,l1] = gk[i,l1]+z_chain.p[l,l1]*Pyinv[l]
                    else
-                       gk[i,l1] = gk[i,l1]+val_interp(ag,gk0[:,l],k0)*z_chain.p[l,l1]
+                       gk[i,l1] = gk[i,l1]+val_interp(a_vals_f,gk0[:,l],k0)*z_chain.p[l,l1]
                    end
                end
            end
@@ -486,12 +495,12 @@ function CDF_pwise_E(am,r)
        kritg = maximum(abs.(gk0-gk))
    end
    # computing the mean
-   kk1 = (gk[1,1]+gk[1,2])*ag[1]
+   kk1 = (gk[1,1]+gk[1,2])*a_vals_f[1]
    gk1 = (gk[2:nk,1]+gk[2:nk,2])-(gk[1:nk-1,1]+gk[1:nk-1,2])
-   ag1 = (ag[2:nk]+ag[1:nk-1])/2
+   ag1 = (a_vals_f[2:nk]+a_vals_f[1:nk-1])./2
    kk1 = kk1 + gk1'*ag1
 
-   ag1 = [ag[1];ag1]
+   ag1 = [a_vals_f[1];ag1]
    gk1 = [gk[1,:];(gk[2:nk,:]-gk[1:nk-1,:])]
    CDF_inv = sum(gk1,dims=2)
    PDF_inv = diff(CDF_inv,dims=1)

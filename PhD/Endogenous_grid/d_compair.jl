@@ -24,3 +24,6 @@ r = 0.03
 @unpack Kap_C, SSdist_C = simulation_C(am, r)
 
 # 4. Piecewise Linear-Interpolation A. Notes by J.Violante
+@unpack Kap_E, SSdist_E = CDF_pwise_E(am, r)
+
+# 6. Collocation as in Windberry (Still to be done)
