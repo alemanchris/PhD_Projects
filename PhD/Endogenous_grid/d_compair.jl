@@ -5,8 +5,8 @@
     1. Discretization taken from Sargent's QuantEcon.
     2. Manual Discretization
     3. Simulation
-    4. Piecewise Linear interpolation A
-    5. Piecewise Linear interpolation B
+    4. Piecewise Linear interpolation A (approximate the CDF)
+    5. Piecewise Linear interpolation B (approximate the PDF)
     6. Collocation
 =#
 # 0. Generate an Instance of household
@@ -26,4 +26,7 @@ r = 0.03
 # 4. Piecewise Linear-Interpolation A. Notes by J.Violante
 @unpack Kap_E, SSdist_E = CDF_pwise_E(am, r)
 
-# 6. Collocation as in Windberry (Still to be done)
+# 5. Piecewise Linear-Interpolation B. Notes by J.Violante
+@unpack Kap_F, SSdist_F = PDF_pwise_F(am, r)
+
+# 6. Collocation Chebyschev as in Windberry (Still to be done)

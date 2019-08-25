@@ -317,7 +317,8 @@ function simulation_C(am,r)
     # Obtain weights
     data_vec = vec(at[:,T-100:T]) #Vectorize data
     bin_it = fit(Histogram,data_vec; closed=:left,nbins=na)
-    return (Kap_C = K_simul, SSdist_C = bin_it.weights)
+    PDF_simul = bin_it.weights./(sum(bin_it.weights))
+    return (Kap_C = K_simul, SSdist_C = PDF_simul)
 #return (mean_K= A_supply2)
 end
 
@@ -425,23 +426,14 @@ function CDF_pwise_E(am,r)
     # Elimination of the rows with the same entry as the subsequent row
     concat1 = [a_star[2:na,1];0]
     concat2 = [a_star[2:na,2];0]
-    log_del_1 = a_star[:,1].==concat1
-    log_del_2 = a_star[:,2].==concat2
+    log_del_1 = .!(a_star[:,1].==concat1)
+    log_del_2 = .!(a_star[:,2].==concat2)
     # Start eliminating (VERY ADHOCK TILL NOW)
     aopt_aux11 = a_vals[log_del_1]
     aopt_aux12 = a_star[log_del_1,1]
     aopt_aux21 = a_vals[log_del_2]
     aopt_aux22 = a_star[log_del_2,2]
-    #=
-    aopt_aux11 = copy(a_vals)
-    aopt_aux12 = copy(a_star[:,1])
-    aopt_aux21 = copy(a_vals)
-    aopt_aux22 = copy(a_star[:,2])
-    deleteat!(vec(aopt_aux11),vec(log_del_1))
-    deleteat!(vec(aopt_aux12),vec(log_del_1))
-    deleteat!(vec(aopt_aux21),vec(log_del_2))
-    deleteat!(vec(aopt_aux22),vec(log_del_2))
-    =#
+
     aopte = [aopt_aux11 aopt_aux12]
     aoptu = [aopt_aux21 aopt_aux22]
     a1 = zeros(nk,ny)
@@ -452,7 +444,7 @@ function CDF_pwise_E(am,r)
                     a1[i,l] = a_vals[1]-0.1
                 elseif a_vals_f[i]>=maximum(aopte[:,2])  #   ag[i]>a' for all a
                     a1[i,l] = maximum(aopte[:,1])
-                else
+                else #1 is the grid
                     a1[i,l] = val_interp(aopte[:,2],aopte[:,1],a_vals_f[i])
                 end
             else
@@ -472,7 +464,7 @@ function CDF_pwise_E(am,r)
    while  q1<ngk #until (q1>ngk);
        q1 = q1+1
 
-       gk0 = copy(gk)
+       gk0 = gk
        gk = zeros(nk,ny)
 
        for l=1:ny
@@ -490,8 +482,7 @@ function CDF_pwise_E(am,r)
            end
        end
 
-
-       gk = gk./(sum(gk[nk,:]))
+       gk = gk./(gk[nk,1]+gk[nk,2])
        kritg = maximum(abs.(gk0-gk))
    end
    # computing the mean
@@ -501,10 +492,80 @@ function CDF_pwise_E(am,r)
    kk1 = kk1 + gk1'*ag1
 
    ag1 = [a_vals_f[1];ag1]
-   gk1 = [gk[1,:];(gk[2:nk,:]-gk[1:nk-1,:])]
+   gk1 = [gk[1,:]';(gk[2:nk,:]-gk[1:nk-1,:])]
    CDF_inv = sum(gk1,dims=2)
-   PDF_inv = diff(CDF_inv,dims=1)
-   KapE = kk1
+   PDF_inv = [(gk[1,1]+gk[1,2])';(gk[2:nk,1]+gk[2:nk,2])-(gk[1:nk-1,1]+gk[1:nk-1,2])]
+   #PDF_inv = diff(CDF_inv,dims=1)
+   KapV = a_vals_f'*PDF_inv # Second way for the mean
 
     return (Kap_E = kk1, SSdist_E = PDF_inv)
+end
+# Piece_wice Linear interpoalation of the PDF
+function PDF_pwise_F(am,r)
+    # Set up problem (I should create a function)
+    w = r_to_w(r)
+    @unpack a_vals, s_vals, u, a_size, z_size, n, dist_tol, z_chain, Pyinv, a_vals_f, a_size_f = am
+    setup_R!(am.R, a_vals, s_vals, r, w, u)
+    na = a_size
+    ny = z_size #2#z_chain.ny
+    nk = a_size_f
+    a_star = solve_asset_policy_rule(am,r)
+    ngk = 25000
+    #
+
+    # initialization of the distribution functions
+
+    gk=ones(nk,2)./(nk*2);
+    #=
+    #gk=gk.*pp1';
+
+    kconv=zeros(ngk+1,1);
+    gk=zeros(nk,2);
+    gk[nk0,1]=pp1[1];
+    gk[nk0,2]=pp1[2];
+    =#
+    # computation of invariant distribution of wealth
+    q1=0
+    kritg=1
+    aopt = a_star
+    amin1 = a_vals[1]
+    amax1 = a_vals[end]
+    while q1<ngk
+        q1 =q1+1
+        gk0=gk
+        gk =zeros(nk,2)
+
+        for l=1:2
+
+            for i=1:nk # until i==nk;
+                k0=a_vals_f[i]
+                if k0<=amin1
+                    k1=aopt[1,l]
+                elseif k0>=amax1
+                    k1=aopt[na,l]
+                else
+                    #k1=lininter(a_vals,aopt[:,l],k0)
+                    k1 = val_interp(a_vals,aopt[:,l],k0)
+                end
+                if k1<=amin1
+                    gk[1,1]=gk[1,1]+gk0[i,l]*z_chain.p[l,1] #pp[l,1];
+                    gk[1,2]=gk[1,2]+gk0[i,l]*z_chain.p[l,2]
+                elseif k1>=amax1;
+                    gk[nk,1]=gk[nk,1]+gk0[i,l]*z_chain.p[l,1]
+                    gk[nk,2]=gk[nk,2]+gk0[i,l]*z_chain.p[l,2]
+                elseif (k1>amin1) && (k1<amax1)
+                    j=sum(a_vals_f.<=k1)+1
+                    n0=(k1-a_vals_f[j-1])/(a_vals_f[j]-a_vals_f[j-1])
+                    gk[j,1]=gk[j,1]+n0*gk0[i,l]*z_chain.p[l,1]
+                    gk[j,2]=gk[j,2]+n0*gk0[i,l]*z_chain.p[l,2]
+                    gk[j-1,1]=gk[j-1,1]+(1-n0)*gk0[i,l]*z_chain.p[l,1]
+                    gk[j-1,2]=gk[j-1,2]+(1-n0)*gk0[i,l]*z_chain.p[l,2]
+                end
+            end
+        end
+        gk=gk./sum(sum(gk))
+        kritg=sum(sum(abs.(gk0-gk)))
+    end
+    k_mean = (gk[:,1]+gk[:,2])'*a_vals_f
+    return (Kap_F = k_mean, SSdist_F = gk)
 end
