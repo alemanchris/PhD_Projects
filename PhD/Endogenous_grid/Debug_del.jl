@@ -94,7 +94,29 @@ ag1 = (a_vals_f[2:nk]+a_vals_f[1:nk-1])./2
 kk1 = kk1 + gk1'*ag1
 
 ag1 = [a_vals_f[1];ag1]
-gk1 = [gk[1,:];(gk[2:nk,:]-gk[1:nk-1,:])]
+french = (gk[2:nk,:]-gk[1:nk-1,:])
+french3 = gk[1,:]'
+gk1 = [gk[1,:]';(gk[2:nk,:]-gk[1:nk-1,:])]
 CDF_inv = sum(gk1,dims=2)
 PDF_inv = diff(CDF_inv,dims=1)
 KapE = kk1
+
+DERT = a_vals_f'
+
+amin10=-2                 #/* asset grid */
+amax10=3000
+na0=201
+astep0=(amax10-amin10)/(na0-1)
+#a0=seqa(amin10,astep0,na0);
+nk0=3*na0 #            /* asset grid for distribution */
+agstep3=(amax10-amin10)/(nk0-1)
+
+#
+A_test = [1 2;3 4;5 6;7 8]
+ldel1 = [2;2;2;2]
+ldel2 = [0;2;0;2]
+log_stuf = .!(ldel1.==ldel2)
+new_dert2 = [A_test[log_stuf,1] A_test[log_stuf,2]]
+inv_log = log_stuf'
+new_dert3 = [A_test[inv_log,1] A_test[inv_log,2]]
+something_again = A_test[inv_log,1]
