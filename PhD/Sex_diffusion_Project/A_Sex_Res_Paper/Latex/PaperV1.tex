@@ -1,58 +1,126 @@
-%\begin{comment}
-\documentclass[a4paper, 12pt]{article}
-\setlength{\parindent}{4ex}
-\usepackage{natbib}
-\bibliographystyle{apa}
-\usepackage{amsmath,amssymb,amsfonts,amsthm, amstext}    
-\usepackage{graphicx,subcaption} 
-\usepackage{hyperref}                          
-\usepackage[font = bf, labelfont = bf]{caption}
-\usepackage{url}
-\usepackage{appendix}
-\usepackage{pdflscape}
-\usepackage{booktabs}
-\usepackage{longtable}
-\usepackage{xcolor}
-\usepackage{tikz}
-\usepackage{float}
-\usepackage[onehalfspacing]{setspace}
-\usepackage{breqn}
-\usepackage{tabu}
-\usepackage{indentfirst}
-\usepackage{fullpage}
-\usepackage{comment}
-\usepackage{array}   % for \newcolumntype macro
-\newcolumntype{C}{>{$}c<{$}} % math-mode version of "l" column type
-\usepackage[automark]{scrpage2}
-\usepackage{multirow}
-\usepackage{footnote}
-\usepackage{enumitem}
-\usepackage{nicefrac}
-\usepackage{dsfont}
-\usepackage{multirow}
-\makesavenoteenv{tabular}
-\pagestyle{scrheadings}
-\automark{section}
-\clearscrheadings
-\ohead{\headmark}
+\PassOptionsToPackage{svgnames}{xcolor}
+\documentclass[12pt]{article}
+\usepackage[showlabels,sections,floats,textmath,displaymath]{preview}
+\usepackage{tcolorbox}
+\usepackage{lipsum}
+%\tcbuselibrary{skins,breakable}
+%\usetikzlibrary{shadings,shadows}
 
-\setlength{\headheight}{1.1\baselineskip}
-\voffset=-2cm 
-\hoffset=-3cm
-\textheight24cm
-\textwidth15.5cm
-\topmargin1cm
-\oddsidemargin3cm
-\evensidemargin3cm
-\makeatletter
-%\setlength{\@fptop}{0pt}
-\makeatother
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[]{trackchanges}
+\usepackage{pdflscape}
+\usepackage{longtable}
+\usepackage{natbib}
+\usepackage{longtable}
+\usepackage{amstext,amsthm,amssymb}
+\usepackage[bf,sf,compact,topmarks,small]{titlesec}
+\usepackage[fleqn]{amsmath}
+\usepackage{rotating}
+\usepackage{verbatim}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{mathrsfs}
+\usepackage{csvsimple}
+%\usepackage{calrsfs}
+%\usepackage{trackchanges}
+%\addeditor{Leandro}
+%\addeditor{Raul}
+%      \add[editor]{added text}
+%      \remove[editor]{removed text}
+%      \change[editor]{removed text}{added text}
+%      \note[editor]{note text}
+%      \annote[editor]{text to annotate}{note text}
+%\def\newblock{\hskip .11em plus .33em minus .07em}
+\usepackage{fancybox}
+\usepackage{subfigure} %YES
+\usepackage{graphicx}
+\graphicspath{{../graphs/}}
+%\usepackage[lofdepth,lotdepth]{subfigure}  %NO
+\usepackage{geometry,setspace}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{comment}
+\hypersetup{
+    colorlinks=true,
+    citecolor=blue,%
+    filecolor=black,%
+    linkcolor=blue,%
+    urlcolor=blue
+}
+\usepackage{appendix}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{tabularx}
+\usepackage{lscape}
+\usepackage{caption}
+
+%Selecting pages to compile
+%\usepackage[1-72]{pagesel}
+
+%\definecolor{orange}{rgb}{1,0.5,0}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{result}[theorem]{Result}
+%\newcounter{subtable}[subtable]
+
+\setlength{\oddsidemargin}{0in} \setlength{\evensidemargin}{0in}
+\setlength{\hoffset}{0in} \setlength{\voffset}{.25in}
+\setlength{\textwidth}{6.5in} \setlength{\textheight}{9.in}
+\setlength{\marginparwidth}{.5in} \setlength{\topmargin}{-.35in}
+\setlength{\headheight}{0in} \setlength{\headsep}{0in}
+
+\def\baselinestretch{1.}
+\parskip=.3cm
+
+\csname toclevel@#2\endcsname
+
+\allowdisplaybreaks
+
+\usepackage{xr}
+
+
+\newcommand{\monthname}[1]{%
+\ifcase#1
+\or January     \or February%
+\or March       \or April%
+\or May         \or June%
+\or July        \or August%
+\or September   \or October%
+\or November    \or December%
+\fi}
+
+
+%\renewcommand{\initialsOne}{di}
+%\renewcommand{\initialsTwo}{kk}
+%\renewcommand{\initialsThree}{rs}  
+
+%\newenvironment{myexampleblock}[1]{%
+   % \tcolorbox[beamer,%
+    % noparskip,breakable,
+    % colback=LightGreen,colframe=DarkGreen,%
+    % colbacklower=LimeGreen!75!LightGreen,%
+    % title=#1]}%
+    % {\endtcolorbox}
+
+\newenvironment{myexampleblock}[1]{%
+    \tcolorbox[beamer,%
+ noparskip,breakable,
+    colback=White,colframe=Gray,%
+    colbacklower=DarkBlue!75!LightBlue,%
+    title=#1]}%
+    {\endtcolorbox}
+
+
+
+
 \begin{document}
 \sf
 \thispagestyle{empty}
-\input{sections/titlepage}
-\input{sections/abstract}
+%\input{sections/titlepage}
+%\input{sections/abstract}
 \pagenumbering{roman}
 
 \newpage
@@ -60,7 +128,7 @@
 \setcounter{page}{1}    % start page numbering anew
 \pagenumbering{arabic}  % page numbers in arabic style
 
-\input{sections/introduction} %This eliminated from chris. Dont do it for the thesis.
+%\input{sections/introduction} %This eliminated from chris. Dont do it for the thesis.
 \input{sections/body}
 \input{sections/appendix}
 \newpage
