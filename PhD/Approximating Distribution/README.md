@@ -1,5 +1,9 @@
 # Approximating the Invariant Wealth Distribution
 ## 1. Preliminaries
+```
+*** Is the main file.
+*** Contains all the functions to run ***
+```
 This is an exercise to implement a list of different methods to approximate the invariant wealth distribution of ABH (Aiyagari-Bewley-Huggett) type models. The methods to the implemented are the following:
 - Eigen Vector Method
 - Monte Carlo Simulation
