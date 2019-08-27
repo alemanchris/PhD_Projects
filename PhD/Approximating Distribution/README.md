@@ -24,7 +24,7 @@ Infinitely lived households solve the following maximization problem:
 
 Subject to: 
 
-<img src="https://render.githubusercontent.com/render/math?math=a_{t\pm1}\pm c_{t}\leq wz_{t}\pm (1\pm r)a_{t}">
+<img src="https://render.githubusercontent.com/render/math?math=a_{t%2B1}\pm c_{t}\leq wz_{t}%2B (1%2B r)a_{t}">
 
 <img src="https://render.githubusercontent.com/render/math?math=c_{t}\geq0 \,\,\,\,\mbox{and}\,\,\,\,a_{t}\geq0">
 Where:
@@ -52,7 +52,7 @@ With:
 
 Then the firms maximization problem is:
 
-<img src="https://render.githubusercontent.com/render/math?math=\max_{K,N} \Big[AK_{t}^{\alpha}N^{1-\alpha} -(r\pm \delta)K-w N\Big]">
+<img src="https://render.githubusercontent.com/render/math?math=\max_{K,N} \Big[AK_{t}^{\alpha}N^{1-\alpha} -(r%2B \delta)K-w N\Big]">
 
 Where <img src="https://render.githubusercontent.com/render/math?math=\delta"> is the depreciation rate
 
