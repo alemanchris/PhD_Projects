@@ -24,7 +24,7 @@ Infinitely lived households solve the following maximization problem:
 
 Subject to: 
 
-<img src="https://render.githubusercontent.com/render/math?math=a_{t%2B1}\pm c_{t}\leq wz_{t}%2B (1%2B r)a_{t}">
+<img src="https://render.githubusercontent.com/render/math?math=a_{t%2B1}%2B c_{t}\leq wz_{t}%2B (1%2B r)a_{t}">
 
 <img src="https://render.githubusercontent.com/render/math?math=c_{t}\geq0 \,\,\,\,\mbox{and}\,\,\,\,a_{t}\geq0">
 Where:
