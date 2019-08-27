@@ -52,7 +52,7 @@ With:
 
 Then the firms maximization problem is:
 
-<img src="https://render.githubusercontent.com/render/math?math=\max_{K,N} \Big[AK_{t}^{\alpha}N^{1-\alpha} -(r\pm\delta)K-w N\Big]">
+<img src="https://render.githubusercontent.com/render/math?math=\max_{K,N} \Big[AK_{t}^{\alpha}N^{1-\alpha} -(r\pm \delta)K-w N\Big]">
 
 Where <img src="https://render.githubusercontent.com/render/math?math=\delta"> is the depreciation rate
 
