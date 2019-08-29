@@ -1,3 +1,4 @@
+# Collects the functions used in d_compair.jl
 using InstantiateFromURL
 activate_github("QuantEcon/QuantEconLecturePackages", tag = "v0.9.8");
 using LinearAlgebra, Statistics, Compat

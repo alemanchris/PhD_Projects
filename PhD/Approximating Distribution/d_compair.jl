@@ -29,7 +29,7 @@ r = 0.03
 # 5. Discretization of the PDF: B. Notes by J.Violante
 @unpack Kap_F, SSdist_F = PDF_disc_F(am, r)
 
-# 6. Piecewise Linear-Interpolation (Rios Rull 1997 "Computation of Equilibria in Het Agent Models")
-@unpack Kap_F, SSdist_F = PDF_pwise_D(am, r)
+# 6. Piecewise Linear-Interpolation (Rios Rull 1997) (Still to be corrected)
+@unpack Kap_F, SSdist_F = PWLinear_D(am, r)
 
-# 6. Collocation Chebyschev as in Windberry (Still to be done)
+# 7. Collocation Chebyschev as in Windberry (Still to be done)
