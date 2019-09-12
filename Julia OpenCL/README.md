@@ -5,7 +5,7 @@ The following codes solve the Life Cycle Model example presented on: A Practical
 - Julia_Par.jl uses the Julia Distributed library to paralellize over the CPU (this is taken directly from Villaverde & Zarruk(2018)).
 - Julia_OpenCL.jl uses ArrayFire for Julia to parallelize over the GPU.
 
-The code is written for Julia 1.0.2
+The code is written for Julia 1.0.2 (Sorry for not keeping up with the latest version)
 
 Make sure to have ArrayFire loaded and working on your operating system.
 
