@@ -1,0 +1,27 @@
+Alternative 1:
+# You can have a function(A) on serial (with serial imputs), and put all the inputs as AFARRAYS
+# Just make sure that all the operations in the function are supported by the ArrayFire
+Alternative 2:
+# You can also declare AFArray within a function(B) (with serial imputs), as to transform the imputs of it (imputs of function(B)).
+# this is like making all the computations within the function as if they were GPU programming
+# then call a (serial) function(A)(but with GPU inputs) as in Alternative one, within the function(B). Function (A) will then run in the GPU
+Alternative 3:
+# You can call function(B) within a function(C) (with serial imputs) that is Serial.
+Alternative 4:
+Apparently it is OK to mix NON AFArrays and AFArrays in the same operations. WHY? NOT OK
+Alternative 5:
+Never loop over
+Typ 1: Create all the fancy arrays u want, using range logs and stuff, then switch them to AFArray
+Typ 2: Autosum loop syntax does not work in AfArray. Eg: x.=+ 2
+Typ 3: Apparently Debugger doesnt work with package for CPU parallel programming (Distributed)
+Typ 4: NEVER LOOP OVER AN AFArray
+QUESTION 1
+. opperation on CPU vs GPU:
+on CPU looks like log.(A) is the log of each element on A; putting log(A) wont work.
+on GPU looks like log(A) is allowed for the log of each element
+QUESTION 2
+Is the output of a Function that outputs am AFArray also an AF Array?
+Apparently yes: if u try to use a non wrapped function on the output it should fail.
+QUESTION 3:
+What happens if I mix AFArray computation with a Non AFArray? Will it still be performed?
+If YES, where in the CPU or the GPU.
