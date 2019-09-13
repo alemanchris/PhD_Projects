@@ -128,33 +128,17 @@ function solve_age_gpu_c(currentState::modelState_zx)
     w       = currentState.w
     r       = currentState.r
     V       = currentState.V
-    # Manipulate Matrices
-    #P_g = permutedims(repeat(reshape(P',(ne,ne,1)), outer = [1,1,nx]),[3,2,1])
-    #V_g = permutedims(repeat(reshape(V,(nx,ne,1)), outer = [1,1,ne]),[1,3,2])
     VV = zeros(nx,ne)
     for ie = 1:ne
         # Calculate expected utility
-        #expected = zeros(nx,ne,nx)
         expected = AFArray(zeros(nx,1))
         if (age < T)
-            #expected = repeat(sum(P[ie,:].*V,dims=2),outer = [1,1,nx])
             expected = AFArray(reshape(sum(V.*reshape(P[ie,:],(1,ne)),dims=2),(nx,1)))
         end
-
-        # Manipulate Matrices Budget constraint
-        #xgrid_g  = permutedims(repeat(reshape(xgrid',(nx,1,1)),outer = [1,nx,ne]),[1,3,2])
-        #xgridp_g = permutedims(repeat(reshape(xgrid,(1,nx,1)),outer = [nx,1,ne]),[1,3,2])
-        #egrid_g  = repeat(reshape(egrid,(1,ne,1)),outer = [nx,1,nx])
-
-        # Compute consumption
-        #cons = (1+r).*xgrid_g +  egrid_g.*w - xgridp_g
         # Compute Utility
         utility = AFArray(ut_g[:,ie,:]).+ bbeta.*expected
         # Eliminate negatives
-        #neg_ind = cons.<=zeros(nx,ne,nx)
-        #utility = utility.*(.!reshape(neg_ind_g[:,ie,:],(nx,nx))).+reshape(neg_ind_g[:,ie,:],(nx,nx)).*(-10.0^(5))
         utility = utility.*(AFArray(convert(Array{Bool},.!neg_ind_g[:,ie,:]))).+AFArray(neg_ind_g[:,ie,:].*(-10.0^(5)))
-        #VV[:,ie] = Array(reshape(maximum(utility,dims = 2),(nx,1))) #reshape is allowed
         VV[:,ie] = Array(maximum(utility,dims = 2)) #reshape is allowed
     end
     return VV
