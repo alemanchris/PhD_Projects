@@ -1,4 +1,5 @@
 # Approximating the Invariant Wealth Distribution
+# by Christian Alemán
 ## 1. Preliminaries
 ```
 'd_compair.jl' Is the main file.
