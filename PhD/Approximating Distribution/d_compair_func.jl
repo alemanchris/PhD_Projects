@@ -295,7 +295,7 @@ function simulation_C(am,r)
         state_it[i,:] = simulate(z_chain, T; init = s1)
     end
     for i = 1:T
-        #try to trace them nigrows
+        # try to trace them nigrows
         #
          ct[:,i] = (state_it[:,i].==z_chain.state_values[1]).*val_interp(a_vals,c_star[:,1],at[:,i])+(state_it[:,i].==z_chain.state_values[2]).*val_interp(a_vals,c_star[:,2],at[:,i])
          # future assets
@@ -308,10 +308,11 @@ function simulation_C(am,r)
          at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w-ct[:,i]
          #extract index
          =#
-        #= Variant with H (incomplete)
+        #= Variant with H (incomplete, but simple to complete)
          ct[:,i] = (state_it[:,i].==egrid[1]).*c_interp(agrid,cpol_mat[:,1],at[:,i])+(state_it[:,i].==egrid[2]).*c_interp(agrid,cpol_mat[:,2],at[:,i])+(state_it[:,i].==egrid[3]).*c_interp(agrid,cpol_mat[:,3],at[:,i])                        +(state_it[:,i].==egrid[4]).*c_interp(agrid,cpol_mat[:,4],at[:,i])+(state_it[:,i].==egrid[5]).*c_interp(agrid,cpol_mat[:,5],at[:,i])+(state_it[:,i].==egrid[6]).*c_interp(agrid,cpol_mat[:,6],at[:,i])+(state_it[:,i].==egrid[7]).*c_interp(agrid,cpol_mat[:,7],at[:,i])
          # future assets
-         at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w.*H-ct[:,i]
+         # Ht is a function of ct[:,i]
+         at[:,i+1] = (1.0+r).*at[:,i]+state_it[:,i].*w.*H(ct[:,i])-ct[:,i]
          =#
     end
     K_simul = mean(mean(at[:,T-100:T]))
